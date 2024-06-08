@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Add from "./Components/Add";
+import AddProduct from "./Components/AddProduct";
 import Footer from "./Components/Footer";
 import Home from "./Components/Home";
 import LogOut from "./Components/LogOut";
@@ -17,7 +17,7 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/add" element={<Add />} />
+            <Route path="/add" element={<AddProduct/>} />
             <Route path="/update" element={<Update />} />
             <Route path="/logout" element={<LogOut />} />
             <Route path="/profile" element={<Profile />} />
