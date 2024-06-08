@@ -7,7 +7,7 @@ import LogOut from "./Components/LogOut";
 import Nav from "./Components/Nav";
 import Profile from "./Components/Profile";
 import SignUp from "./Components/SignUp";
-import Update from "./Components/Update";
+import UpdateProduct from "./Components/UpdateProduct";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/addproduct" element={<AddProduct/>} />
-            <Route path="/update" element={<Update />} />
+            <Route path="/updateproduct" element={<UpdateProduct />} />
             <Route path="/logout" element={<LogOut />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/signup" element={<SignUp />} />
