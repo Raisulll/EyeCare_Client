@@ -8,6 +8,8 @@ import Profile from "./Components/Profile";
 import SignUp from "./Components/SignUp";
 import UpdateProduct from "./Components/UpdateProduct";
 import Shop from "./Components/Shop";
+import SignIn from "./Components/Signin";
+import Forgot from "./Components/Forgot";
 
 function App() {
   return (
@@ -23,6 +25,8 @@ function App() {
             <Route path="/logout" element={<LogOut />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+            <Route path="/forgotpassword" element={<Forgot/>} />
           </Routes>
         </main>
       </BrowserRouter>
