@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import "../App.css"; // Ensure this is imported to apply the CSS styles
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
@@ -15,12 +16,12 @@ function ForgotPassword() {
 
   return (
     <Container
-      className="d-flex justify-content-center align-items-center"
+      className="d-flex justify-content-center align-items-center containerColor"
       style={{ height: "100vh" }}
     >
       <Row className="w-100 justify-content-center">
         <Col md={8} lg={6}>
-          <Card>
+          <Card className="cardcolor">
             <Card.Body>
               <Card.Title className="text-center mb-4">
                 Forgot Password

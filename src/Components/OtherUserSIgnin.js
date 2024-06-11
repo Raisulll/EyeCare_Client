@@ -1,11 +1,14 @@
+import React, { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import "../App.css";
 
-function SignIn() {
+function OtherUserSignin() {
+  const [userType, setUserType] = useState("");
+
   return (
     <Container
-      className="d-flex justify-content-center align-items-center signin-container"
+      className="d-flex justify-content-center align-items-center"
       style={{ height: "100vh" }}
     >
       <Row className="w-100 justify-content-center">
@@ -13,9 +16,28 @@ function SignIn() {
           <Card className="cardcolor">
             <Card.Body>
               <Card.Title className="text-center mb-4">
-                Sign in to Eye Care
+                Other Users Sign In
               </Card.Title>
               <Form>
+                <Form.Group className="mb-3" controlId="formUserType">
+                  <Form.Label>Select User Type</Form.Label>
+                  <Form.Control
+                    as="select"
+                    value={userType}
+                    onChange={(e) => setUserType(e.target.value)}
+                  >
+                    <option value="">Select...</option>
+                    <option value="doctor">Doctor</option>
+                    <option value="shopOwner">Shop Owner</option>
+                    <option value="eyeHospitalManager">
+                      Eye Hospital Manager
+                    </option>
+                  </Form.Control>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicId">
+                  <Form.Label>Your ID</Form.Label>
+                  <Form.Control type="text" placeholder="Your ID" />
+                </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Email address</Form.Label>
                   <Form.Control type="email" placeholder="test@example.com" />
@@ -29,12 +51,6 @@ function SignIn() {
                 </Button>
               </Form>
               <div className="text-center mt-3">
-                <span>Don't have an account? </span>
-                <NavLink to="/signup" className="signin-link sign-up-link">
-                  Sign Up
-                </NavLink>
-              </div>
-              <div className="text-center mt-3">
                 <span>Forgot your password? </span>
                 <NavLink
                   to="/forgotpassword"
@@ -46,11 +62,11 @@ function SignIn() {
               </div>
               <div className="d-flex justify-content-center mt-3">
                 <NavLink
-                  to="/otheruserssignin"
+                  to="/signin"
                   className="other-users-signin-link"
                   style={{ textDecoration: "none" }}
                 >
-                  Other User Sign In
+                  Patient Login
                 </NavLink>
               </div>
             </Card.Body>
@@ -61,4 +77,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default OtherUserSignin;

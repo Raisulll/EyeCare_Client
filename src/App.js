@@ -10,6 +10,7 @@ import UpdateProduct from "./Components/UpdateProduct";
 import Shop from "./Components/Shop";
 import SignIn from "./Components/Signin";
 import Forgot from "./Components/Forgot";
+import OtherUserSignin from "./Components/OtherUserSIgnin";
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
             <Route path="/profile" element={<Profile />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/signin" element={<SignIn />} />
-            <Route path="/forgotpassword" element={<Forgot/>} />
+            <Route path="/forgotpassword" element={<Forgot />} />
+            <Route path="/otheruserssignin" element={<OtherUserSignin />} />
           </Routes>
         </main>
       </BrowserRouter>
