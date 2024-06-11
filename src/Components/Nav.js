@@ -1,14 +1,10 @@
-import { Container, Navbar, Nav, Button, Form } from "react-bootstrap";
+import { Button, Container, Form, Nav, Navbar } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import "../App.css"; // Import the CSS file
 
 function NavigationBar() {
   return (
-    <Navbar
-      expand="lg"
-      className="bg-body-tertiary fixed-top"
-      style={{ backgroundColor: "#f8f9fa" }}
-    >
+    <Navbar expand="lg" className="bg-body-tertiary fixed-top custom-navbar">
       <Container>
         <Navbar.Brand as={NavLink} to="/home">
           Eye Care
@@ -23,7 +19,7 @@ function NavigationBar() {
               Shop
             </Nav.Link>
           </Nav>
-          <Form className="d-flex">
+          <Form className="d-flex ">
             <Form.Control
               type="search"
               placeholder="Search product..."

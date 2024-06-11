@@ -1,3 +1,8 @@
+body {
+  background-color: #181A1B;
+  color: #ffffff; /* White text color for better readability */
+}
+
 .sign-up-link {
   text-decoration: none;
   color: #007bff;
@@ -21,5 +26,106 @@ body {
 
 .container {
   margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.custom-navbar {
+  background-color: #1b1e1f !important;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px !important;
+}
+
+.custom-navbar .nav-link,
+.custom-navbar .navbar-brand,
+.custom-navbar .bi-bag {
+  color: #fff !important;
+}
+
+.custom-navbar .btn-outline-secondary {
+  border-color: #fff !important;
+  color: #fff !important;
+}
+
+.custom-navbar .btn-outline-secondary:hover {
+  background-color: #fff !important;
+  color: #1b1e1f !important;
+}
+
+.custom-navbar .btn-dark {
+  background-color: #fff !important;
+  color: #1b1e1f !important;
+  border-color: #fff !important;
+}
+
+.custom-navbar .btn-dark:hover {
+  background-color: #1b1e1f !important;
+  color: #fff !important;
+  border-color: #1b1e1f !important;
+}
+
+.signin-container {
+  background-color: #181A1B;
+  color: #ffffff;
+}
+
+.signin-card {
+  background-color: #181A1B;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Light white shadow */
+}
+
+.signin-link {
+  text-decoration: none;
+  color: #007bff; /* Bootstrap blue color for links */
+}
+
+.signin-link:hover {
+  color: #0056b3; /* Darker blue on hover */
+}
+
+.containerColor {
+  background-color: #181A1B;
+  color: #ffffff;
+}
+
+.cardcolor {
+  background-color: #181A1B;
+  color: #ffffff;
+  border: none;
+  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Light white shadow */
+}
+
+.cardcolor .form-control {
+  background-color: #333;
+  color: #ffffff;
+}
+
+.cardcolor .form-control::placeholder {
+  color: #aaaaaa;
+}
+
+.cardcolor .form-label {
+  color: #ffffff;
+}
+
+.cardcolor .btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.cardcolor .btn-primary:hover {
+  background-color: #0056b3;
+  border-color: #0056b3;
+}
+
+.cardcolor .nav-link {
+  color: #007bff;
+}
+
+.cardcolor .nav-link:hover {
+  color: #0056b3;
+}
+
+.bottommrgn {
   margin-bottom: 1rem;
 }
