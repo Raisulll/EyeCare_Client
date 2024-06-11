@@ -7,7 +7,7 @@ function SignUp() {
     <Container className="d-flex justify-content-center align-items-center mt-5 mb-5">
       <Row className="w-100 justify-content-center">
         <Col md={8} lg={6}>
-          <Card>
+          <Card className="cardcolor">
             <Card.Body>
               <Card.Title className="text-center mb-4">
                 Sign up to Eye Care
@@ -25,7 +25,7 @@ function SignUp() {
 
                 <Form.Group className="mb-3" controlId="formPhoneNumber">
                   <Form.Label>Phone Number</Form.Label>
-                      <Form.Control type="text" placeholder="Phone Number" />
+                  <Form.Control type="text" placeholder="Phone Number" />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formDateOfBirth">
@@ -66,13 +66,13 @@ function SignUp() {
                 </Button>
               </Form>
             </Card.Body>
+            <div className="text-center mt-3 bottommrgn">
+              <span>Already have an account? </span>
+              <NavLink to="/signin" className="auth-link">
+                Sign In
+              </NavLink>
+            </div>
           </Card>
-          <div className="text-center mt-3">
-            <span>Already have an account? </span>
-            <NavLink to="/signin" className="auth-link">
-              Sign In
-            </NavLink>
-          </div>
         </Col>
       </Row>
     </Container>
