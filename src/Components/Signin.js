@@ -1,8 +1,35 @@
+import { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../App.css";
 
 function SignIn() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+
+  const collectData = async (e) => {
+    e.preventDefault();
+    const data = {
+      patientEmail: email,
+      patientPassword: password,
+    };
+    console.log(data);
+    const result = await fetch("http://localhost:5000/auth/login", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(result);
+    if (result.status === 200) {
+      navigate("/");
+      console.log("User Logged In");
+    }
+  };
+
   return (
     <Container
       className="d-flex justify-content-center align-items-center signin-container"
@@ -18,13 +45,23 @@ function SignIn() {
               <Form>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Email address</Form.Label>
-                  <Form.Control type="email" placeholder="test@example.com" />
+                  <Form.Control
+                    type="email"
+                    placeholder="test@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" placeholder="Your Password" />
+                  <Form.Control
+                    type="password"
+                    placeholder="Your Password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
                 </Form.Group>
-                <Button variant="primary" type="submit" className="w-100">
+                <Button variant="primary" type="submit" className="w-100" onClick={collectData}>
                   Sign In
                 </Button>
               </Form>
