@@ -11,6 +11,8 @@ import Shop from "./Components/Shop";
 import SignIn from "./Components/Signin";
 import Forgot from "./Components/Forgot";
 import OtherUserSignin from "./Components/OtherUserSIgnin";
+import PrivateComponent from "./Components/PrivateComponent";
+import Cart from "./Components/Cart";
 
 function App() {
   return (
@@ -19,16 +21,20 @@ function App() {
         <Nav />
         <main>
           <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/addproduct" element={<AddProduct />} />
-            <Route path="/shop" element={<Shop />} />
-            <Route path="/updateproduct" element={<UpdateProduct />} />
-            <Route path="/logout" element={<LogOut />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/forgotpassword" element={<Forgot />} />
-            <Route path="/otheruserssignin" element={<OtherUserSignin />} />
+            {/* Adding PrivateComponent here */}
+            <Route element={<PrivateComponent />}>
+              <Route path="/addproduct" element={<AddProduct />} />
+              <Route path="/shop" element={<Shop />} />
+              <Route path="/updateproduct" element={<UpdateProduct />} />
+              <Route path="/logout" element={<LogOut />} />
+              <Route path="/profile" element={<Profile />} />
+              <Route path="/cart" element={<Cart />} />
+            </Route>
+              <Route path="/" element={<Home />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/otheruserssignin" element={<OtherUserSignin />} />
+              <Route path="/forgotpassword" element={<Forgot />} />
           </Routes>
         </main>
       </BrowserRouter>

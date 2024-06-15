@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../App.css";
@@ -15,6 +15,14 @@ function SignUp() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+
+  // if a user is already logged in, they should be redirected to the home page
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      navigate("/");
+    }
+  });
 
   const collectData = async (e) => {
     e.preventDefault();
@@ -39,7 +47,7 @@ function SignUp() {
     });
     console.log(result);
     if (result.status === 200) {
-      navigate("/");
+      navigate("/signin");
     }
   };
 
