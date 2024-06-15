@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../App.css";
@@ -8,6 +8,14 @@ function SignIn() {
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
+
+  // if a user is already logged in, they should be redirected to the home page
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      navigate("/");
+    }
+  });
 
   const collectData = async (e) => {
     e.preventDefault();
@@ -25,6 +33,7 @@ function SignIn() {
     });
     console.log(result);
     if (result.status === 200) {
+      localStorage.setItem("user", JSON.stringify(data));
       navigate("/");
       console.log("User Logged In");
     }
@@ -61,7 +70,12 @@ function SignIn() {
                     onChange={(e) => setPassword(e.target.value)}
                   />
                 </Form.Group>
-                <Button variant="primary" type="submit" className="w-100" onClick={collectData}>
+                <Button
+                  variant="primary"
+                  type="submit"
+                  className="w-100"
+                  onClick={collectData}
+                >
                   Sign In
                 </Button>
               </Form>

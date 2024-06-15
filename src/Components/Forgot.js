@@ -1,12 +1,21 @@
-import React, { useState } from "react";
-import { Container, Row, Col, Card, Button, Form } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import { NavLink, useNavigate } from "react-router-dom";
 import "../App.css"; // Ensure this is imported to apply the CSS styles
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [contactNumber, setContactNumber] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const navigate = useNavigate();
+  // if a user is already logged in, they should be redirected to the home page
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      navigate("/");
+    }
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();

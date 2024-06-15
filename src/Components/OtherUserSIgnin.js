@@ -1,10 +1,19 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { NavLink } from "react-router-dom";
+import { NavLink,useNavigate } from "react-router-dom";
 import "../App.css";
 
 function OtherUserSignin() {
   const [userType, setUserType] = useState("");
+
+  const navigate = useNavigate();
+  // if a user is already logged in, they should be redirected to the home page
+  useEffect(() => {
+    const user = localStorage.getItem("user");
+    if (user) {
+      navigate("/");
+    }
+  });
 
   return (
     <Container
