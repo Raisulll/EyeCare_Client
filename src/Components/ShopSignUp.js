@@ -3,16 +3,17 @@ import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../App.css";
 
-function SignUp() {
+function ShopOwnerSignUp() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
   const [district, setDistrict] = useState("");
   const [area, setArea] = useState("");
   const [roadNumber, setRoadNumber] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
+  const [shopName, setShopName] = useState("");
+  const [shopLicense, setShopLicense] = useState("");
 
   const navigate = useNavigate();
 
@@ -30,12 +31,13 @@ function SignUp() {
       patientName: fullName,
       patientEmail: email,
       patientPhone: phoneNumber,
-      patientDob: dateOfBirth,
       patientDistrict: district,
       patientArea: area,
       patientRoadNum: roadNumber,
       patientGender: gender,
       patientPassword: password,
+      shopName: shopName,
+      shopLicense: shopLicense,
     };
     console.log(data);
     const result = await fetch("http://localhost:5000/auth/signup", {
@@ -58,11 +60,11 @@ function SignUp() {
           <Card className="cardcolor">
             <Card.Body>
               <Card.Title className="text-center mb-4">
-                Sign up to Eye Care
+                Shop Owner Sign Up
               </Card.Title>
               <Form>
                 <Form.Group className="mb-3" controlId="formFullName">
-                  <Form.Label>Full Name</Form.Label>
+                  <Form.Label>Shop Name</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="John Doe"
@@ -90,15 +92,6 @@ function SignUp() {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formDateOfBirth">
-                  <Form.Label>Date of Birth</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={dateOfBirth}
-                    onChange={(e) => setDateOfBirth(e.target.value)}
-                  />
-                </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formAddress">
                   <Form.Label>Address</Form.Label>
                   <Form.Control
@@ -123,20 +116,14 @@ function SignUp() {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formGender">
-                  <Form.Label>Gender</Form.Label>
+                <Form.Group className="mb-3" controlId="formShopLicense">
+                  <Form.Label>Shop License</Form.Label>
                   <Form.Control
-                    as="select"
-                    value={gender}
-                    onChange={(e) => {
-                      setGender(e.target.value);
-                      console.log(e.target.value);
-                    }}
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </Form.Control>
+                    type="text"
+                    placeholder="Shop License Number"
+                    value={shopLicense}
+                    onChange={(e) => setShopLicense(e.target.value)}
+                  />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -161,7 +148,7 @@ function SignUp() {
             </Card.Body>
             <div className="text-center mt-3 bottommrgn">
               <span>Already have an account? </span>
-              <NavLink to="/signin" className="auth-link">
+              <NavLink to="/otheruserssignin" className="auth-link">
                 Sign In
               </NavLink>
             </div>
@@ -180,4 +167,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default ShopOwnerSignUp;

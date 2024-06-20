@@ -5,10 +5,10 @@ const Profile = () => {
 
     const navigate = useNavigate();
 
-    // if a user is already logged in, they should be redirected to the home page
+    // if a user is not logged in, they should be redirected to the home page
     useEffect(() => {
       const user = localStorage.getItem("user");
-      if (user) {
+      if (!user) {
         navigate("/signin");
       }
     });
