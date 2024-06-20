@@ -3,15 +3,14 @@ import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../App.css";
 
-function SignUp() {
+function EyeHospitalManagerSignUp() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
   const [district, setDistrict] = useState("");
   const [area, setArea] = useState("");
   const [roadNumber, setRoadNumber] = useState("");
-  const [gender, setGender] = useState("");
+  const [hospitalLicense, setHospitalLicense] = useState("");
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
@@ -30,14 +29,13 @@ function SignUp() {
       patientName: fullName,
       patientEmail: email,
       patientPhone: phoneNumber,
-      patientDob: dateOfBirth,
       patientDistrict: district,
       patientArea: area,
       patientRoadNum: roadNumber,
-      patientGender: gender,
+      hospitalLicense: hospitalLicense,
       patientPassword: password,
     };
-    console.log(data);
+
     const result = await fetch("http://localhost:5000/auth/signup", {
       method: "POST",
       body: JSON.stringify(data),
@@ -45,7 +43,7 @@ function SignUp() {
         "Content-Type": "application/json",
       },
     });
-    console.log(result);
+
     if (result.status === 200) {
       navigate("/signin");
     }
@@ -58,11 +56,11 @@ function SignUp() {
           <Card className="cardcolor">
             <Card.Body>
               <Card.Title className="text-center mb-4">
-                Sign up to Eye Care
+                Eye Hospital Manager Sign Up
               </Card.Title>
               <Form>
                 <Form.Group className="mb-3" controlId="formFullName">
-                  <Form.Label>Full Name</Form.Label>
+                  <Form.Label>Hospital Name</Form.Label>
                   <Form.Control
                     type="text"
                     placeholder="John Doe"
@@ -90,15 +88,6 @@ function SignUp() {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formDateOfBirth">
-                  <Form.Label>Date of Birth</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={dateOfBirth}
-                    onChange={(e) => setDateOfBirth(e.target.value)}
-                  />
-                </Form.Group>
-
                 <Form.Group className="mb-3" controlId="formAddress">
                   <Form.Label>Address</Form.Label>
                   <Form.Control
@@ -123,20 +112,15 @@ function SignUp() {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formGender">
-                  <Form.Label>Gender</Form.Label>
+
+                <Form.Group className="mb-3" controlId="formHospitalLicense">
+                  <Form.Label>Hospital License</Form.Label>
                   <Form.Control
-                    as="select"
-                    value={gender}
-                    onChange={(e) => {
-                      setGender(e.target.value);
-                      console.log(e.target.value);
-                    }}
-                  >
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                  </Form.Control>
+                    type="text"
+                    placeholder="Hospital License Number"
+                    value={hospitalLicense}
+                    onChange={(e) => setHospitalLicense(e.target.value)}
+                  />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -161,7 +145,7 @@ function SignUp() {
             </Card.Body>
             <div className="text-center mt-3 bottommrgn">
               <span>Already have an account? </span>
-              <NavLink to="/signin" className="auth-link">
+              <NavLink to="/otheruserssignin" className="auth-link">
                 Sign In
               </NavLink>
             </div>
@@ -180,4 +164,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default EyeHospitalManagerSignUp;

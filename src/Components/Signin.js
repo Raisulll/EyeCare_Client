@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import "../App.css";
@@ -6,16 +6,7 @@ import "../App.css";
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
-
-  // if a user is already logged in, they should be redirected to the home page
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      navigate("/");
-    }
-  });
 
   const collectData = async (e) => {
     e.preventDefault();
@@ -23,7 +14,6 @@ function SignIn() {
       patientEmail: email,
       patientPassword: password,
     };
-    console.log(data);
     const result = await fetch("http://localhost:5000/auth/login", {
       method: "POST",
       body: JSON.stringify(data),
@@ -31,11 +21,16 @@ function SignIn() {
         "Content-Type": "application/json",
       },
     });
-    console.log(result);
     if (result.status === 200) {
-      localStorage.setItem("user", JSON.stringify(data));
+      // i get full user info from the server. i need to save them in loacl storage
+      const userInfo = await result.json();
+      localStorage.setItem("user", JSON.stringify(userInfo));
+      
+      window.dispatchEvent(new Event("storage")); // Trigger the storage event
       navigate("/");
       console.log("User Logged In");
+    } else {
+      console.log("Login failed");
     }
   };
 
