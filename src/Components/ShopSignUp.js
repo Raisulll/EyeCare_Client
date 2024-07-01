@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "../App.css";
 
 function ShopOwnerSignUp() {
@@ -10,9 +12,8 @@ function ShopOwnerSignUp() {
   const [district, setDistrict] = useState("");
   const [area, setArea] = useState("");
   const [roadNumber, setRoadNumber] = useState("");
-  const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
-  const [shopName, setShopName] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [shopLicense, setShopLicense] = useState("");
 
   const navigate = useNavigate();
@@ -28,15 +29,13 @@ function ShopOwnerSignUp() {
   const collectData = async (e) => {
     e.preventDefault();
     const data = {
-      patientName: fullName,
-      patientEmail: email,
-      patientPhone: phoneNumber,
-      patientDistrict: district,
-      patientArea: area,
-      patientRoadNum: roadNumber,
-      patientGender: gender,
-      patientPassword: password,
-      shopName: shopName,
+      shopName: fullName,
+      shopEmail: email,
+      shopPhone: phoneNumber,
+      shopDistrict: district,
+      shopArea: area,
+      shopRoadNum: roadNumber,
+      shopPassword: password,
       shopLicense: shopLicense,
     };
     console.log(data);
@@ -128,12 +127,20 @@ function ShopOwnerSignUp() {
 
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Your Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                  <div className="password-input-container">
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Your Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="password-input"
+                    />
+                    <FontAwesomeIcon
+                      icon={showPassword ? faEye : faEyeSlash}
+                      className="password-toggle-icon"
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  </div>
                 </Form.Group>
 
                 <Button

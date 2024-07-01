@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "../App.css";
 
 function OtherUserSignin() {
   const [userType, setUserType] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   // if a user is already logged in, they should be redirected to the home page
@@ -132,14 +135,22 @@ function OtherUserSignin() {
                   <Form.Label>Email address</Form.Label>
                   <Form.Control type="email" placeholder="test@example.com" />
                 </Form.Group>
-                <Form.Group
-                  className="mb-3"
-                  controlId="formBasicPassword"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                >
+                <Form.Group className="mb-3" controlId="formBasicPassword">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control type="password" placeholder="Your Password" />
+                  <div className="password-input-container">
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Your Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="password-input"
+                    />
+                    <FontAwesomeIcon
+                      icon={showPassword ? faEye : faEyeSlash}
+                      className="password-toggle-icon"
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  </div>
                 </Form.Group>
                 <Button
                   variant="primary"

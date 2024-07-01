@@ -147,3 +147,22 @@ body {
   /* border: 1px solid #ced4da; */
   border-radius: 0.25rem;
 }
+
+.password-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  padding-right: 2.5rem;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+  background-color: transparent;
+}

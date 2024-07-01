@@ -91,8 +91,8 @@ function NavigationBar() {
                 <NavDropdown.Item as={NavLink} to="/profile">
                   <i className="bi bi-person me-2"></i>View Profile
                 </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="/settings">
-                  <i className="bi bi-gear me-2"></i>Settings
+                <NavDropdown.Item as={NavLink} to="/editprofile">
+                  <i className="bi bi-pencil-square me-2"></i>Edit Profile
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 <NavDropdown.Item
