@@ -1,11 +1,15 @@
 import React, { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "../App.css";
 
 function ResetPassword() {
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [repeatPassword, setRepeatPassword] = useState("");
+  const [showRepeatPassword, setShowRepeatPassword] = useState(false);
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
@@ -35,7 +39,7 @@ function ResetPassword() {
     console.log(result);
 
     if (result.status === 200) {
-      navigate("/signin"); 
+      navigate("/signin");
     } else {
       setError("Password update failed. Please try again.");
     }
@@ -54,25 +58,40 @@ function ResetPassword() {
                 Reset Password
               </Card.Title>
               <Form onSubmit={handleSubmit}>
-                <Form.Group className="mb-3" controlId="formPassword">
-                  <Form.Label>New Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Enter new password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                  />
+                <Form.Group className="mb-3" controlId="formBasicPassword">
+                  <Form.Label>Password</Form.Label>
+                  <div className="password-input-container">
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Your Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="password-input"
+                    />
+                    <FontAwesomeIcon
+                      icon={showPassword ? faEye : faEyeSlash}
+                      className="password-toggle-icon"
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  </div>
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formRepeatPassword">
                   <Form.Label>Repeat Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Repeat new password"
-                    value={repeatPassword}
-                    onChange={(e) => setRepeatPassword(e.target.value)}
-                    required
-                  />
+                  <div className="password-input-container">
+                    <Form.Control
+                      type={showRepeatPassword ? "text" : "password"}
+                      placeholder="Repeat new password"
+                      value={repeatPassword}
+                      onChange={(e) => setRepeatPassword(e.target.value)}
+                      className="password-input"
+                      required
+                    />
+                    <FontAwesomeIcon
+                      icon={showRepeatPassword ? faEye : faEyeSlash}
+                      className="password-toggle-icon"
+                      onClick={() => setShowRepeatPassword(!showRepeatPassword)}
+                    />
+                  </div>
                 </Form.Group>
                 {error && <p className="text-danger">{error}</p>}
                 <Button variant="primary" type="submit" className="w-100">

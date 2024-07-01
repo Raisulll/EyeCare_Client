@@ -9,6 +9,8 @@ import {
   Alert,
 } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "../App.css";
 
 function DoctorSignUp() {
@@ -20,6 +22,7 @@ function DoctorSignUp() {
   const [roadNumber, setRoadNumber] = useState("");
   const [gender, setGender] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [doctorLicense, setDoctorLicense] = useState("");
   const [timeSlot, setTimeSlot] = useState("");
   const [experience, setExperience] = useState("");
@@ -185,19 +188,28 @@ function DoctorSignUp() {
 
                   <Form.Group className="mb-3" controlId="formBasicPassword">
                     <Form.Label>Password</Form.Label>
-                    <Form.Control
-                      type="password"
-                      placeholder="Your Password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <div className="password-input-container">
+                      <Form.Control
+                        type={showPassword ? "text" : "password"}
+                        placeholder="Your Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="password-input"
+                      />
+                      <FontAwesomeIcon
+                        icon={showPassword ? faEye : faEyeSlash}
+                        className="password-toggle-icon"
+                        onClick={() => setShowPassword(!showPassword)}
+                      />
+                    </div>
                   </Form.Group>
 
-                    <Button variant="primary"
-                      type="submit"
-                      className="w-100"
-                      onClick={collectData}
-                    >
+                  <Button
+                    variant="primary"
+                    type="submit"
+                    className="w-100"
+                    onClick={collectData}
+                  >
                     Sign Up
                   </Button>
                 </Form>

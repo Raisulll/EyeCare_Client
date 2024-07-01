@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import "../App.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import "../App.css"; // Import custom CSS
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const collectData = async (e) => {
@@ -22,11 +25,10 @@ function SignIn() {
       },
     });
     if (result.status === 200) {
-      // i get full user info from the server. i need to save them in loacl storage
       const userInfo = await result.json();
       localStorage.setItem("user", JSON.stringify(userInfo));
-      
-      window.dispatchEvent(new Event("storage")); // Trigger the storage event
+
+      window.dispatchEvent(new Event("storage"));
       navigate("/");
       console.log("User Logged In");
     } else {
@@ -46,7 +48,7 @@ function SignIn() {
               <Card.Title className="text-center mb-4">
                 Sign in to Eye Care
               </Card.Title>
-              <Form>
+              <Form onSubmit={collectData}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
@@ -58,19 +60,22 @@ function SignIn() {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Your Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                  <div className="password-input-container">
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Your Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="password-input"
+                    />
+                    <FontAwesomeIcon
+                      icon={showPassword ? faEye : faEyeSlash}
+                      className="password-toggle-icon"
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  </div>
                 </Form.Group>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  className="w-100"
-                  onClick={collectData}
-                >
+                <Button variant="primary" type="submit" className="w-100">
                   Sign In
                 </Button>
               </Form>
