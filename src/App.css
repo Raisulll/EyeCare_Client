@@ -129,3 +129,40 @@ body {
 .bottommrgn {
   margin-bottom: 1rem;
 }
+
+.no-arrow .dropdown-toggle::after {
+  display: none;
+}
+
+
+.cardcolor {
+  /* background-color: #f8f9fa; */
+  /* border: 1px solid #dee2e6; */
+  border-radius: 0.25rem;
+  padding: 2rem;
+}
+
+.signin-container {
+  /* background-color: #ffffff; */
+  /* border: 1px solid #ced4da; */
+  border-radius: 0.25rem;
+}
+
+.password-input-container {
+  position: relative;
+  width: 100%;
+}
+
+.password-input {
+  padding-right: 2.5rem;
+}
+
+.password-toggle-icon {
+  position: absolute;
+  top: 50%;
+  right: 0.75rem;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #6c757d;
+  background-color: transparent;
+}

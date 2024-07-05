@@ -1,21 +1,15 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import "../App.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import "../App.css"; // Import custom CSS
 
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
-  // if a user is already logged in, they should be redirected to the home page
-  useEffect(() => {
-    const user = localStorage.getItem("user");
-    if (user) {
-      navigate("/");
-    }
-  });
 
   const collectData = async (e) => {
     e.preventDefault();
@@ -23,7 +17,6 @@ function SignIn() {
       patientEmail: email,
       patientPassword: password,
     };
-    console.log(data);
     const result = await fetch("http://localhost:5000/auth/login", {
       method: "POST",
       body: JSON.stringify(data),
@@ -31,11 +24,15 @@ function SignIn() {
         "Content-Type": "application/json",
       },
     });
-    console.log(result);
     if (result.status === 200) {
-      localStorage.setItem("user", JSON.stringify(data));
+      const userInfo = await result.json();
+      localStorage.setItem("user", JSON.stringify(userInfo));
+
+      window.dispatchEvent(new Event("storage"));
       navigate("/");
       console.log("User Logged In");
+    } else {
+      console.log("Login failed");
     }
   };
 
@@ -51,7 +48,7 @@ function SignIn() {
               <Card.Title className="text-center mb-4">
                 Sign in to Eye Care
               </Card.Title>
-              <Form>
+              <Form onSubmit={collectData}>
                 <Form.Group className="mb-3" controlId="formBasicEmail">
                   <Form.Label>Email address</Form.Label>
                   <Form.Control
@@ -63,19 +60,22 @@ function SignIn() {
                 </Form.Group>
                 <Form.Group className="mb-3" controlId="formBasicPassword">
                   <Form.Label>Password</Form.Label>
-                  <Form.Control
-                    type="password"
-                    placeholder="Your Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
+                  <div className="password-input-container">
+                    <Form.Control
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Your Password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="password-input"
+                    />
+                    <FontAwesomeIcon
+                      icon={showPassword ? faEye : faEyeSlash}
+                      className="password-toggle-icon"
+                      onClick={() => setShowPassword(!showPassword)}
+                    />
+                  </div>
                 </Form.Group>
-                <Button
-                  variant="primary"
-                  type="submit"
-                  className="w-100"
-                  onClick={collectData}
-                >
+                <Button variant="primary" type="submit" className="w-100">
                   Sign In
                 </Button>
               </Form>

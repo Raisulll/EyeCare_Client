@@ -1,26 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { NavLink, useNavigate } from "react-router-dom";
-import "../App.css"; // Ensure this is imported to apply the CSS styles
+import { useNavigate } from "react-router-dom";
+import "../App.css";
 
 function ForgotPassword() {
+  const [userType, setUserType] = useState("");
   const [email, setEmail] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   const navigate = useNavigate();
+
   // if a user is already logged in, they should be redirected to the home page
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
       navigate("/");
     }
-  });
+  }, [navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Perform action to send reset password email (not implemented in this example)
-    setIsSubmitted(true);
+    const data = {
+      userType: userType,
+      email: email,
+    };
+    console.log(data);
+    const result = await fetch("http://localhost:5000/auth/resetpassword", {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    console.log(result);
+    if (result.status === 200) {
+      const responseData = await result.json();
+      setIsSubmitted(true);
+      navigate("/otp", { state: { email: responseData.email } }); // Pass the email as state
+    } else {
+      console.log("Password Reset Failed");
+    }
   };
 
   return (
@@ -35,46 +54,37 @@ function ForgotPassword() {
               <Card.Title className="text-center mb-4">
                 Forgot Password
               </Card.Title>
-              {isSubmitted ? (
-                <div className="text-center">
-                  <p>
-                    An email has been sent to {email} with instructions to reset
-                    your password.
-                  </p>
-                  <NavLink to="/signin" className="btn btn-primary">
-                    Return to Sign In
-                  </NavLink>
-                </div>
-              ) : (
-                <Form onSubmit={handleSubmit}>
-                  <Form.Group className="mb-3" controlId="formBasicEmail">
-                    <Form.Label>Email address</Form.Label>
-                    <Form.Control
-                      type="email"
-                      placeholder="Enter your email"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
-                  <Form.Group
-                    className="mb-3"
-                    controlId="formBasicContactNumber"
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-3" controlId="formUserType">
+                  <Form.Label>Select User Type</Form.Label>
+                  <Form.Control
+                    as="select"
+                    value={userType}
+                    onChange={(e) => setUserType(e.target.value)}
                   >
-                    <Form.Label>Contact Number</Form.Label>
-                    <Form.Control
-                      type="text"
-                      placeholder="Enter your contact number"
-                      value={contactNumber}
-                      onChange={(e) => setContactNumber(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
-                  <Button variant="primary" type="submit" className="w-100">
-                    Submit
-                  </Button>
-                </Form>
-              )}
+                    <option value="">Select...</option>
+                    <option value="patient">Patient</option>
+                    <option value="doctor">Doctor</option>
+                    <option value="shopOwner">Shop Owner</option>
+                    <option value="eyeHospitalManager">
+                      Eye Hospital Manager
+                    </option>
+                  </Form.Control>
+                </Form.Group>
+                <Form.Group className="mb-3" controlId="formBasicEmail">
+                  <Form.Label>Email address</Form.Label>
+                  <Form.Control
+                    type="email"
+                    placeholder="Enter your email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+                <Button variant="primary" type="submit" className="w-100">
+                  Submit
+                </Button>
+              </Form>
             </Card.Body>
           </Card>
         </Col>
