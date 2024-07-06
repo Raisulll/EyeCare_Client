@@ -4,6 +4,8 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
+import DoctorProfile from "./Components/DoctorProfile";
+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
