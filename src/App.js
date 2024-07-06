@@ -18,12 +18,16 @@ import SignIn from "./Components/Signin";
 import UpdateProduct from "./Components/UpdateProduct";
 import OTP from "./Components/OTP";
 import ResetPassword from "./Components/ResetPassword";
+import DoctorProfile from "./Components/DoctorProfile";
+import DoctorAppointment from "./Components/DoctorAppointment"
+import DoctorSurgery from "./Components/DoctorSurgery"
+
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
-        <Nav />
+        <Nav  />
         <main>
           <Routes>
             {/* Adding PrivateComponent here */}
@@ -45,6 +49,10 @@ function App() {
             <Route path="/doctorsignup" element={<DoctorSignUP />} />
             <Route path="shopsignup" element={<ShopSignUp />} />
             <Route path="/hospitalsignup" element={<HospitalSignUP />} />
+            <Route path="/doctorProfile" element={<DoctorProfile />} />
+            <Route path="/DoctorAppointment" element={<DoctorAppointment />} />
+            <Route path="/DoctorSurgery" element={<DoctorSurgery />} />
+          
           </Routes>
         </main>
       </BrowserRouter>

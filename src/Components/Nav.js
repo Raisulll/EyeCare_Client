@@ -69,8 +69,8 @@ function NavigationBar() {
             {!user && (
               <div className="mx-3">
                 <NavLink to="/signup">
-                  <Button variant="dark" className="me-2">
-                    Sign Up
+                  <Button variant="outline-secondary">
+                    Sign up
                   </Button>
                 </NavLink>
               </div>
