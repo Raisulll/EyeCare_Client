@@ -21,6 +21,9 @@ import ResetPassword from "./Components/ResetPassword";
 import DoctorProfile from "./Components/DoctorProfile";
 import DoctorAppointment from "./Components/DoctorAppointment"
 import DoctorSurgery from "./Components/DoctorSurgery"
+import Hospital from "./Hospital/Hospital";
+import SchedulePage from "./Hospital/SchedulePage";
+
 
 
 function App() {
@@ -37,6 +40,7 @@ function App() {
               <Route path="/updateproduct" element={<UpdateProduct />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/cart" element={<Cart />} />
+              
             </Route>
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignUp />} />
@@ -52,7 +56,11 @@ function App() {
             <Route path="/doctorProfile" element={<DoctorProfile />} />
             <Route path="/DoctorAppointment" element={<DoctorAppointment />} />
             <Route path="/DoctorSurgery" element={<DoctorSurgery />} />
-          
+
+            /*** Hospital */
+            <Route path="/hospital" element={<Hospital/>} />
+            <Route path="/schedulepage" element={<SchedulePage/>} />
+
           </Routes>
         </main>
       </BrowserRouter>
