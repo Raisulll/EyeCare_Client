@@ -12,6 +12,12 @@ function OtherUserSignin() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
+
+  //Static Sign In 
+  const handleClick = () => {
+    navigate('/hospital');
+    };
+
   // if a user is already logged in, they should be redirected to the home page
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -156,7 +162,7 @@ function OtherUserSignin() {
                   variant="primary"
                   type="submit"
                   className="w-100"
-                  onClick={collectData}
+                  onClick={handleClick}
                 >
                   Sign In
                 </Button>
