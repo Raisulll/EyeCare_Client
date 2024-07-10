@@ -121,7 +121,7 @@ const HospitalProfile = () => {
           See More
         </button>
         
-        <button className="btn add-more-btn" onClick={() => navigate("/schedulepage")}>
+        <button variant="outline-secondary"  className="btn add-more-btn" onClick={() => navigate("/schedulepage")}>
           Add
         </button>
 

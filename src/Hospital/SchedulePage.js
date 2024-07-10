@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../Hospital/SchedulePage.css'
- // Assuming you have a similar CSS file for Schedule Page
+import '../Hospital/SchedulePage.css';
 
 const SchedulePage = () => {
   const navigate = useNavigate();
-
-  const dummySchedule = [
+  const [schedules, setSchedules] = useState([
     { id: 1, patientName: 'Alice', appointmentTime: '10:00 am' },
     { id: 2, patientName: 'Bob', appointmentTime: '11:00 am' },
     { id: 3, patientName: 'Charlie', appointmentTime: '1:00 pm' },
@@ -27,28 +25,113 @@ const SchedulePage = () => {
     { id: 19, patientName: 'MS', appointmentTime: '12:30 pm' },
     { id: 20, patientName: 'DHONI', appointmentTime: '12:04 pm' },
     { id: 21, patientName: 'Thala', appointmentTime: '12:50 pm' },
-    // Add more schedule entries as needed
-  ];
+  ]);
+  
+  const [editingSchedule, setEditingSchedule] = useState(null);
+  const [newSchedule, setNewSchedule] = useState({ patientName: '', appointmentTime: '' });
+
+  const handleEdit = (schedule) => {
+    setEditingSchedule(schedule);
+  };
+
+  const handleSave = () => {
+    setSchedules((prevSchedules) =>
+      prevSchedules.map((schedule) =>
+        schedule.id === editingSchedule.id ? editingSchedule : schedule
+      )
+    );
+    setEditingSchedule(null);
+  };
+
+  const handleDelete = (id) => {
+    setSchedules((prevSchedules) => prevSchedules.filter((schedule) => schedule.id !== id));
+  };
+
+  const handleAdd = () => {
+    setSchedules((prevSchedules) => [
+      ...prevSchedules,
+      { ...newSchedule, id: prevSchedules.length + 1 },
+    ]);
+    setNewSchedule({ patientName: '', appointmentTime: '' });
+  };
 
   return (
     <div className="schedule-page-container">
-      <h1 className='title'>All Patient Schedules</h1>
+      <h1 className="title">All Patient Schedules</h1>
       <table className="schedule-table">
-          <thead>
-            <tr>
-              <th>Patient Name</th>
-              <th>Appointment Time</th>
+        <thead>
+          <tr>
+            <th>Patient Name</th>
+            <th>Appointment Time</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {schedules.map((schedule) => (
+            <tr key={schedule.id}>
+              <td>
+                {editingSchedule && editingSchedule.id === schedule.id ? (
+                  <input
+                    type="text"
+                    value={editingSchedule.patientName}
+                    onChange={(e) =>
+                      setEditingSchedule({
+                        ...editingSchedule,
+                        patientName: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  schedule.patientName
+                )}
+              </td>
+              <td>
+                {editingSchedule && editingSchedule.id === schedule.id ? (
+                  <input
+                    type="text"
+                    value={editingSchedule.appointmentTime}
+                    onChange={(e) =>
+                      setEditingSchedule({
+                        ...editingSchedule,
+                        appointmentTime: e.target.value,
+                      })
+                    }
+                  />
+                ) : (
+                  schedule.appointmentTime
+                )}
+              </td>
+              <td>
+                {editingSchedule && editingSchedule.id === schedule.id ? (
+                  <button onClick={handleSave}>Save</button>
+                ) : (
+                  <button className='btn-e' onClick={() => handleEdit(schedule)}>Edit</button>
+                )}
+                <button className='btn-d' onClick={() => handleDelete(schedule.id)}>Delete</button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {dummySchedule.map(schedule => (
-              <tr key={schedule.id}>
-                <td>{schedule.patientName}</td>
-                <td>{schedule.appointmentTime}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+          ))}
+        </tbody>
+      </table>
+      <div className="add-schedule">
+        <input
+          type="text"
+          placeholder="Patient Name"
+          value={newSchedule.patientName}
+          onChange={(e) =>
+            setNewSchedule({ ...newSchedule, patientName: e.target.value })
+          }
+        />
+        <input
+          type="text"
+          placeholder="Appointment Time"
+          value={newSchedule.appointmentTime}
+          onChange={(e) =>
+            setNewSchedule({ ...newSchedule, appointmentTime: e.target.value })
+          }
+        />
+        <button onClick={handleAdd}>Add Schedule</button>
+      </div>
       <button className="btn back-btn" onClick={() => navigate(-1)}>
         Back
       </button>

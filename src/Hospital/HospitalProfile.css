@@ -98,14 +98,12 @@ body{
 }
 .btn.see-more-btn {
   margin-top: 10px;
-  background-color: cadetblue;
   font-size: medium;
   font-family: 'Times New Roman', Times, serif;
 }
 
 .btn.add-more-btn{
   margin-left: 2vh;
-  background-color: cadetblue;
   font-size: medium;
   font-family: 'Times New Roman', Times, serif;
 }
