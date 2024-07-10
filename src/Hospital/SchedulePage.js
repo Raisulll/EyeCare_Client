@@ -27,6 +27,7 @@ const SchedulePage = () => {
     { id: 21, patientName: 'Thala', appointmentTime: '12:50 pm' },
   ]);
   
+  const [searchQuery, setSearchQuery] = useState('');
   const [editingSchedule, setEditingSchedule] = useState(null);
   const [newSchedule, setNewSchedule] = useState({ patientName: '', appointmentTime: '' });
 
@@ -55,9 +56,22 @@ const SchedulePage = () => {
     setNewSchedule({ patientName: '', appointmentTime: '' });
   };
 
+  const filteredSchedules = schedules.filter(
+    (schedule) =>
+      schedule.patientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      schedule.appointmentTime.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="schedule-page-container">
       <h1 className="title">All Patient Schedules</h1>
+      <input
+        type="text"
+        className="search-bar"
+        placeholder="Search Schedule"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+      />
       <table className="schedule-table">
         <thead>
           <tr>
@@ -67,7 +81,7 @@ const SchedulePage = () => {
           </tr>
         </thead>
         <tbody>
-          {schedules.map((schedule) => (
+          {filteredSchedules.map((schedule) => (
             <tr key={schedule.id}>
               <td>
                 {editingSchedule && editingSchedule.id === schedule.id ? (
@@ -105,9 +119,9 @@ const SchedulePage = () => {
                 {editingSchedule && editingSchedule.id === schedule.id ? (
                   <button onClick={handleSave}>Save</button>
                 ) : (
-                  <button className='btn-e' onClick={() => handleEdit(schedule)}>Edit</button>
+                  <button className="btn-e" onClick={() => handleEdit(schedule)}>Edit</button>
                 )}
-                <button className='btn-d' onClick={() => handleDelete(schedule.id)}>Delete</button>
+                <button className="btn-d" onClick={() => handleDelete(schedule.id)}>Delete</button>
               </td>
             </tr>
           ))}

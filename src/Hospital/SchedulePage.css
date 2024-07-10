@@ -66,3 +66,10 @@
     background-color: rgb(187, 56, 56);
     
 }
+
+.search-bar {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+}
