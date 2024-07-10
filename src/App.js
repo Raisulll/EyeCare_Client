@@ -23,6 +23,7 @@ import DoctorAppointment from "./Components/DoctorAppointment"
 import DoctorSurgery from "./Components/DoctorSurgery"
 import Hospital from "./Hospital/Hospital";
 import SchedulePage from "./Hospital/SchedulePage";
+import EditProfilePage from "./Hospital/EditProfilePage";
 
 
 
@@ -60,6 +61,7 @@ function App() {
             /*** Hospital */
             <Route path="/hospital" element={<Hospital/>} />
             <Route path="/schedulepage" element={<SchedulePage/>} />
+            <Route path="/editprofile" element={<EditProfilePage/>} />
 
           </Routes>
         </main>

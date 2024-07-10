@@ -56,7 +56,7 @@ const HospitalProfile = () => {
           />
           <div className="header-text">
             <h1 className="profile-name">{dummyData.Name}</h1>
-            <button className="btn edit-btn" onClick={() => navigate("/edit")}>
+            <button className="btn edit-btn" onClick={() => navigate("/editprofile")}>
               Edit Profile
             </button>
           </div>
