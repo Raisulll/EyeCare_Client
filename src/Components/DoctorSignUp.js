@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
 import {
+  Alert,
   Button,
   Card,
   Col,
   Container,
   Form,
   Row,
-  Alert,
 } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "../App.css";
 
 function DoctorSignUp() {

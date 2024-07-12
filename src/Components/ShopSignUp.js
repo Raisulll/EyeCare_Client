@@ -30,7 +30,7 @@ function ShopOwnerSignUp() {
     e.preventDefault();
     const data = {
       shopName: fullName,
-      shopEmail: email,
+      shopMail: email,
       shopPhone: phoneNumber,
       shopDistrict: district,
       shopArea: area,
@@ -39,7 +39,7 @@ function ShopOwnerSignUp() {
       shopLicense: shopLicense,
     };
     console.log(data);
-    const result = await fetch("http://localhost:5000/auth/signup", {
+    const result = await fetch("http://localhost:5000/auth/shopsignup", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -48,7 +48,7 @@ function ShopOwnerSignUp() {
     });
     console.log(result);
     if (result.status === 200) {
-      navigate("/signin");
+      navigate("/otheruserssignin");
     }
   };
 
