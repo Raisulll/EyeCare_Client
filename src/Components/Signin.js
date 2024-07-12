@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "../App.css"; // Import custom CSS
 
-
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -76,7 +75,7 @@ function SignIn() {
                     />
                   </div>
                 </Form.Group>
-                <Button variant="primary" type="submit" className="w-100"onClick={() => navigate("/doctorProfile")}>
+                <Button variant="primary" type="submit" className="w-100">
                   Sign In
                 </Button>
               </Form>

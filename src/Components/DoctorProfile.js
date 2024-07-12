@@ -1,97 +1,119 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import "../css/DoctorProfile.css";
+import { Button, Card, Container, Row, Col, Image } from "react-bootstrap";
 
 const DoctorProfile = () => {
   const navigate = useNavigate();
+  const [doctorData, setDoctorData] = useState({});
 
-  const dummyData = {
-    Name: "Dr.Billal Hossain",
-    avatar: "image.png",
-    coverPhoto: "pexels-tobiasbjorkli-1887624.jpg",
-    ID: "D_001",
-    GENDER: "Male",
-    EMAIL: "billal.hossain@gmail.com",
-    PHONE: "01769093333",
-    DISTRICT: "Dhaka",
-    AREA: "Mirpur",
-    ROADNUMBER: "11",
-    LICENSE: "FPS",
-    TIMESLOT: "6:30 pm",
-    EXPERTISE: "Child Specialist",
-    WORKS_IN: "Eye Hospital"
-  };
+  useEffect(() => {
+    // Fetch data from user object in local storage
+    const user = JSON.parse(localStorage.getItem("user"));
+    const data = {
+      Name: user?.doctorName,
+      avatar: "image.png",
+      coverPhoto: "pexels-tobiasbjorkli-1887624.jpg",
+      ID: user?.DoctorId,
+      GENDER: user?.doctorGender,
+      EMAIL: user?.doctorEmail,
+      PHONE: user?.doctorPhone,
+      DISTRICT: user?.doctorDistrict,
+      AREA: user?.doctorArea,
+      ROADNUMBER: user?.doctorRoadNum,
+      LICENSE: user?.doctorLicense,
+      TIMESLOT: user?.timeslot,
+      EXPERTISE: user?.experience,
+    };
+    setDoctorData(data);
+  }, []);
 
   return (
-    <div className="profile-container">
-      <div className="profile-cover">
-        <div className="cover-buttons">
-        
-        </div>
-        <img src={dummyData.coverPhoto} alt="Cover" className="cover-photo" />
-        <div className="profile-header">
-          <img
-            src={dummyData.avatar}
-            alt={`${dummyData.Name}'s avatar`}
-            className="profile-avatar"
-          />
-          <div className="header-text">
-            <h1 className="profile-name">{dummyData.Name}</h1>
-            <button className="btn edit-btn" onClick={() => navigate("/edit")}>
-              Edit Profile
-            </button>
-            
-          </div>
-        </div>
-      </div>
-      <div className="profile-details">
-        <p>
-          <strong>DOCTOR_ID</strong> <span>{dummyData.ID}</span>
-        </p>
-        <p>
-          <strong>GENDER</strong> <span>{dummyData.GENDER}</span>
-        </p>
-        <p>
-          <strong>EMAIL</strong> <span>{dummyData.EMAIL}</span>
-          <button
-            className="btn cover-btn"
-            onClick={() => navigate("/DoctorAppointment")}
-          >
-            Schedule Appointment
-          </button>
-        </p>
-        <p>
-          <strong>PHONE</strong> <span>{dummyData.PHONE}</span>
-        </p>
-        <p>
-          <strong>DISTRICT</strong> <span>{dummyData.DISTRICT}</span>
-          <button
-            className="btn cover-btn"
-            onClick={() => navigate("/DoctorSurgery")}
-          >
-            Schedule<br/>Surgery
-          </button>
-        </p>
-        <p>
-          <strong>AREA</strong> <span>{dummyData.AREA}</span>
-        </p>
-        <p>
-          <strong>ROADNO.</strong> <span>{dummyData.ROADNUMBER}</span>
-        </p>
-        <p>
-          <strong>LICENSE</strong> <span>{dummyData.LICENSE}</span>
-        </p>
-        <p>
-          <strong>TIMESLOT</strong> <span>{dummyData.TIMESLOT}</span>
-        </p>
-        <p>
-          <strong>EXPERTISE</strong> <span>{dummyData.EXPERTISE}</span>
-        </p>
-        <p>
-          <strong>WORKS_IN</strong> <span>{dummyData.WORKS_IN}</span>
-        </p>
-      </div>
-    </div>
+    <Container className="profile-container">
+      <Card className="profile-card">
+        <Card.Img
+          variant="top"
+          src={doctorData.coverPhoto}
+          className="cover-photo"
+        />
+        <Card.Body>
+          <Row className="align-items-center">
+            <Col md={3} className="text-center">
+              <Image
+                src={doctorData.avatar}
+                roundedCircle
+                className="profile-avatar"
+              />
+            </Col>
+            <Col md={6}>
+              <h1 className="profile-name">{doctorData.Name}</h1>
+              <p className="profile-expertise">{doctorData.EXPERTISE}</p>
+            </Col>
+            <Col md={3} className="text-center">
+              <Button
+                variant="primary"
+                onClick={() => navigate("/doctoreditprofile")}
+              >
+                Edit Profile
+              </Button>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+      <Card className="profile-details-card mt-4">
+        <Card.Body>
+          <Row>
+            <Col md={6}>
+              <p>
+                <strong>Doctor ID:</strong> {doctorData.ID}
+              </p>
+              <p>
+                <strong>Gender:</strong> {doctorData.GENDER}
+              </p>
+              <p>
+                <strong>Email:</strong> {doctorData.EMAIL}
+              </p>
+              <p>
+                <strong>Phone:</strong> {doctorData.PHONE}
+              </p>
+            </Col>
+            <Col md={6}>
+              <p>
+                <strong>District:</strong> {doctorData.DISTRICT}
+              </p>
+              <p>
+                <strong>Area:</strong> {doctorData.AREA}
+              </p>
+              <p>
+                <strong>Road No.:</strong> {doctorData.ROADNUMBER}
+              </p>
+              <p>
+                <strong>License:</strong> {doctorData.LICENSE}
+              </p>
+            </Col>
+          </Row>
+          <Row className="mt-4">
+            <Col md={6}>
+              <Button
+                variant="secondary"
+                className="w-100 mb-2"
+                onClick={() => navigate("/doctorappointments")}
+              >
+                Appointments
+              </Button>
+            </Col>
+            <Col md={6}>
+              <Button
+                variant="secondary"
+                className="w-100"
+                onClick={() => navigate("/DoctorSurgery")}
+              >
+                Schedule Surgery
+              </Button>
+            </Col>
+          </Row>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 

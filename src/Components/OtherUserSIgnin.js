@@ -1,8 +1,8 @@
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import "../App.css";
 
 function OtherUserSignin() {
@@ -11,12 +11,6 @@ function OtherUserSignin() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-
-
-  //Static Sign In 
-  const handleClick = () => {
-    navigate('/hospital');
-    };
 
   // if a user is already logged in, they should be redirected to the home page
   useEffect(() => {
@@ -36,67 +30,74 @@ function OtherUserSignin() {
 
     if (userType === "doctor") {
       delete data.userType;
-      console.log(data);
-      const result = await fetch("http://localhost:5000/auth/doctorsignin", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(result);
-      if (result.status === 200) {
-        const userInfo = await result.json();
-        localStorage.setItem("user", JSON.stringify(userInfo));
-
-        window.dispatchEvent(new Event("storage"));
-        navigate("/");
-        console.log("Doctor Sign In Successful");
-      }
-      else {
-        console.log("Doctor Sign In Failed");
-      }
-    }
-    if (userType === "shopOwner") {
-      delete data.userType;
-      const result = await fetch("http://localhost:5000/auth/shoposignin", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(result);
-      if (result.status === 200) {
-        const userInfo = await result.json();
-        localStorage.setItem("user", JSON.stringify(userInfo));
-
-        window.dispatchEvent(new Event("storage"));
-        navigate("/");
-        console.log("Shop Owner Sign In Successful");
-      } else {
-        console.log("Shop Owner Sign In Failed");
-      }
-    }
-    if (userType === "eyeHospitalManager") {
-      delete data.userType;
-      const result = await fetch(
-        "http://localhost:5000/auth/hospitalsignin",
-        {
+      console.log("Doctor Data: ", data);
+      try {
+        const result = await fetch("http://localhost:5000/auth/doctorsignin", {
           method: "POST",
           body: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
           },
+        });
+        console.log(result);
+        if (result.status === 200) {
+          const userInfo = await result.json();
+          localStorage.setItem("user", JSON.stringify(userInfo));
+          window.dispatchEvent(new Event("storage"));
+          navigate("/doctorprofile", { state: { userInfo } });
+          console.log("Doctor Sign In Successful");
+        } else {
+          console.log("Doctor Sign In Failed");
         }
-      );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    if (userType === "shopOwner") {
+      const shopData = {
+        shopMail: email,
+        shopPassword: password,
+      };
+      console.log("Shop Owner Data: ", shopData);
+      const result = await fetch("http://localhost:5000/auth/shopsignin", {
+        method: "POST",
+        body: JSON.stringify(shopData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       console.log(result);
       if (result.status === 200) {
         const userInfo = await result.json();
         localStorage.setItem("user", JSON.stringify(userInfo));
-
         window.dispatchEvent(new Event("storage"));
-        navigate("/");
+        navigate("/shopProfile", { state: { userInfo } });
+        console.log("Shop Owner Sign In Successful");
+      } else {
+        console.log("Shop Owner Sign In Failed");
+      }
+    }
+
+    if (userType === "eyeHospitalManager") {
+      const hospitalData = {
+        hospitalMail: email,
+        hospitalPassword: password,
+      };
+      console.log("Hospital Manager Data: ", hospitalData);
+      const result = await fetch("http://localhost:5000/auth/hospitalsignin", {
+        method: "POST",
+        body: JSON.stringify(hospitalData),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(result);
+      if (result.status === 200) {
+        const userInfo = await result.json();
+        localStorage.setItem("user", JSON.stringify(userInfo));
+        window.dispatchEvent(new Event("storage"));
+        navigate("/hospitalProfile", { state: { userInfo } });
         console.log("Hospital Sign In Successful");
       } else {
         console.log("Hospital Sign In Failed");
@@ -162,7 +163,7 @@ function OtherUserSignin() {
                   variant="primary"
                   type="submit"
                   className="w-100"
-                  onClick={handleClick}
+                  onClick={collectData}
                 >
                   Sign In
                 </Button>

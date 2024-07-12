@@ -1,10 +1,26 @@
-import React, { useState } from "react";
-import "../css/DoctorAppointment.css";
+import React, { useEffect, useState } from "react";
 
 // Appointment Component
-const Appointments = ({ appointments }) => {
+const Appointments = () => {
+  const [appointments, setAppointments] = useState([]);
   const [sortConfig, setSortConfig] = useState(null);
   const [isTableVisible, setIsTableVisible] = useState(true);
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:5000/senddoctorappointments"
+        );
+        const data = await response.json();
+        setAppointments(data);
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+      }
+    };
+
+    fetchAppointments();
+  }, []);
 
   const sortedAppointments = [...appointments].sort((a, b) => {
     if (!sortConfig) return 0;
@@ -43,18 +59,22 @@ const Appointments = ({ appointments }) => {
           <thead>
             <tr>
               <th onClick={() => requestSort("patientName")}>Patient Name</th>
-              <th onClick={() => requestSort("date")}>Date</th>
-              <th onClick={() => requestSort("time")}>Time</th>
-              <th onClick={() => requestSort("status")}>Status</th>
+              <th onClick={() => requestSort("appointmentDate")}>Date</th>
+              <th onClick={() => requestSort("appointmentTime")}>Time</th>
+              <th onClick={() => requestSort("appointmentStatus")}>Status</th>
             </tr>
           </thead>
           <tbody>
             {sortedAppointments.map((appointment, index) => (
               <tr key={index}>
-                <td>{appointment.patientName}</td>
-                <td>{appointment.date}</td>
-                <td>{appointment.time}</td>
-                <td className={`status-${appointment.status.toLowerCase()}`}>{appointment.status}</td>
+                <td>{appointment.PATIENT_NAME}</td>
+                <td>{appointment.APPOINTMENT_DATE}</td>
+                <td>{appointment.APPOINTMENT_TIME}</td>
+                <td
+                  className={`status-${appointment.APPOINTMENT_STATUS.toLowerCase()}`}
+                >
+                  {appointment.APPOINTMENT_STATUS}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -66,42 +86,9 @@ const Appointments = ({ appointments }) => {
 
 // Main App Component
 const App = () => {
-  const dummyAppointments = [
-    {
-      patientName: "Alice Smith",
-      date: "2024-07-01",
-      time: "10:00 AM",
-      status: "Completed",
-    },
-    {
-      patientName: "Bob Johnson",
-      date: "2024-07-10",
-      time: "02:00 PM",
-      status: "Upcoming",
-    },
-    {
-      patientName: "Charlie Brown",
-      date: "2024-06-20",
-      time: "11:00 AM",
-      status: "Completed",
-    },
-    {
-      patientName: "David Wilson",
-      date: "2024-07-15",
-      time: "09:00 AM",
-      status: "Upcoming",
-    },
-    {
-      patientName: "Eve Davis",
-      date: "2024-06-25",
-      time: "03:00 PM",
-      status: "Completed",
-    },
-  ];
-
   return (
     <div className="App">
-      <Appointments appointments={dummyAppointments} />
+      <Appointments />
     </div>
   );
 };
