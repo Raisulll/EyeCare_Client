@@ -7,8 +7,11 @@ const HospitalProfile = () => {
 
   const handleClick = () => {
     navigate('/schedulepage');
-    };
-    
+  };
+
+  const SeeMoreSttaf = () => {
+    navigate('/staffpage');
+  };
 
   const dummyData = {
     Name: "Mr. John Doe",
@@ -34,11 +37,11 @@ const HospitalProfile = () => {
     { id: 4, patientName: 'Eve', appointmentTime: '2:00 pm' },
   ];
 
-  const dummyTransaction = [
-    { id: 1, patientName: 'Alice', appointmentTime: '10:00 am' },
-    { id: 2, patientName: 'Bob', appointmentTime: '11:00 am' },
-    { id: 3, patientName: 'Charlie', appointmentTime: '1:00 pm' },
-    { id: 4, patientName: 'Eve', appointmentTime: '2:00 pm' },
+  const dummyStaffList = [
+    { id: 1, staffName: 'Dr. Smith', role: 'Surgeon', salary: '100,000' },
+    { id: 2, staffName: 'Nurse Nancy', role: 'Nurse', salary: '50,000' },
+    { id: 3, staffName: 'Dr. Brown', role: 'Pediatrician', salary: '80,000' },
+    { id: 4, staffName: 'Admin Alex', role: 'Administrator', salary: '60,000' },
   ];
 
   return (
@@ -63,41 +66,19 @@ const HospitalProfile = () => {
         </div>
       </div>
       <div className="profile-details">
-        <p>
-          <strong>MANAGER_ID</strong> <span>{dummyData.ID}</span>
-        </p>
-        <p>
-          <strong>GENDER</strong> <span>{dummyData.GENDER}</span>
-        </p>
-        <p>
-          <strong>EMAIL</strong> <span>{dummyData.EMAIL}</span>
-        </p>
-        <p>
-          <strong>PHONE</strong> <span>{dummyData.PHONE}</span>
-        </p>
-        <p>
-          <strong>DISTRICT</strong> <span>{dummyData.DISTRICT}</span>
-        </p>
-        <p>
-          <strong>AREA</strong> <span>{dummyData.AREA}</span>
-        </p>
-        <p>
-          <strong>ROAD NO.</strong> <span>{dummyData.ROADNUMBER}</span>
-        </p>
-        <p>
-          <strong>LICENSE</strong> <span>{dummyData.LICENSE}</span>
-        </p>
-        <p>
-          <strong>TIMESLOT</strong> <span>{dummyData.TIMESLOT}</span>
-        </p>
-        <p>
-          <strong>ROLE</strong> <span>{dummyData.ROLE}</span>
-        </p>
-        <p>
-          <strong>WORKS_IN</strong> <span>{dummyData.WORKS_IN}</span>
-        </p>
+        <p><strong>MANAGER_ID</strong> <span>{dummyData.ID}</span></p>
+        <p><strong>GENDER</strong> <span>{dummyData.GENDER}</span></p>
+        <p><strong>EMAIL</strong> <span>{dummyData.EMAIL}</span></p>
+        <p><strong>PHONE</strong> <span>{dummyData.PHONE}</span></p>
+        <p><strong>DISTRICT</strong> <span>{dummyData.DISTRICT}</span></p>
+        <p><strong>AREA</strong> <span>{dummyData.AREA}</span></p>
+        <p><strong>ROAD NO.</strong> <span>{dummyData.ROADNUMBER}</span></p>
+        <p><strong>LICENSE</strong> <span>{dummyData.LICENSE}</span></p>
+        <p><strong>TIMESLOT</strong> <span>{dummyData.TIMESLOT}</span></p>
+        <p><strong>ROLE</strong> <span>{dummyData.ROLE}</span></p>
+        <p><strong>WORKS_IN</strong> <span>{dummyData.WORKS_IN}</span></p>
       </div>
-      
+
       {/* New Schedule Section */}
       <div className="profile-schedule">
         <h2>Patient Schedule</h2>
@@ -117,14 +98,32 @@ const HospitalProfile = () => {
             ))}
           </tbody>
         </table>
-        <button className="btn see-more-btn" onClick={handleClick}>
-          See More
-        </button>
-        
-        <button variant="outline-secondary"  className="btn add-more-btn" onClick={() => navigate("/schedulepage")}>
-          Add
-        </button>
+        <button className="btn see-more-btn" onClick={handleClick}>See More</button>
+        <button className="btn add-more-btn" onClick={() => navigate("/schedulepage")}>Add</button>
+      </div>
 
+      {/* New Staff List Section */}
+      <div className="profile-staff">
+        <h2>Staff List of Hospital</h2>
+        <table className="staff-table">
+          <thead>
+            <tr>
+              <th>Staff Name</th>
+              <th>Role</th>
+              <th>Salary</th>
+            </tr>
+          </thead>
+          <tbody>
+            {dummyStaffList.map(staff => (
+              <tr key={staff.id}>
+                <td>{staff.staffName}</td>
+                <td>{staff.role}</td>
+                <td>{staff.salary}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <button className="btn see-more-btn" onClick={SeeMoreSttaf}>See More</button>
       </div>
     </div>
   );

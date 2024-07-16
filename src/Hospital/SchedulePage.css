@@ -2,11 +2,13 @@
     width: 80%;
     margin: auto;
     padding-top: 30px;
+    color: whitesmoke;
   }
   
   .title {
     text-align: center;
     margin-bottom: 20px;
+    color: white;
   }
   
   .schedule-table {
@@ -22,8 +24,22 @@
   }
   
   .schedule-table th {
-    background-color: #f2f2f2;
+    background-color: #333; /* Darker background for header */
     text-align: left;
+    color: white; /* White text for better visibility */
+  }
+
+  .schedule-table tr:nth-child(even) {
+    background-color: #444; /* Alternating row color */
+  }
+  
+  .schedule-table tr:nth-child(odd) {
+    background-color: #555; /* Alternating row color */
+  }
+  
+  .schedule-table td {
+    background-color: #444; /* Background color for table cells */
+    color: white; /* Text color for table cells */
   }
   
   .add-schedule {

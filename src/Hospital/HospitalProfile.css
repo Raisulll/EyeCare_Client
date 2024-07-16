@@ -72,20 +72,20 @@ body{
   
 
 
-.schedule-table {
+.schedule-table,.staff-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 10px;
 }
 
-.schedule-table th,
-.schedule-table td {
+.schedule-table th,.staff-table th
+.schedule-table td , .staff-table td{
   border: 1px solid #ddd;
   padding: 8px;
 }
 
-.schedule-table th {
-  background-color: #f2f2f2;
+.schedule-table th , .staff-table th{
+  background-color: #3f3e3e;
   text-align: left;
 }
 

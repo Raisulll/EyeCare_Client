@@ -20,6 +20,10 @@ function OtherUserSignin() {
     }
   });
 
+  const handleClick = () => {
+    navigate('/hospital');
+    };
+
   const collectData = async (e) => {
     e.preventDefault();
     const data = {
@@ -163,7 +167,7 @@ function OtherUserSignin() {
                   variant="primary"
                   type="submit"
                   className="w-100"
-                  onClick={collectData}
+                  onClick={handleClick}
                 >
                   Sign In
                 </Button>
