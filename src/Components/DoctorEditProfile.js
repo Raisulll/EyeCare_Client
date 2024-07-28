@@ -49,7 +49,7 @@ const EditProfile = () => {
     console.log(formData);
     try {
       const response = await fetch(
-        `http://localhost:5000/auth/editdoctorprofile`,
+        `http://localhost:5000/edit/doctorprofile`,
         {
           method: "POST",
           headers: {
