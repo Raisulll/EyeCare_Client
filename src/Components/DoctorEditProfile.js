@@ -21,7 +21,7 @@ const EditProfile = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       setFormData({
-        doctorId: user.DoctorId,
+        doctorId: user.doctorId,
         doctorName: user.doctorName || "",
         doctorGender: user.doctorGender || "",
         doctorEmail: user.doctorEmail || "",
@@ -60,7 +60,9 @@ const EditProfile = () => {
       );
       if (response.ok) {
         alert("Profile updated successfully!");
-        navigate("/profile");
+        //update local storage with new profile data
+        localStorage.setItem("user", JSON.stringify(formData));
+        navigate("/doctorprofile");
       } else {
         throw new Error("Failed to update profile");
       }

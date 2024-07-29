@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, Container, Row, Col, Image } from "react-bootstrap";
 
 const DoctorProfile = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const DoctorProfile = () => {
       Name: user?.doctorName,
       avatar: "image.png",
       coverPhoto: "pexels-tobiasbjorkli-1887624.jpg",
-      ID: user?.DoctorId,
+      ID: user?.doctorId,
       GENDER: user?.doctorGender,
       EMAIL: user?.doctorEmail,
       PHONE: user?.doctorPhone,
@@ -25,7 +25,7 @@ const DoctorProfile = () => {
       EXPERTISE: user?.experience,
     };
     setDoctorData(data);
-  }, []);
+  }, [localStorage.getItem("user")]);
 
   return (
     <Container className="profile-container">
