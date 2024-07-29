@@ -13,7 +13,7 @@ const EditProfile = () => {
     doctorArea: "",
     doctorRoadNum: "",
     doctorLicense: "",
-    timeslot: "",
+    doctorTimeslot: "",
     experience: "",
   });
 
@@ -30,7 +30,7 @@ const EditProfile = () => {
         doctorArea: user.doctorArea || "",
         doctorRoadNum: user.doctorRoadNum || "",
         doctorLicense: user.doctorLicense || "",
-        timeslot: user.timeslot || "",
+        doctorTimeslot: user.timeslot || "",
         experience: user.experience || "",
       });
     }
@@ -48,16 +48,13 @@ const EditProfile = () => {
     e.preventDefault();
     console.log(formData);
     try {
-      const response = await fetch(
-        `http://localhost:5000/edit/doctorprofile`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`http://localhost:5000/edit/doctorprofile`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
       if (response.ok) {
         alert("Profile updated successfully!");
         //update local storage with new profile data
@@ -161,8 +158,8 @@ const EditProfile = () => {
           <Form.Control
             type="text"
             placeholder="Enter timeslot"
-            name="timeslot"
-            value={formData.timeslot}
+            name="Doctor timeslot"
+            value={formData.doctorTimeslot}
             onChange={handleInputChange}
           />
         </Form.Group>
