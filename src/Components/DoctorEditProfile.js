@@ -13,7 +13,7 @@ const EditProfile = () => {
     doctorArea: "",
     doctorRoadNum: "",
     doctorLicense: "",
-    timeslot: "",
+    doctorTimeslot: "",
     experience: "",
   });
 
@@ -21,7 +21,7 @@ const EditProfile = () => {
     const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       setFormData({
-        doctorId: user.DoctorId,
+        doctorId: user.doctorId,
         doctorName: user.doctorName || "",
         doctorGender: user.doctorGender || "",
         doctorEmail: user.doctorEmail || "",
@@ -30,7 +30,7 @@ const EditProfile = () => {
         doctorArea: user.doctorArea || "",
         doctorRoadNum: user.doctorRoadNum || "",
         doctorLicense: user.doctorLicense || "",
-        timeslot: user.timeslot || "",
+        doctorTimeslot: user.timeslot || "",
         experience: user.experience || "",
       });
     }
@@ -48,19 +48,18 @@ const EditProfile = () => {
     e.preventDefault();
     console.log(formData);
     try {
-      const response = await fetch(
-        `http://localhost:5000/auth/editdoctorprofile`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      const response = await fetch(`http://localhost:5000/edit/doctorprofile`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
       if (response.ok) {
         alert("Profile updated successfully!");
-        navigate("/profile");
+        //update local storage with new profile data
+        localStorage.setItem("user", JSON.stringify(formData));
+        navigate("/doctorprofile");
       } else {
         throw new Error("Failed to update profile");
       }
@@ -159,8 +158,8 @@ const EditProfile = () => {
           <Form.Control
             type="text"
             placeholder="Enter timeslot"
-            name="timeslot"
-            value={formData.timeslot}
+            name="Doctor timeslot"
+            value={formData.doctorTimeslot}
             onChange={handleInputChange}
           />
         </Form.Group>
