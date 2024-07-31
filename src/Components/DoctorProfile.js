@@ -13,6 +13,7 @@ const DoctorProfile = () => {
       Name: user?.doctorName,
       avatar: "image.png",
       coverPhoto: "pexels-tobiasbjorkli-1887624.jpg",
+      
       ID: user?.doctorId,
       GENDER: user?.doctorGender,
       EMAIL: user?.doctorEmail,
