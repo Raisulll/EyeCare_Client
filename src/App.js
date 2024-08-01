@@ -26,6 +26,7 @@ import Hospital from  "./Hospital/Hospital";
 import EditProfilePage   from"./Hospital/EditProfilePage";
 import SchedulePage from  "./Hospital/SchedulePage";
 import StaffPage from "./Hospital/StaffPage";
+import UserProfile from './UserProfile/UserProfile';
 
 function App() {
   return (
@@ -39,7 +40,7 @@ function App() {
               <Route path="/addproduct" element={<AddProduct />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/updateproduct" element={<UpdateProduct />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<UserProfile />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/doctorprofile" element={<DoctorProfile />} />
               <Route path="/doctoreditprofile" element={<DoctorEditProfile />} />

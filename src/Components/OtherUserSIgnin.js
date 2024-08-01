@@ -20,10 +20,6 @@ function OtherUserSignin() {
     }
   });
 
-  const handleClick = () => {
-    navigate('/hospital');
-    };
-
   const collectData = async (e) => {
     e.preventDefault();
     const data = {
@@ -108,8 +104,7 @@ function OtherUserSignin() {
       }
     }
   };
-
-  return (
+return (
     <Container
       className="d-flex justify-content-center align-items-center"
       style={{ height: "100vh" }}
@@ -167,7 +162,7 @@ function OtherUserSignin() {
                   variant="primary"
                   type="submit"
                   className="w-100"
-                  onClick={handleClick}
+                  onClick={collectData}
                 >
                   Sign In
                 </Button>
