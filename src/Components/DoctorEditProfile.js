@@ -13,7 +13,7 @@ const EditProfile = () => {
     doctorArea: "",
     doctorRoadNum: "",
     doctorLicense: "",
-    doctorTimeslot: "",
+    timeslot: "",
     experience: "",
   });
 
@@ -30,7 +30,7 @@ const EditProfile = () => {
         doctorArea: user.doctorArea || "",
         doctorRoadNum: user.doctorRoadNum || "",
         doctorLicense: user.doctorLicense || "",
-        doctorTimeslot: user.timeslot || "",
+        timeslot: user.timeslot || "",
         experience: user.experience || "",
       });
     }
@@ -154,12 +154,12 @@ const EditProfile = () => {
           />
         </Form.Group>
         <Form.Group controlId="formTimeslot">
-          <Form.Label>Timeslot</Form.Label>
+          <Form.Label>Enter timeslot</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter timeslot"
-            name="Doctor timeslot"
-            value={formData.doctorTimeslot}
+            placeholder="timeslot"
+            name="timeslot"
+            value={formData.timeslot}
             onChange={handleInputChange}
           />
         </Form.Group>
