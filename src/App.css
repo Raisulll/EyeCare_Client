@@ -1,6 +1,13 @@
+/* Import Poppins font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Apply Poppins font to the entire body */
 body {
-  background-color:black;
-  color: #ffffff; /* White text color for better readability */
+  background-color: #181A1B;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
 .sign-up-link {
@@ -11,6 +18,7 @@ body {
 .sign-up-link:hover {
   text-decoration: underline;
 }
+
 .auth-link {
   text-decoration: none;
   color: #007bff;
@@ -134,17 +142,12 @@ body {
   display: none;
 }
 
-
 .cardcolor {
-  /* background-color: #f8f9fa; */
-  /* border: 1px solid #dee2e6; */
   border-radius: 0.25rem;
   padding: 2rem;
 }
 
 .signin-container {
-  /* background-color: #ffffff; */
-  /* border: 1px solid #ced4da; */
   border-radius: 0.25rem;
 }
 
@@ -165,4 +168,76 @@ body {
   cursor: pointer;
   color: #6c757d;
   background-color: transparent;
+}
+
+/* Profile Page Styles */
+.profile-container {
+  /* max-width: 900px; */
+  margin: 2rem auto;
+  padding: 0 1rem;
+  color: #ffffff;
+}
+
+.profile-card {
+  background-color: #1f1f1f;
+  color:#ffffff;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cover-photo {
+  border-top-left-radius: 0.5rem;
+  border-top-right-radius: 0.5rem;
+  height: 200px;
+  object-fit: cover;
+}
+
+.profile-avatar {
+  width: 150px;
+  height: 150px;
+  border: 4px solid #181A1B;
+  margin-top: -75px;
+}
+
+.profile-name {
+  color:#ffffff;
+  font-size: 1.8rem;
+  margin: 0;
+}
+
+.profile-expertise {
+  color:#ffffff;
+  font-size: 1.2rem;
+  color: #ccc;
+}
+
+.profile-details-card {
+  color:#ffffff;
+  background-color: #1f1f1f;
+  border: none;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-details-card p {
+  margin: 0.5rem 0;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+.btn-secondary:hover {
+  background-color: #5a6268;
 }

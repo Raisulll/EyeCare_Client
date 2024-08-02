@@ -1,6 +1,9 @@
 import React from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
+import { FaUserDoctor,FaHospitalUser } from "react-icons/fa6";
+import { MdOutlineShoppingCart } from "react-icons/md";
+
 import "../App.css";
 
 const OtherUserSignUp = () => {
@@ -17,17 +20,17 @@ const OtherUserSignUp = () => {
               <div className="text-center">
                 <NavLink to="/doctorsignup">
                   <Button variant="primary" size="lg" className="mb-3 w-100">
-                    Doctor
+                  <FaUserDoctor />  Doctor
                   </Button>
                 </NavLink>
                 <NavLink to="/shopsignup">
                   <Button variant="primary" size="lg" className="mb-3 w-100">
-                    Shop Owner
+                  <MdOutlineShoppingCart />  Shop Owner
                   </Button>
                 </NavLink>
                 <NavLink to="/hospitalsignup">
                   <Button variant="primary" size="lg" className="w-100">
-                    Eye Hospital Manager
+                  <FaHospitalUser />  Eye Hospital Manager
                   </Button>
                 </NavLink>
               </div>
