@@ -39,7 +39,7 @@ const UserProfile = () => {
 
     // Fetch or set static list of doctors
     setDoctors([
-      { id: 1, name: 'Dr. Ses Smoke', specialty: 'Eye Surgeon' },
+      { id: 1, name: 'Dr. Sea Smoke', specialty: 'Eye Surgeon' },
       { id: 2, name: 'Dr. Virmiture', specialty: 'Surgeon' },
       { id: 3, name: 'Dr. John Doe', specialty: 'Ophthalmologist' },
       { id: 4, name: 'Dr. Jane Smith', specialty: 'Optometrist' },
