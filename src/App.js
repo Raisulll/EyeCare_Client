@@ -23,6 +23,12 @@ import DoctorEditProfile from "./Components/DoctorEditProfile";
 import DoctorAppointments from "./Components/DoctorAppointments";
 import GetAppointment from "./Components/GetAppointment";
 
+import Hospital from  "./Hospital/Hospital";
+import EditProfilePage   from"./Hospital/EditProfilePage";
+import SchedulePage from  "./Hospital/SchedulePage";
+import StaffPage from "./Hospital/StaffPage";
+import UserProfile from './UserProfile/UserProfile';
+
 function App() {
   return (
     <div className="App">
@@ -35,7 +41,7 @@ function App() {
               <Route path="/addproduct" element={<AddProduct />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/updateproduct" element={<UpdateProduct />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<UserProfile />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/doctorprofile" element={<DoctorProfile />} />
               <Route path="/doctoreditprofile" element={<DoctorEditProfile />} />
@@ -52,7 +58,19 @@ function App() {
             <Route path="/doctorsignup" element={<DoctorSignUP />} />
             <Route path="shopsignup" element={<ShopSignUp />} />
             <Route path="/hospitalsignup" element={<HospitalSignUP />} />
+<<<<<<< HEAD
             <Route path="/GetAppointment" element={<GetAppointment />} />
+=======
+            <Route path="/doctorProfile" element={<DoctorProfile />} />
+            <Route path="/DoctorAppointment" element={<DoctorAppointments />} />
+            
+
+            /*** Hospital */
+            <Route path="/hospital" element={<Hospital/>} />
+            <Route path="/schedulepage" element={<SchedulePage/>} />
+            <Route path="/editprofile" element={<EditProfilePage/>} />
+            <Route path="/staffpage" element={<StaffPage/>} />
+>>>>>>> ec14cbaddb2af0662dca4b3f94a63a6b200860ad
           </Routes>
         </main>
       </BrowserRouter>
