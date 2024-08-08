@@ -21,6 +21,7 @@ import UpdateProduct from "./Components/UpdateProduct";
 import DoctorProfile from "./Components/DoctorProfile";
 import DoctorEditProfile from "./Components/DoctorEditProfile";
 import DoctorAppointments from "./Components/DoctorAppointments";
+import GetAppointment from "./Components/GetAppointment";
 
 function App() {
   return (
@@ -51,6 +52,7 @@ function App() {
             <Route path="/doctorsignup" element={<DoctorSignUP />} />
             <Route path="shopsignup" element={<ShopSignUp />} />
             <Route path="/hospitalsignup" element={<HospitalSignUP />} />
+            <Route path="/GetAppointment" element={<GetAppointment />} />
           </Routes>
         </main>
       </BrowserRouter>
