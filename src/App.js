@@ -58,19 +58,15 @@ function App() {
             <Route path="/doctorsignup" element={<DoctorSignUP />} />
             <Route path="shopsignup" element={<ShopSignUp />} />
             <Route path="/hospitalsignup" element={<HospitalSignUP />} />
-<<<<<<< HEAD
-            <Route path="/GetAppointment" element={<GetAppointment />} />
-=======
             <Route path="/doctorProfile" element={<DoctorProfile />} />
             <Route path="/DoctorAppointment" element={<DoctorAppointments />} />
-            
-
+            <Route path="/GetAppointment" element={<GetAppointment />} />
+            <Route path="/Profile" element={<Profile/>} />
             /*** Hospital */
             <Route path="/hospital" element={<Hospital/>} />
             <Route path="/schedulepage" element={<SchedulePage/>} />
             <Route path="/editprofile" element={<EditProfilePage/>} />
             <Route path="/staffpage" element={<StaffPage/>} />
->>>>>>> ec14cbaddb2af0662dca4b3f94a63a6b200860ad
           </Routes>
         </main>
       </BrowserRouter>
