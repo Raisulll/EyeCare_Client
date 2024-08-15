@@ -144,7 +144,7 @@ const UserProfile = () => {
 
               <div className="appointments-list mt-5">
                 <h5>Previous Appointments</h5>
-                {appointments.length > 0 ? (
+                {appointments && appointments.length > 0 ? (
                   <Row>
                     {appointments.map((appointment) => (
                       <Col key={appointment.APPOINTMENT_ID} md={4} className="mb-3">
