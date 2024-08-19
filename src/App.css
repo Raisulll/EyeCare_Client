@@ -329,3 +329,17 @@ body {
 .purchase-card {
   height: 100%;
 }
+
+.user-details {
+  text-align: left;
+}
+
+.see-more-card {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  height: 100%;
+}
+
+.see-more-card .btn {
+  width: 100%;
+}

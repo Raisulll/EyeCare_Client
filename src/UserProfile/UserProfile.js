@@ -9,10 +9,8 @@ const UserProfile = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const [appointmentDate, setAppointmentDate] = useState('');
-  
   const [appointments, setAppointments] = useState([]);
   const [purchases, setPurchases] = useState([]);
-
 
   const navigate = useNavigate();
 
@@ -22,7 +20,7 @@ const UserProfile = () => {
     if (storedUser) {
       setUser(JSON.parse(storedUser));
 
-       // Set static appointments data for demonstration
+      // Set static appointments data for demonstration
       setAppointments([
         { id: 1, doctorName: 'Dr. John Doe', date: '2024-07-01', specialty: 'Ophthalmologist' },
         { id: 2, doctorName: 'Dr. Jane Smith', date: '2024-06-15', specialty: 'Optometrist' },
@@ -66,6 +64,21 @@ const UserProfile = () => {
     }
   };
 
+  const handleSeeMorePurchases = () => {
+    // Implement logic to navigate to purchases page or load more purchases
+    console.log('See More Purchases');
+  };
+
+  const handleSeeMoreAppointments = () => {
+    // Implement logic to navigate to appointments page or load more appointments
+    console.log('See More Appointments');
+  };
+
+  const handleSeeMoreDoctors = () => {
+    // Implement logic to navigate to doctors page or load more doctors
+    console.log('See More Doctors');
+  };
+
   if (!user) {
     return <div>Loading...</div>;
   }
@@ -91,66 +104,77 @@ const UserProfile = () => {
                 />
               </div>
               <Card.Title className="text-center mb-4">User Profile</Card.Title>
-              <div className="user-details">
-                <p><strong>Name:</strong> {user.patientName}</p>
-                <p><strong>Email:</strong> {user.patientEmail}</p>
-                <p><strong>Phone:</strong> {user.patientPhone}</p>
-                <p><strong>Date of Birth:</strong> {user.patientDob}</p>
-                <p><strong>District:</strong> {user.patientDistrict}</p>
-                <p><strong>Area:</strong> {user.patientArea}</p>
-                <p><strong>Road Number:</strong> {user.patientRoadNum}</p>
-                <p><strong>Gender:</strong> {user.patientGender}</p>
-              </div>
+
+              <Row className="user-details">
+                <Col md={6}>
+                  <p><strong>Name:</strong> {user.patientName}</p>
+                  <p><strong>Email:</strong> {user.patientEmail}</p>
+                  <p><strong>Phone:</strong> {user.patientPhone}</p>
+                  <p><strong>Date of Birth:</strong> {user.patientDob}</p>
+                </Col>
+                <Col md={6}>
+                  <p><strong>District:</strong> {user.patientDistrict}</p>
+                  <p><strong>Area:</strong> {user.patientArea}</p>
+                  <p><strong>Road Number:</strong> {user.patientRoadNum}</p>
+                  <p><strong>Gender:</strong> {user.patientGender}</p>
+                </Col>
+              </Row>
               
               <div className="purchases-list mt-5">
                 <h5>Previous Purchases</h5>
-                {purchases.length > 0 ? (
-                  <Row>
-                    {purchases.map(purchase => (
-                      <Col key={purchase.id} md={4} className="mb-3">
-                        <Card className="purchase-card">
-                          <Card.Body>
-                            <Card.Title>{purchase.itemName}</Card.Title>
-                            <Card.Text>
-                              <strong>Date:</strong> {purchase.date}<br />
-                              <strong>Amount:</strong> {purchase.amount}
-                            </Card.Text>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    ))}
-                  </Row>
-                ) : (
-                  <p>No previous purchases found.</p>
-                )}
+                <Row>
+                  {purchases.map(purchase => (
+                    <Col key={purchase.id} md={4} className="mb-3">
+                      <Card className="purchase-card">
+                        <Card.Body>
+                          <Card.Title>{purchase.itemName}</Card.Title>
+                          <Card.Text>
+                            <strong>Date:</strong> {purchase.date}<br />
+                            <strong>Amount:</strong> {purchase.amount}
+                          </Card.Text>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+                  <Col md={4} className="mb-3">
+                    <Card className="purchase-card see-more-card">
+                      <Card.Body className="d-flex align-items-center justify-content-center">
+                        <Button variant="outline-primary" onClick={handleSeeMorePurchases}>
+                          See More
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
               </div>
-
-
 
               <div className="appointments-list mt-5">
                 <h5>Previous Appointments</h5>
-                {appointments.length > 0 ? (
-                  <Row>
-                    {appointments.map(appointment => (
-                      <Col key={appointment.id} md={4} className="mb-3">
-                        <Card className="appointment-card">
-                          <Card.Body>
-                            <Card.Title>{appointment.doctorName}</Card.Title>
-                            <Card.Text>
-                              <strong>Date:</strong> {appointment.date}<br />
-                              <strong>Specialty:</strong> {appointment.specialty}
-                            </Card.Text>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    ))}
-                  </Row>
-                ) : (
-                  <p>No previous appointments found.</p>
-                )}
+                <Row>
+                  {appointments.map(appointment => (
+                    <Col key={appointment.id} md={4} className="mb-3">
+                      <Card className="appointment-card">
+                        <Card.Body>
+                          <Card.Title>{appointment.doctorName}</Card.Title>
+                          <Card.Text>
+                            <strong>Date:</strong> {appointment.date}<br />
+                            <strong>Specialty:</strong> {appointment.specialty}
+                          </Card.Text>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+                  <Col md={4} className="mb-3">
+                    <Card className="appointment-card see-more-card">
+                      <Card.Body className="d-flex align-items-center justify-content-center">
+                        <Button variant="outline-primary" onClick={handleSeeMoreAppointments}>
+                          See More
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                </Row>
               </div>
-
-
 
               <div className="doctor-list mt-5">
                 <h5>Available Doctors</h5>
@@ -168,6 +192,15 @@ const UserProfile = () => {
                       </Card>
                     </Col>
                   ))}
+                  <Col md={4} className="mb-3">
+                    <Card className="doctor-card see-more-card">
+                      <Card.Body className="d-flex align-items-center justify-content-center">
+                        <Button variant="outline-primary" onClick={handleSeeMoreDoctors}>
+                          See More
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
                 </Row>
               </div>
             </Card.Body>
