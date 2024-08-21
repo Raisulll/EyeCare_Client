@@ -21,7 +21,7 @@ function EyeHospitalManagerSignUp() {
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
-      navigate("/");
+      navigate("/hospitalprofile");
     }
   }, [navigate]);
 
