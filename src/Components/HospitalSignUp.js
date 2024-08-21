@@ -28,14 +28,14 @@ function EyeHospitalManagerSignUp() {
   const collectData = async (e) => {
     e.preventDefault();
     const data = {
-      hospitalName,
-      hospitalMail,
-      hospitalPhone,
-      hospitalDistrict,
-      hospitalArea,
-      hospitalRoadNum,
-      hospitalLicense,
-      hospitalPassword,
+      hospitalName:hospitalName,
+      hospitalMail:hospitalMail,
+      hospitalPhone:hospitalPhone,
+      hospitalDistrict:hospitalDistrict,
+      hospitalArea:hospitalArea,
+      hospitalRoadNum: hospitalRoadNum,
+      hospitalLicense:hospitalLicense,
+      hospitalPassword:hospitalPassword,
     };
 
     try {

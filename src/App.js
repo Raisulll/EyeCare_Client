@@ -21,7 +21,13 @@ import UpdateProduct from "./Components/UpdateProduct";
 import DoctorProfile from "./Components/DoctorProfile";
 import DoctorEditProfile from "./Components/DoctorEditProfile";
 import DoctorAppointments from "./Components/DoctorAppointments";
-import Hospital from "./Components/Hospital";
+import GetAppointment from "./Components/GetAppointment";
+
+import Hospital from  "./Hospital/Hospital";
+import EditProfilePage   from"./Hospital/EditProfilePage";
+import SchedulePage from  "./Hospital/SchedulePage";
+import StaffPage from "./Hospital/StaffPage";
+import UserProfile from './UserProfile/UserProfile';
 
 function App() {
   return (
@@ -35,7 +41,7 @@ function App() {
               <Route path="/addproduct" element={<AddProduct />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/updateproduct" element={<UpdateProduct />} />
-              <Route path="/profile" element={<Profile />} />
+              <Route path="/profile" element={<UserProfile />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/doctorprofile" element={<DoctorProfile />} />
               <Route path="/doctoreditprofile" element={<DoctorEditProfile />} />
@@ -53,6 +59,15 @@ function App() {
             <Route path="/doctorsignup" element={<DoctorSignUP />} />
             <Route path="shopsignup" element={<ShopSignUp />} />
             <Route path="/hospitalsignup" element={<HospitalSignUP />} />
+            <Route path="/doctorProfile" element={<DoctorProfile />} />
+            <Route path="/DoctorAppointment" element={<DoctorAppointments />} />
+            <Route path="/GetAppointment" element={<GetAppointment />} />
+            <Route path="/Profile" element={<Profile/>} />
+            /*** Hospital */
+            <Route path="/hospital" element={<Hospital/>} />
+            <Route path="/schedulepage" element={<SchedulePage/>} />
+            <Route path="/editprofile" element={<EditProfilePage/>} />
+            <Route path="/staffpage" element={<StaffPage/>} />
           </Routes>
         </main>
       </BrowserRouter>
