@@ -22,12 +22,14 @@ import DoctorProfile from "./Components/DoctorProfile";
 import DoctorEditProfile from "./Components/DoctorEditProfile";
 import DoctorAppointments from "./Components/DoctorAppointments";
 import GetAppointment from "./Components/GetAppointment";
+import PatientEditProfile from "./Components/PatienEditProfile";
 
 import Hospital from  "./Hospital/Hospital";
 import EditProfilePage   from"./Hospital/EditProfilePage";
 import SchedulePage from  "./Hospital/SchedulePage";
 import StaffPage from "./Hospital/StaffPage";
 import UserProfile from './UserProfile/UserProfile';
+import PICTURETABLE from "./Components/PICTURETABLE";
 
 function App() {
   return (
@@ -62,6 +64,8 @@ function App() {
             <Route path="/DoctorAppointment" element={<DoctorAppointments />} />
             <Route path="/GetAppointment" element={<GetAppointment />} />
             <Route path="/Profile" element={<Profile/>} />
+            <Route path="/PICTURETABLE" element={<PICTURETABLE/>} />
+            <Route path="/PatientEditProfile" element={<PatientEditProfile/>} />
             /*** Hospital */
             <Route path="/hospital" element={<Hospital/>} />
             <Route path="/schedulepage" element={<SchedulePage/>} />

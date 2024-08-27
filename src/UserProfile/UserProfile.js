@@ -3,7 +3,7 @@ import { Card, Container, Row, Col, Button, Modal, Form } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-const UserProfile = () => {
+  const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
@@ -125,7 +125,7 @@ const UserProfile = () => {
               </div>
               <div className="profile-pic-container">
                 <img 
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYrGAWh74hhpy1hzIQKhmZ145ivdaePqlGFw&s" 
+                  src={user.URL || "https://via.placeholder.com/150"} // Use Cloudinary URL or fallback
                   alt="Profile" 
                   className="profile-pic" 
                 />
@@ -165,7 +165,7 @@ const UserProfile = () => {
                 ) : (
                   <p>No previous appointments found.</p>
                 )}
-              </div>
+              </div>
 
               <div className="doctor-list mt-5">
                 <h5>Available Doctors</h5>
@@ -248,4 +248,3 @@ const UserProfile = () => {
 };
 
 export default UserProfile;
-
