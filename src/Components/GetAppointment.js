@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-
 function GetAppointement() {
     const [doctors, setDoctors] = useState([]);
     const [times, setTimes] = useState([]);
@@ -11,11 +10,9 @@ function GetAppointement() {
         // Fetch doctors when component mounts
         const fetchDoctors = async () => {
             try {
-                console.log('Fetching doctors...');
                 const response = await fetch('http://localhost:5000/api/doctors');
                 if (!response.ok) throw new Error('Failed to fetch doctors');
                 const data = await response.json();
-                console.log('Fetched doctors:', data);
                 setDoctors(data);
             } catch (error) {
                 console.error('Error fetching doctors:', error);
@@ -27,35 +24,33 @@ function GetAppointement() {
     }, []);
 
     useEffect(() => {
-        // Fetch time slots when doctor changes
+        // Fetch time slots when doctor or day changes
         const fetchTimeSlots = async () => {
-            if (selectedDoctor) {
+            if (selectedDoctor && appointment.day) {
                 try {
-                    console.log(`Fetching time slots for doctor ID: ${selectedDoctor}`);
-                    const response = await fetch(`http://localhost:5000/api/doctors/${selectedDoctor}/times`);
+                    const response = await fetch(
+                        `http://localhost:5000/api/doctors/${selectedDoctor}/times?day=${appointment.day}`
+                    );
                     if (!response.ok) throw new Error('Failed to fetch time slots');
                     const data = await response.json();
-                    console.log(`Fetched time slots for doctor ID: ${selectedDoctor}`, data);
                     setTimes(data);
                 } catch (error) {
-                    console.error(`Error fetching time slots for doctor ID: ${selectedDoctor}`, error);
+                    console.error('Error fetching time slots:', error);
                     alert(error.message);
                 }
             }
         };
 
         fetchTimeSlots();
-    }, [selectedDoctor]);
+    }, [selectedDoctor, appointment.day]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        console.log(`Changing ${name} to ${value}`);
         setAppointment(prev => ({ ...prev, [name]: value }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Submitting appointment:', appointment);
         try {
             const response = await fetch('http://localhost:5000/api/appointments', {
                 method: 'POST',
@@ -67,11 +62,9 @@ function GetAppointement() {
 
             if (!response.ok) throw new Error('Failed to book appointment');
 
-            console.log('Appointment successfully booked!');
             alert('Appointment successfully booked!');
             setAppointment({ doctor: '', time: '', day: '' });
         } catch (error) {
-            console.error('Error booking appointment:', error);
             alert(error.message);
         }
     };
@@ -99,22 +92,6 @@ function GetAppointement() {
                     ))}
                 </select>
 
-                <label htmlFor="time">Select Time Slot:</label>
-                <select
-                    id="time"
-                    name="time"
-                    value={appointment.time}
-                    onChange={handleChange}
-                    required
-                >
-                    <option value="">Select a time slot</option>
-                    {times.map(time => (
-                        <option key={time} value={time}>
-                            {time}
-                        </option>
-                    ))}
-                </select>
-
                 <label htmlFor="day">Select Day:</label>
                 <select
                     id="day"
@@ -133,11 +110,26 @@ function GetAppointement() {
                     <option value="Thursday">Thursday</option>
                 </select>
 
+                <label htmlFor="time">Select Time Slot:</label>
+                <select
+                    id="time"
+                    name="time"
+                    value={appointment.time}
+                    onChange={handleChange}
+                    required
+                >
+                    <option value="">Select a time slot</option>
+                    {times.map(time => (
+                        <option key={time} value={time}>
+                            {time}
+                        </option>
+                    ))}
+                </select>
+
                 <button type="submit">Submit Appointment</button>
             </form>
-        </div>
-    );
+        </div>
+    );
 }
-
 
 export default GetAppointement;

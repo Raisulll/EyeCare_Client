@@ -3,7 +3,7 @@ import { Card, Container, Row, Col, Button, Modal, Form } from 'react-bootstrap'
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-  const UserProfile = () => {
+const UserProfile = () => {
   const [user, setUser] = useState(null);
   const [doctors, setDoctors] = useState([]);
   const [appointments, setAppointments] = useState([]);
@@ -11,6 +11,7 @@ import '../App.css';
   const [showModal, setShowModal] = useState(false);
   const [selectedDoctor, setSelectedDoctor] = useState('');
   const [appointment, setAppointment] = useState({ doctor: '', time: '', day: '' });
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,10 +20,8 @@ import '../App.css';
       const parsedUser = JSON.parse(storedUser);
       setUser(parsedUser);
 
-      // Fetch appointments for the user
+      // Fetch appointments and doctors for the user
       fetchAppointments(parsedUser.PatientId);
-
-      // Fetch doctors from the API
       fetchDoctors();
     } else {
       navigate('/signin');
@@ -34,11 +33,14 @@ import '../App.css';
       const response = await fetch('http://localhost:5000/api/doctors');
       if (!response.ok) throw new Error('Failed to fetch doctors');
       const data = await response.json();
-      const formattedDoctors = data.map(doctor => ({
-        id: doctor[0],
-        name: doctor[1],
-        experience: doctor[2],
-      }));
+      const formattedDoctors = data.map(doctor => {
+        const experience = isNaN(doctor[2]) ? doctor[2] : `${doctor[2]} Years`; // Format experience
+        return {
+          id: doctor[0],
+          name: doctor[1],
+          experience: experience,
+        };
+      });
       setDoctors(formattedDoctors);
     } catch (error) {
       console.error('Error fetching doctors:', error);
@@ -51,19 +53,21 @@ import '../App.css';
       const response = await fetch(`http://localhost:5000/api/appointments?patientId=${patientId}`);
       if (!response.ok) throw new Error('Failed to fetch appointments');
       const data = await response.json();
-      setAppointments(data.length ? data : null); // Handle null if no appointments
+      setAppointments(data); // Assuming the API provides the expected structure
+      setLoading(false); // Turn off loading after data is fetched
     } catch (error) {
       console.error('Error fetching appointments:', error);
       alert(error.message);
+      setLoading(false); // Stop loading in case of an error
     }
   };
 
-  const fetchTimeSlots = async (doctorId) => {
+  const fetchTimeSlots = async (doctorId, day) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/doctors/${doctorId}/times`);
+      const response = await fetch(`http://localhost:5000/api/doctors/${doctorId}/times?day=${day}`);
       if (!response.ok) throw new Error('Failed to fetch time slots');
       const data = await response.json();
-      setTimes(data.map(time => time[0])); // Assuming each time is returned as an array
+      setTimes(data); // Assuming the API provides the correct format
     } catch (error) {
       console.error(`Error fetching time slots for doctor ID: ${doctorId}`, error);
       alert(error.message);
@@ -73,7 +77,6 @@ import '../App.css';
   const handleShowModal = (doctorId) => {
     setSelectedDoctor(doctorId);
     setAppointment((prev) => ({ ...prev, doctor: doctorId }));
-    fetchTimeSlots(doctorId);
     setShowModal(true);
   };
 
@@ -82,6 +85,40 @@ import '../App.css';
     setSelectedDoctor('');
     setAppointment({ doctor: '', time: '', day: '' });
     setTimes([]);
+  };
+
+  const handleDayChange = (e) => {
+    const selectedDay = e.target.value;
+    setAppointment((prev) => ({ ...prev, day: selectedDay }));
+
+    // Find the next date for the selected day
+    const today = new Date();
+    const nextDayDate = getNextDayOfWeek(today, selectedDay);
+
+    // Format the date as DD-MMM-YY for API request
+    const formattedDate = formatDateForApi(nextDayDate);
+    fetchTimeSlots(selectedDoctor, formattedDate);
+  };
+
+  const getNextDayOfWeek = (date, day) => {
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const currentDay = date.getDay();
+    const targetDay = daysOfWeek.indexOf(day);
+
+    const daysUntilTarget = (targetDay - currentDay + 7) % 7;
+    if (daysUntilTarget === 0) {
+        return new Date(date); // If it's the same day, return today
+    }
+    const resultDate = new Date(date);
+    resultDate.setDate(date.getDate() + daysUntilTarget);
+    return resultDate;
+  };
+
+  const formatDateForApi = (date) => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = date.toLocaleString('default', { month: 'short' }).toUpperCase();
+    const year = String(date.getFullYear()).slice(-2); // Get last 2 digits of the year
+    return `${day}-${month}-${year}`;
   };
 
   const handleBookAppointment = async () => {
@@ -106,7 +143,7 @@ import '../App.css';
     }
   };
 
-  if (!user) {
+  if (loading) {
     return <div>Loading...</div>;
   }
 
@@ -117,17 +154,17 @@ import '../App.css';
           <Card className="cardcolor">
             <Card.Body>
               <div className="cover-photo-container">
-                <img 
-                  src="https://hips.hearstapps.com/hmg-prod/images/house-of-the-dragon-3-1-6674876bce7cd.jpg" 
-                  alt="Cover" 
-                  className="cover-photo" 
+                <img
+                  src="https://hips.hearstapps.com/hmg-prod/images/house-of-the-dragon-3-1-6674876bce7cd.jpg"
+                  alt="Cover"
+                  className="cover-photo"
                 />
               </div>
               <div className="profile-pic-container">
-                <img 
+                <img
                   src={user.URL || "https://via.placeholder.com/150"} // Use Cloudinary URL or fallback
-                  alt="Profile" 
-                  className="profile-pic" 
+                  alt="Profile"
+                  className="profile-pic"
                 />
               </div>
               <Card.Title className="text-center mb-4">User Profile</Card.Title>
@@ -175,7 +212,7 @@ import '../App.css';
                       <Card className="doctor-card">
                         <Card.Body>
                           <Card.Title>{doctor.name}</Card.Title>
-                          <Card.Text>Experience: {doctor.experience}</Card.Text>
+                          <Card.Text>Specialty: {doctor.experience}</Card.Text>
                           <Button variant="primary" onClick={() => handleShowModal(doctor.id)}>
                             Book Appointment
                           </Button>
@@ -196,25 +233,22 @@ import '../App.css';
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group controlId="appointmentDate">
+            <Form.Group controlId="appointmentDay">
               <Form.Label>Select Day</Form.Label>
               <Form.Control
                 as="select"
                 name="day"
                 value={appointment.day}
-                onChange={(e) => setAppointment((prev) => ({ ...prev, day: e.target.value }))}
+                onChange={handleDayChange}
                 required
               >
                 <option value="">Select a day</option>
-                <option value="Friday">Friday</option>
-                <option value="Saturday">Saturday</option>
-                <option value="Sunday">Sunday</option>
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <option value="Thursday">Thursday</option>
+                {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map(day => (
+                  <option key={day} value={day}>{day}</option>
+                ))}
               </Form.Control>
             </Form.Group>
+
             <Form.Group controlId="appointmentTime">
               <Form.Label>Select Time Slot</Form.Label>
               <Form.Control
@@ -226,9 +260,7 @@ import '../App.css';
               >
                 <option value="">Select a time slot</option>
                 {times.map((time, index) => (
-                  <option key={index} value={time}>
-                    {time}
-                  </option>
+                  <option key={index} value={time}>{time}</option>
                 ))}
               </Form.Control>
             </Form.Group>
