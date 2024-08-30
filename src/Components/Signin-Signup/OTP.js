@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
-import "../App.css";
+import "../../App.css";
 
 function OTP() {
   const [otp, setOtp] = useState(new Array(6).fill(""));

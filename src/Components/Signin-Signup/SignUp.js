@@ -3,7 +3,9 @@ import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import "../App.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../../App.css";
 
 function SignUp() {
   const [fullName, setFullName] = useState("");
@@ -51,6 +53,18 @@ function SignUp() {
     console.log(result);
     if (result.status === 200) {
       navigate("/signin");
+    }
+    else if(result.status===409){
+      toast.error('User already exists!', {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
 
@@ -187,6 +201,7 @@ function SignUp() {
           </Card>
         </Col>
       </Row>
+      <ToastContainer />
     </Container>
   );
 }

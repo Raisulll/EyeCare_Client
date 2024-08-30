@@ -3,7 +3,7 @@ import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-import "../App.css";
+import "../../App.css";
 
 function ResetPassword() {
   const [password, setPassword] = useState("");

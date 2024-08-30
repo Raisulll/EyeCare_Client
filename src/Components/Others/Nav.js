@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import "bootstrap-icons/font/bootstrap-icons.css";
+import React, { Profiler, useEffect, useState } from "react";
 import {
   Button,
   Container,
@@ -8,8 +9,7 @@ import {
   NavDropdown,
 } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import "../App.css";
-import "bootstrap-icons/font/bootstrap-icons.css";
+import "../../App.css";
 
 function NavigationBar() {
   const [user, setUser] = useState(localStorage.getItem("user"));
@@ -32,6 +32,16 @@ function NavigationBar() {
     setUser(null);
     navigate("/signin");
   };
+  const userprofile = () => {
+    const userType = localStorage.getItem("usertype");
+    if (userType === "doctor") {
+      navigate("/doctorprofile");
+    } else if (userType === "hospital") {
+      navigate("/hospitalprofile");
+    } else {
+      navigate("/profile");
+    }
+  }
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary fixed-top custom-navbar">
@@ -69,9 +79,7 @@ function NavigationBar() {
             {!user && (
               <div className="mx-3">
                 <NavLink to="/signup">
-                  <Button variant="outline-secondary">
-                    Sign up
-                  </Button>
+                  <Button variant="outline-secondary">Sign up</Button>
                 </NavLink>
               </div>
             )}
@@ -88,7 +96,10 @@ function NavigationBar() {
                 menuVariant="dark"
                 className="no-arrow"
               >
-                <NavDropdown.Item as={NavLink} to="/profile">
+                <NavDropdown.Item
+                  as={NavLink}
+                  to="/profile"
+                >
                   <i className="bi bi-person me-2"></i>View Profile
                 </NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/editprofile">

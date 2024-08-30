@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import '../Hospital/StaffPage.css'; // Make sure to create this CSS file
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import "./StaffPage.css"; // Make sure to create this CSS file
 
 const StaffPage = () => {
   const navigate = useNavigate();
   const [staffList, setStaffList] = useState([
-    { id: 1, staffName: 'Dr. Smith', role: 'Surgeon', salary: '100,000' },
-    { id: 2, staffName: 'Nurse Nancy', role: 'Nurse', salary: '50,000' },
-    { id: 3, staffName: 'Dr. Brown', role: 'Pediatrician', salary: '80,000' },
-    { id: 4, staffName: 'Admin Alex', role: 'Administrator', salary: '60,000' },
+    { id: 1, staffName: "Dr. Smith", role: "Surgeon", salary: "100,000" },
+    { id: 2, staffName: "Nurse Nancy", role: "Nurse", salary: "50,000" },
+    { id: 3, staffName: "Dr. Brown", role: "Pediatrician", salary: "80,000" },
+    { id: 4, staffName: "Admin Alex", role: "Administrator", salary: "60,000" },
   ]);
 
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [editingStaff, setEditingStaff] = useState(null);
-  const [newStaff, setNewStaff] = useState({ staffName: '', role: '', salary: '' });
+  const [newStaff, setNewStaff] = useState({
+    staffName: "",
+    role: "",
+    salary: "",
+  });
 
   const handleEdit = (staff) => {
     setEditingStaff(staff);
@@ -29,7 +33,9 @@ const StaffPage = () => {
   };
 
   const handleDelete = (id) => {
-    setStaffList((prevStaffList) => prevStaffList.filter((staff) => staff.id !== id));
+    setStaffList((prevStaffList) =>
+      prevStaffList.filter((staff) => staff.id !== id)
+    );
   };
 
   const handleAdd = () => {
@@ -37,7 +43,7 @@ const StaffPage = () => {
       ...prevStaffList,
       { ...newStaff, id: prevStaffList.length + 1 },
     ]);
-    setNewStaff({ staffName: '', role: '', salary: '' });
+    setNewStaff({ staffName: "", role: "", salary: "" });
   };
 
   const filteredStaffList = staffList.filter(
@@ -121,9 +127,16 @@ const StaffPage = () => {
                 {editingStaff && editingStaff.id === staff.id ? (
                   <button onClick={handleSave}>Save</button>
                 ) : (
-                  <button className="btn-e" onClick={() => handleEdit(staff)}>Edit</button>
+                  <button className="btn-e" onClick={() => handleEdit(staff)}>
+                    Edit
+                  </button>
                 )}
-                <button className="btn-d" onClick={() => handleDelete(staff.id)}>Delete</button>
+                <button
+                  className="btn-d"
+                  onClick={() => handleDelete(staff.id)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}
@@ -142,17 +155,13 @@ const StaffPage = () => {
           type="text"
           placeholder="Role"
           value={newStaff.role}
-          onChange={(e) =>
-            setNewStaff({ ...newStaff, role: e.target.value })
-          }
+          onChange={(e) => setNewStaff({ ...newStaff, role: e.target.value })}
         />
         <input
           type="text"
           placeholder="Salary"
           value={newStaff.salary}
-          onChange={(e) =>
-            setNewStaff({ ...newStaff, salary: e.target.value })
-          }
+          onChange={(e) => setNewStaff({ ...newStaff, salary: e.target.value })}
         />
         <button onClick={handleAdd}>Add Staff</button>
       </div>

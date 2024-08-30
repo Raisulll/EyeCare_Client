@@ -1,33 +1,38 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import AddProduct from "./Components/AddProduct";
-import Cart from "./Components/Cart";
-import DoctorSignUP from "./Components/DoctorSignUp";
-import Forgot from "./Components/Forgot";
-import Home from "./Components/Home";
-import HospitalSignUP from "./Components/HospitalSignUp";
-import Nav from "./Components/Nav";
-import OTP from "./Components/OTP";
-import OtherUserSignin from "./Components/OtherUserSIgnin";
-import OtherUserSignUp from "./Components/OtherUserSignUp";
-import PrivateComponent from "./Components/PrivateComponent";
-import Profile from "./Components/Profile";
-import ResetPassword from "./Components/ResetPassword";
-import Shop from "./Components/Shop";
-import ShopSignUp from "./Components/ShopSignUp";
-import SignUp from "./Components/SignUp";
-import SignIn from "./Components/Signin";
-import UpdateProduct from "./Components/UpdateProduct";
-import DoctorProfile from "./Components/DoctorProfile";
-import DoctorEditProfile from "./Components/DoctorEditProfile";
-import DoctorAppointments from "./Components/DoctorAppointments";
-import GetAppointment from "./Components/GetAppointment";
+import DoctorAppointments from "./Components/Doctor/DoctorAppointments";
+import DoctorEditProfile from "./Components/Doctor/DoctorEditProfile";
+import DoctorProfile from "./Components/Doctor/DoctorProfile";
+import Cart from "./Components/Others/Cart";
+import Home from "./Components/Others/Home";
+import Nav from "./Components/Others/Nav";
+import PrivateComponent from "./Components/Others/PrivateComponent";
+import GetAppointment from "./Components/Patient/GetAppointment";
+import AddProduct from "./Components/Shop/AddProduct";
+import Shop from "./Components/Shop/Shop";
+import UpdateProduct from "./Components/Shop/UpdateProduct";
+import DoctorSignUP from "./Components/Signin-Signup/DoctorSignUp";
+import Forgot from "./Components/Signin-Signup/Forgot";
+import HospitalSignUP from "./Components/Signin-Signup/HospitalSignUp";
+import OTP from "./Components/Signin-Signup/OTP";
+import OtherUserSignin from "./Components/Signin-Signup/OtherUserSIgnin";
+import OtherUserSignUp from "./Components/Signin-Signup/OtherUserSignUp";
+import ResetPassword from "./Components/Signin-Signup/ResetPassword";
+import ShopSignUp from "./Components/Signin-Signup/ShopSignUp";
+import SignUp from "./Components/Signin-Signup/SignUp";
+import SignIn from "./Components/Signin-Signup/Signin";
 
-import Hospital from  "./Hospital/Hospital";
-import EditProfilePage   from"./Hospital/EditProfilePage";
-import SchedulePage from  "./Hospital/SchedulePage";
-import StaffPage from "./Hospital/StaffPage";
-import UserProfile from './UserProfile/UserProfile';
+import DoctorTransaction from "./Components/Doctor/DoctorTransaction";
+import Prescription from "./Components/Doctor/Prescription";
+import EditProfilePage from "./Components/Hospital/EditProfilePage";
+import Hospital from "./Components/Hospital/Hospital";
+import HospitalSchedule from "./Components/Hospital/HospitalSchedule";
+import SchedulePage from "./Components/Hospital/SchedulePage";
+import PatientTransaction from "./Components/Patient/PatientTransaction";
+import Products from "./Components/Patient/Products";
+import UserProfile from "./Components/Patient/UserProfile";
+import ViewPrescription from "./Components/Patient/ViewPrescription";
+import Card from "./Components/Others/Card";
 
 function App() {
   return (
@@ -39,14 +44,33 @@ function App() {
             {/* Adding PrivateComponent here */}
             <Route element={<PrivateComponent />}>
               <Route path="/addproduct" element={<AddProduct />} />
-              <Route path="/shop" element={<Shop />} />
+              <Route path="/shopprofile" element={<Shop />} />
               <Route path="/updateproduct" element={<UpdateProduct />} />
               <Route path="/profile" element={<UserProfile />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/doctorprofile" element={<DoctorProfile />} />
-              <Route path="/doctoreditprofile" element={<DoctorEditProfile />} />
-              <Route path="/doctorappointments" element={<DoctorAppointments />} />
-              <Route path="/hospitalprofile" element={<Hospital/>} />
+              <Route
+                path="/doctoreditprofile"
+                element={<DoctorEditProfile />}
+              />
+              <Route
+                path="/doctorappointments"
+                element={<DoctorAppointments />}
+              />
+              <Route path="/hospitalprofile" element={<Hospital />} />
+              <Route path="/prescription" element={<Prescription />} />
+              <Route
+                path="/doctortransaction"
+                element={<DoctorTransaction />}
+              />
+              <Route
+                path="/patienttransaction"
+                element={<PatientTransaction />}
+              />
+              <Route path="/hospitalschedule" element={<HospitalSchedule />} />
+              <Route path="/viewprescription" element={<ViewPrescription />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/card" element={<Card />} />
             </Route>
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignUp />} />
@@ -62,12 +86,10 @@ function App() {
             <Route path="/doctorProfile" element={<DoctorProfile />} />
             <Route path="/DoctorAppointment" element={<DoctorAppointments />} />
             <Route path="/GetAppointment" element={<GetAppointment />} />
-            <Route path="/Profile" element={<Profile/>} />
             /*** Hospital */
-            <Route path="/hospital" element={<Hospital/>} />
-            <Route path="/schedulepage" element={<SchedulePage/>} />
-            <Route path="/editprofile" element={<EditProfilePage/>} />
-            <Route path="/staffpage" element={<StaffPage/>} />
+            <Route path="/hospital" element={<Hospital />} />
+            <Route path="/schedulepage" element={<SchedulePage />} />
+            <Route path="/editprofile" element={<EditProfilePage />} />
           </Routes>
         </main>
       </BrowserRouter>

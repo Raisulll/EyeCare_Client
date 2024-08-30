@@ -4,7 +4,7 @@ import { NavLink } from "react-router-dom";
 import { FaUserDoctor,FaHospitalUser } from "react-icons/fa6";
 import { MdOutlineShoppingCart } from "react-icons/md";
 
-import "../App.css";
+import "../../App.css";
 
 const OtherUserSignUp = () => {
   return (

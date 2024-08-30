@@ -11,7 +11,9 @@ import {
   Row,
 } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import "../App.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../../App.css";
 
 function DoctorSignUp() {
   const [fullName, setFullName] = useState("");
@@ -27,6 +29,7 @@ function DoctorSignUp() {
   const [timeSlot, setTimeSlot] = useState("");
   const [experience, setExperience] = useState("");
   const [signedUp, setSignedUp] = useState(false); // State to track sign-up status
+  const [payment, setPayment] = useState();
 
   const navigate = useNavigate();
 
@@ -66,6 +69,17 @@ function DoctorSignUp() {
     if (result.status === 200) {
       navigate("/otheruserssignin");
       setSignedUp(true); // Set signedUp to true after successful sign-up
+    } else if (result.status === 409) {
+      toast.error("User already exists!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
 
@@ -176,6 +190,16 @@ function DoctorSignUp() {
                     />
                   </Form.Group>
 
+                  <Form.Group className="mb-3" controlId="formTimeSlot">
+                    <Form.Label>Remuneration</Form.Label>
+                    <Form.Control
+                      type="text"
+                      placeholder="Remuneration"
+                      value={payment}
+                      onChange={(e) => setPayment(e.target.value)}
+                    />
+                  </Form.Group>
+
                   <Form.Group className="mb-3" controlId="formExperience">
                     <Form.Label>Experience</Form.Label>
                     <Form.Control
@@ -232,6 +256,7 @@ function DoctorSignUp() {
           </Card>
         </Col>
       </Row>
+      <ToastContainer />
     </Container>
   );
 }

@@ -1,9 +1,19 @@
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  Row,
+  Toast,
+} from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import "../App.css";
+import "../../App.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function OtherUserSignin() {
   const [userType, setUserType] = useState("");
@@ -46,15 +56,44 @@ function OtherUserSignin() {
           window.dispatchEvent(new Event("storage"));
           navigate("/doctorprofile", { state: { userInfo } });
           console.log("Doctor Sign In Successful");
+        } else if (result.status === 401) {
+          toast.error("Invalid Password!", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
+        } else if (result.status === 404) {
+          toast.error("User not exists!", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         } else {
-          console.log("Doctor Sign In Failed");
+          toast.error("Server Issue!", {
+            position: "top-right",
+            autoClose: 2500,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: false,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+          });
         }
       } catch (error) {
         console.log(error);
       }
-    }
-
-    if (userType === "shopOwner") {
+    } else if (userType === "shopOwner") {
       const shopData = {
         shopMail: email,
         shopPassword: password,
@@ -72,14 +111,43 @@ function OtherUserSignin() {
         const userInfo = await result.json();
         localStorage.setItem("user", JSON.stringify(userInfo));
         window.dispatchEvent(new Event("storage"));
-        navigate("/shopProfile", { state: { userInfo } });
+        navigate("/shopprofile", { state: { userInfo } });
         console.log("Shop Owner Sign In Successful");
+      } else if(result.status === 401) {
+        toast.error("Invalid Password!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else if (result.status === 404) {
+        toast.error("User not exists!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       } else {
-        console.log("Shop Owner Sign In Failed");
+        toast.error("Server Issue!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        }); 
       }
-    }
-
-    if (userType === "eyeHospitalManager") {
+    } else if (userType === "eyeHospitalManager") {
       const hospitalData = {
         hospitalMail: email,
         hospitalPassword: password,
@@ -99,12 +167,54 @@ function OtherUserSignin() {
         window.dispatchEvent(new Event("storage"));
         navigate("/hospitalProfile", { state: { userInfo } });
         console.log("Hospital Sign In Successful");
+      } else if (result.status === 401) {
+        toast.error("Invalid Password!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else if (result.status === 404) {
+        toast.error("User not exists!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       } else {
-        console.log("Hospital Sign In Failed");
+        toast.error("Server Issue!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       }
+    } else {
+      toast.error("Invalid UserType!!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
     }
   };
-return (
+  return (
     <Container
       className="d-flex justify-content-center align-items-center"
       style={{ height: "100vh" }}
@@ -200,6 +310,7 @@ return (
           </Card>
         </Col>
       </Row>
+      <ToastContainer />
     </Container>
   );
 }

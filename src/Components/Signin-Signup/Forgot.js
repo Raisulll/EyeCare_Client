@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "../App.css";
+import "../../App.css";
 
 function ForgotPassword() {
   const [userType, setUserType] = useState("");

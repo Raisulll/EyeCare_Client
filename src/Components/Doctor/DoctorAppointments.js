@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
+import { Button, Card, Col, Container, Image, Row } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+
 
 // Appointment Component
 const Appointments = () => {
+  const navigate = useNavigate();
   const [appointments, setAppointments] = useState([]);
   const [sortConfig, setSortConfig] = useState(null);
   const [isTableVisible, setIsTableVisible] = useState(true);
 
   // Fetch doctorId from localStorage
-  const doctorData = JSON.parse(localStorage.getItem('user')); // 'user' stores doctor data in localStorage
+  const doctorData = JSON.parse(localStorage.getItem("user")); // 'user' stores doctor data in localStorage
   const doctorId = doctorData?.doctorId; // Extract doctorId
+  console.log(doctorId);
 
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/senddoctorappointments?doctorId=${doctorId}`
+          `http://localhost:5000/api/senddoctorappointments?doctorId=${doctorId}`
         );
         const data = await response.json();
+        console.log(data);
         setAppointments(data); // Set the fetched appointment data
       } catch (error) {
         console.error("Error fetching appointments:", error);
@@ -24,7 +30,7 @@ const Appointments = () => {
     };
 
     if (doctorId) {
-      fetchAppointments();  // Fetch data when doctorId is available
+      fetchAppointments(); // Fetch data when doctorId is available
     }
   }, [doctorId]);
 
@@ -40,6 +46,7 @@ const Appointments = () => {
   });
 
   const requestSort = (key) => {
+    console.log("key", key);
     let direction = "ascending";
     if (
       sortConfig &&
@@ -55,6 +62,13 @@ const Appointments = () => {
     setIsTableVisible(!isTableVisible);
   };
 
+  const handleAddPrescription = (appointmentId) => {
+    // Handle the logic to add a prescription for the appointment
+    console.log(`Add prescription for appointment ID: ${appointmentId}`);
+    //navigate to /prescritption page with this appointmentId 
+    navigate(`/prescription/?appointmentId=${appointmentId}`);
+  };
+
   return (
     <div className="appointments-container">
       <h2 onClick={toggleTableVisibility} className="toggle-bar">
@@ -68,19 +82,27 @@ const Appointments = () => {
               <th onClick={() => requestSort("APPOINTMENT_DATE")}>Date</th>
               <th onClick={() => requestSort("APPOINTMENT_TIME")}>Time</th>
               <th onClick={() => requestSort("APPOINTMENT_STATUS")}>Status</th>
+              <th>Add Prescription</th> {/* Add the Prescription column header */}
             </tr>
           </thead>
           <tbody>
             {sortedAppointments.map((appointment, index) => (
               <tr key={index}>
                 <td>{appointment.PATIENT_NAME}</td>
-                <td>{new Date(appointment.APPOINTMENT_DATE).toLocaleDateString()}</td>
+                <td>
+                  {new Date(appointment.APPOINTMENT_DATE).toLocaleDateString()}
+                </td>
                 <td>{appointment.APPOINTMENT_TIME}</td>
-                <td
-                  className={`status-${appointment.APPOINTMENT_STATUS.toLowerCase()}`}
-                >
+                <td className={`status-${appointment.APPOINTMENT_STATUS}`}>
                   {appointment.APPOINTMENT_STATUS}
                 </td>
+                <td>
+                  <Button
+                    variant="secondary"
+                    onClick={() => handleAddPrescription(appointment.APPOINTMENT_ID)}
+                  >Add</Button>
+                </td>{" "}
+                {/* Add the button in the Prescription column */}
               </tr>
             ))}
           </tbody>
@@ -90,4 +112,4 @@ const Appointments = () => {
   );
 };
 
-export default Appointments;
+export default Appointments;

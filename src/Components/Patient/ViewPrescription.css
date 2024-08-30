@@ -1,0 +1,35 @@
+.view-prescription-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #f8f9fa;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.prescription-details {
+  flex: 1;
+  margin-right: 20px;
+}
+
+.prescription-details h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.prescription-details p {
+  font-size: 18px;
+  margin: 10px 0;
+}
+
+.prescription-image {
+  flex: 1;
+  text-align: center;
+}
+
+.prescription-image img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+}

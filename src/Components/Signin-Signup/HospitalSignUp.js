@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { NavLink, useNavigate } from "react-router-dom";
-import "../App.css";
+import "../../App.css";
 
 function EyeHospitalManagerSignUp() {
   const [hospitalName, setHospitalName] = useState("");

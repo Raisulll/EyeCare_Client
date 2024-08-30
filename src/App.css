@@ -409,3 +409,116 @@ body {
   font-weight: bold;
 }
 
+
+.profile-container {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+
+.profile-card {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.cover-photo {
+  height: 200px;
+  object-fit: cover;
+}
+
+.profile-pic-label {
+  cursor: pointer;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border: 4px solid #fff;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.profile-name {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.profile-expertise {
+  font-size: 1.2rem;
+  color: #6c757d;
+}
+
+.profile-details-card {
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  border-radius: 1rem;
+}
+
+
+/* Common Styles for Both Components */
+
+.container {
+  margin-top: 20px;
+}
+
+.toggle-bar {
+  font-size: 1.5em;
+  cursor: pointer;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.toggle-bar:hover {
+  background-color: #0056b3;
+}
+
+.transactions-table,
+.appointments-table {
+  width: 100%;
+  margin-top: 15px;
+  border-collapse: collapse;
+  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+}
+
+.transactions-table th,
+.appointments-table th {
+  background-color: #f8f9fa;
+  color: #343a40;
+  padding: 10px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.transactions-table th:hover,
+.appointments-table th:hover {
+  background-color: #e9ecef;
+}
+
+.transactions-table td,
+.appointments-table td {
+  padding: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.transactions-table tr:hover,
+.appointments-table tr:hover {
+  background-color: #f1f1f1;
+}
+
+.status-Completed {
+  color: green;
+  font-weight: bold;
+}
+
+.status-Pending {
+  color: orange;
+  font-weight: bold;
+}
+
+.status-Canceled {
+  color: red;
+  font-weight: bold;
+}
