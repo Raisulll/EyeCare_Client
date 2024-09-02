@@ -6,21 +6,27 @@ const Appointments = () => {
   const [sortConfig, setSortConfig] = useState(null);
   const [isTableVisible, setIsTableVisible] = useState(true);
 
+  // Fetch doctorId from localStorage
+  const doctorData = JSON.parse(localStorage.getItem('user')); // 'user' stores doctor data in localStorage
+  const doctorId = doctorData?.doctorId; // Extract doctorId
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5000/senddoctorappointments"
+          `http://localhost:5000/senddoctorappointments?doctorId=${doctorId}`
         );
         const data = await response.json();
-        setAppointments(data);
+        setAppointments(data); // Set the fetched appointment data
       } catch (error) {
         console.error("Error fetching appointments:", error);
       }
     };
 
-    fetchAppointments();
-  }, []);
+    if (doctorId) {
+      fetchAppointments();  // Fetch data when doctorId is available
+    }
+  }, [doctorId]);
 
   const sortedAppointments = [...appointments].sort((a, b) => {
     if (!sortConfig) return 0;
@@ -58,17 +64,17 @@ const Appointments = () => {
         <table className="appointments-table">
           <thead>
             <tr>
-              <th onClick={() => requestSort("patientName")}>Patient Name</th>
-              <th onClick={() => requestSort("appointmentDate")}>Date</th>
-              <th onClick={() => requestSort("appointmentTime")}>Time</th>
-              <th onClick={() => requestSort("appointmentStatus")}>Status</th>
+              <th onClick={() => requestSort("PATIENT_NAME")}>Patient Name</th>
+              <th onClick={() => requestSort("APPOINTMENT_DATE")}>Date</th>
+              <th onClick={() => requestSort("APPOINTMENT_TIME")}>Time</th>
+              <th onClick={() => requestSort("APPOINTMENT_STATUS")}>Status</th>
             </tr>
           </thead>
           <tbody>
             {sortedAppointments.map((appointment, index) => (
               <tr key={index}>
                 <td>{appointment.PATIENT_NAME}</td>
-                <td>{appointment.APPOINTMENT_DATE}</td>
+                <td>{new Date(appointment.APPOINTMENT_DATE).toLocaleDateString()}</td>
                 <td>{appointment.APPOINTMENT_TIME}</td>
                 <td
                   className={`status-${appointment.APPOINTMENT_STATUS.toLowerCase()}`}
@@ -84,13 +90,4 @@ const Appointments = () => {
   );
 };
 
-// Main App Component
-const App = () => {
-  return (
-    <div className="App">
-      <Appointments />
-    </div>
-  );
-};
-
-export default App;
+export default Appointments;

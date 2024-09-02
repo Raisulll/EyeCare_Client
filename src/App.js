@@ -21,6 +21,7 @@ import UpdateProduct from "./Components/UpdateProduct";
 import DoctorProfile from "./Components/DoctorProfile";
 import DoctorEditProfile from "./Components/DoctorEditProfile";
 import DoctorAppointments from "./Components/DoctorAppointments";
+import GetAppointment from "./Components/GetAppointment";
 
 import Hospital from  "./Hospital/Hospital";
 import EditProfilePage   from"./Hospital/EditProfilePage";
@@ -59,8 +60,8 @@ function App() {
             <Route path="/hospitalsignup" element={<HospitalSignUP />} />
             <Route path="/doctorProfile" element={<DoctorProfile />} />
             <Route path="/DoctorAppointment" element={<DoctorAppointments />} />
-            
-
+            <Route path="/GetAppointment" element={<GetAppointment />} />
+            <Route path="/Profile" element={<Profile/>} />
             /*** Hospital */
             <Route path="/hospital" element={<Hospital/>} />
             <Route path="/schedulepage" element={<SchedulePage/>} />

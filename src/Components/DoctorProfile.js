@@ -108,7 +108,7 @@ const DoctorProfile = () => {
                 className="w-100"
                 onClick={() => navigate("/DoctorSurgery")}
               >
-                Schedule Surgery
+                Transaction
               </Button>
             </Col>
           </Row>
