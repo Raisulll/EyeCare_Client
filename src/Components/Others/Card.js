@@ -1,12 +1,43 @@
 import React from "react";
 import styled from "styled-components";
 
-const Card = ({ title, description, price, quantity }) => {
-
-  const handleSubmit = () => {
+const Card = ({
+  title,
+  description,
+  price,
+  shopId,
+  userId,
+  productId,
+  quantity
+}) => {
+  const handleSubmit = async () => {
     console.log("Add to cart clicked");
-    
-  }
+    console.log(userId, productId, shopId);
+    const data = {
+      userId: userId,
+      productId: productId,
+      shopId: shopId,
+    };
+
+    try {
+      const result = await fetch("http://localhost:5000/sets/addtocart", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (result.status === 200) {
+        console.log("Product added to cart");
+      } else {
+        console.error("Failed to add product to cart");
+      }
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  };
+
   return (
     <StyledWrapper>
       <div className="card">
@@ -14,6 +45,7 @@ const Card = ({ title, description, price, quantity }) => {
         <div className="card-info">
           <p className="text-title">{title}</p>
           <p className="text-body">{description}</p>
+          <p className="text-quantity">Quantity:{quantity} </p>
         </div>
         <div className="card-footer">
           <span className="text-title">${price}</span>
@@ -53,6 +85,23 @@ const StyledWrapper = styled.div`
     padding-top: 10%;
   }
 
+  .text-title {
+    font-weight: 900;
+    font-size: 1.2em;
+    line-height: 1.5;
+  }
+
+  .text-body {
+    font-size: 0.9em;
+    padding-bottom: 10px;
+  }
+
+  .text-quantity {
+    font-size: 0.9em;
+    padding-top: 5px;
+    color: #888;
+  }
+
   svg {
     width: 20px;
     height: 20px;
@@ -67,19 +116,6 @@ const StyledWrapper = styled.div`
     border-top: 1px solid #ddd;
   }
 
-  /*Text*/
-  .text-title {
-    font-weight: 900;
-    font-size: 1.2em;
-    line-height: 1.5;
-  }
-
-  .text-body {
-    font-size: 0.9em;
-    padding-bottom: 10px;
-  }
-
-  /*Button*/
   .card-button {
     border: 1px solid #252525;
     display: flex;
@@ -89,7 +125,6 @@ const StyledWrapper = styled.div`
     transition: 0.3s ease-in-out;
   }
 
-  /*Hover*/
   .card-img:hover {
     transform: translateY(-25%);
     box-shadow: rgba(226, 196, 63, 0.25) 0px 13px 47px -5px,

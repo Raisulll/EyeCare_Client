@@ -3,7 +3,7 @@ import "./App.css";
 import DoctorAppointments from "./Components/Doctor/DoctorAppointments";
 import DoctorEditProfile from "./Components/Doctor/DoctorEditProfile";
 import DoctorProfile from "./Components/Doctor/DoctorProfile";
-import Cart from "./Components/Others/Cart";
+import Cart from "./Components/Patient/Cart";
 import Home from "./Components/Others/Home";
 import Nav from "./Components/Others/Nav";
 import PrivateComponent from "./Components/Others/PrivateComponent";
@@ -71,6 +71,7 @@ function App() {
               <Route path="/viewprescription" element={<ViewPrescription />} />
               <Route path="/products" element={<Products />} />
               <Route path="/card" element={<Card />} />
+              <Route path="/cart" element={<Cart />} /> 
             </Route>
             <Route path="/" element={<Home />} />
             <Route path="/signup" element={<SignUp />} />
