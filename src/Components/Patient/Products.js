@@ -15,7 +15,6 @@ const Products = () => {
         const response = await fetch(`http://localhost:5000/gets/products`);
         const data = await response.json();
         setProducts(data);
-        // console.log(data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -25,18 +24,6 @@ const Products = () => {
 
   return (
     <div className="products-container">
-      {/* <ul className="circles">
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-        <li></li>
-      </ul> */}
       <div className="products">
         {products.map((product) => (
           <Card className="product-card"
