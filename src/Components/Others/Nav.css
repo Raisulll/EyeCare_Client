@@ -1,0 +1,165 @@
+:root {
+  --blue-light: #45a6db;
+  --blue-dark: #114964;
+  --yellow-light: #f6c90e;
+  --black-color: #0d0f10;
+  --nav-menu-text: var(--blue-dark);
+  --button-bg: var(--blue-light);
+  --button-text: #fff;
+  --menu-hover-color: var(--blue-light);
+}
+
+.navHeader {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  justify-content: space-around;
+  /* background-color: #287183be; */
+  background-color: #515b60a2;
+  padding: 0 2em 0 0;
+  top: 0;
+  /* padding: 10; */
+  /* position: sticky; */
+  backdrop-filter: blur(10px);
+  top: 0;
+  color: #000;
+}
+
+.navLogoname {
+  display: flex;
+}
+
+.navLogoname h2 {
+  color: #000;
+  margin-left: 5px;
+  margin-top: 7px;
+}
+
+.navLogo {
+  width: 60px;
+  height: 60px;
+  margin-left: 5%;
+}
+
+.navLinks {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  list-style: none;
+  padding: 10px;
+}
+
+.navIcons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+}
+.navLinks li,
+.navIcons li {
+  padding: 0 1em;
+}
+
+.navButtons {
+  margin-top: 25px;
+  list-style: none;
+  display: flex;
+}
+
+.navButtons li {
+  padding: 0 1em;
+}
+
+a {
+  text-decoration: none;
+  color: #000;
+  font-size: 1.2em;
+}
+
+.navIcon {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 10;
+}
+
+.dropdownContent {
+  display: none;
+  position: absolute;
+  background-color: #fff;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  padding: 0.5em;
+  right: 0;
+  min-width: 160px;
+  z-index: 10;
+  border-radius: 5px;
+}
+
+.dropdownContent a {
+  color: var(--nav-menu-text);
+  text-decoration: none;
+  display: block;
+  padding: 0.5em 1em;
+  font-size: 1rem;
+}
+
+.dropdownContent a:hover {
+  background-color: var(--menu-hover-color);
+  color: white;
+  border-radius: 5px;
+}
+.dropdownContent a:nth-child(2):hover {
+  background-color: red;
+  color: white;
+}
+
+.dropdown:hover .dropdownContent {
+  display: block;
+  z-index: 10;
+}
+
+.navLinks li a,
+.navButtons li a {
+  font-weight: 400;
+  font-size: clamp(1em, 2vw, 1.2em);
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.navLinks li a:hover,
+.navButtons li a:hover {
+  color: #dad3d3;
+}
+
+.navLinks li a::before,
+.navButtons li a::before {
+  content: "";
+  position: absolute;
+  height: 2px;
+  width: 100%;
+  background-color: #dad3d3;
+  left: 0;
+  bottom: -5px;
+  transform: scaleX(0);
+  transition: all 0.2s ease-in-out;
+}
+
+.navLinks li a:hover::before,
+.navButtons li a:hover::before {
+  transform: scaleX(1);
+}
+
+.navProfileImage{
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  object-fit: cover;
+  aspect-ratio: 1/1;
+}

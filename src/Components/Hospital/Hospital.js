@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "./HospitalProfile.css";
+// import "./HospitalProfile.css";
 
 const HospitalProfile = () => {
   const navigate = useNavigate();

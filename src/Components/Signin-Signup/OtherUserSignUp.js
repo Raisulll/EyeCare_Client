@@ -1,8 +1,9 @@
 import React from "react";
 import { Button, Card, Col, Container, Row } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
-import { FaUserDoctor,FaHospitalUser } from "react-icons/fa6";
+import { FaUserDoctor, FaHospitalUser } from "react-icons/fa6";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { FaTruck } from "react-icons/fa"; // Importing the truck icon for Delivery Agency
 
 import "../../App.css";
 
@@ -20,17 +21,22 @@ const OtherUserSignUp = () => {
               <div className="text-center">
                 <NavLink to="/doctorsignup">
                   <Button variant="primary" size="lg" className="mb-3 w-100">
-                  <FaUserDoctor />  Doctor
+                    <FaUserDoctor /> Doctor
                   </Button>
                 </NavLink>
                 <NavLink to="/shopsignup">
                   <Button variant="primary" size="lg" className="mb-3 w-100">
-                  <MdOutlineShoppingCart />  Shop Owner
+                    <MdOutlineShoppingCart /> Shop Owner
                   </Button>
                 </NavLink>
                 <NavLink to="/hospitalsignup">
+                  <Button variant="primary" size="lg" className="mb-3 w-100">
+                    <FaHospitalUser /> Eye Hospital Manager
+                  </Button>
+                </NavLink>
+                <NavLink to="/deliverysignup">
                   <Button variant="primary" size="lg" className="w-100">
-                  <FaHospitalUser />  Eye Hospital Manager
+                    <FaTruck /> Delivery Agency
                   </Button>
                 </NavLink>
               </div>

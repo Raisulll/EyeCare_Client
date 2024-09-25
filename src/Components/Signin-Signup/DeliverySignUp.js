@@ -6,7 +6,7 @@ import "./Signup.css";
 import styled from "styled-components";
 import image from "../../Assets/images/SignUp.svg";
 
-function ShopOwnerSignUp() {
+function DeliverySignUp() {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -15,7 +15,9 @@ function ShopOwnerSignUp() {
   const [roadNumber, setRoadNumber] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [shopLicense, setShopLicense] = useState("");
+  const [deliveryLicense, setDeliveryLicense] = useState("");
+  const [deliveryCharge, setDeliveryCharge] = useState("");
+  const [deliveryType, setDeliveryType] = useState("");
 
   const navigate = useNavigate();
 
@@ -30,17 +32,19 @@ function ShopOwnerSignUp() {
   const collectData = async (e) => {
     e.preventDefault();
     const data = {
-      shopName: fullName,
-      shopMail: email,
-      shopPhone: phoneNumber,
-      shopDistrict: district,
-      shopArea: area,
-      shopRoadNum: roadNumber,
-      shopPassword: password,
-      shopLicense: shopLicense,
+      deliveryName: fullName,
+      deliveryMail: email,
+      deliveryPhone: phoneNumber,
+      deliveryDistrict: district,
+      deliveryArea: area,
+      deliveryRoadNum: roadNumber,
+      deliveryPassword: password,
+      deliveryLicense: deliveryLicense,
+      deliveryCharge: deliveryCharge,
+      deliveryType: deliveryType,
     };
     console.log(data);
-    const result = await fetch("http://localhost:5000/auth/shopsignup", {
+    const result = await fetch("http://localhost:5000/auth/deliverysignup", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
@@ -72,7 +76,7 @@ function ShopOwnerSignUp() {
         <img src={image} alt="Sign Up" />
       </div>
       <form className="signupForm" onSubmit={collectData}>
-        <h1>Sign Up as Shop Owner</h1>
+        <h1>Sign Up as Delivery Agency</h1>
         <StyledWrapper>
           <div className="input-container">
             <input
@@ -83,7 +87,7 @@ function ShopOwnerSignUp() {
               required
             />
             <label htmlFor="fullName" className="label">
-              Full Name
+              Agency Name
             </label>
             <div className="underline" />
           </div>
@@ -167,15 +171,63 @@ function ShopOwnerSignUp() {
           <div className="input-container">
             <input
               type="text"
-              id="shopLicense"
-              value={shopLicense}
-              onChange={(e) => setShopLicense(e.target.value)}
+              id="deliveryLicense"
+              value={deliveryLicense}
+              onChange={(e) => setDeliveryLicense(e.target.value)}
               required
             />
             <label htmlFor="shopLicense" className="label">
-              Shop License
+              Agency License
             </label>
             <div className="underline" />
+          </div>
+        </StyledWrapper>
+        <StyledWrapper>
+          <div className="input-container">
+            <input
+              type="text"
+              id="deliveryCharge"
+              value={deliveryCharge}
+              onChange={(e) => setDeliveryCharge(e.target.value)}
+              required
+            />
+            <label htmlFor="shopLicense" className="label">
+              Delivery Charge
+            </label>
+            <div className="underline" />
+          </div>
+        </StyledWrapper>
+        {/* <StyledWrapper>
+          <div className="input-container">
+            <input
+              type="text"
+              id="deliveryType"
+              value={deliveryType}
+              onChange={(e) => setDeliveryType(e.target.value)}
+              required
+            />
+            <label htmlFor="shopLicense" className="label">
+              Delivery Type
+            </label>
+            <div className="underline" />
+          </div>
+        </StyledWrapper> */}
+        <StyledWrapper>
+          <div className="input-container">
+            <select
+              id="deliveryType"
+              value={deliveryType}
+              onChange={(e) => setDeliveryType(e.target.value)}
+              required
+            >
+              <option value="" hidden></option>
+              <option value="Regular">Regular</option>
+              <option value="Express">Express</option>
+              <option value="SuperExpress">Super Express</option>
+            </select>
+            <label htmlFor="deliveryType" className="label">
+              Delivery Type
+            </label>
           </div>
         </StyledWrapper>
         <StyledWrapper>
@@ -323,5 +375,4 @@ const StyledWrapper = styled.div`
   }
 `;
 
-
-export default ShopOwnerSignUp;
+export default DeliverySignUp;

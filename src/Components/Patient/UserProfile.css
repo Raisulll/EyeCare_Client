@@ -1,0 +1,56 @@
+.profile-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: block;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.466);
+  margin-top: 40px;
+  border: 2px solid #0a09098e;
+  object-fit: cover;
+  aspect-ratio: 1/1;
+}
+
+.vitorer-div{
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-top: 20px;
+  /* border: 2px solid black; */
+  width: 90%;
+}
+
+.second{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* border: 2px solid black; */
+  position: relative;
+  width: 60%;
+  border-radius: 30px;
+  margin-top: 60px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.466);
+}
+
+.firstdiv{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.profile-image-input {
+  display: none;
+  margin-top: 10px;
+}
+
+.button-div{
+  width: 20vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.last-div{
+  margin-bottom: 20px;
+}

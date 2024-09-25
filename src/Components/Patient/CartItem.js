@@ -7,7 +7,6 @@ const CartItem = ({
   initialQuantity,
   finalQuantity,
   productId,
-  onRemove,
   onQuantityChange,
 }) => {
   console.log(initialQuantity, finalQuantity);
@@ -40,6 +39,28 @@ const CartItem = ({
       } catch (error) {
         console.error("Error adding product count to cart:", error);
       }
+    }
+  };
+
+  const onRemove = async () => { 
+    const data = {
+      productId: productId,
+      patientId: JSON.parse(localStorage.getItem("user")).PatientId,
+    };
+    console.log("data",data.patientId, data.productId);
+    try {
+      const result = await fetch("http://localhost:5000/sets/removefromcart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const response = await result.json();
+      console.log(response);
+      onQuantityChange(productId, 0);
+    } catch (error) {
+      console.error("Error removing product from cart:", error);
     }
   };
 

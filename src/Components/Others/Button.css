@@ -1,0 +1,19 @@
+.custom-button {
+  all: unset;
+  box-sizing: border-box;
+  /* margin-top: 1em; */
+  padding: 0.1em 0.8em;
+  outline: none;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  border-radius: 1em;
+  font-weight: 600;
+  font-size: clamp(1em, 2vw, 1.2em);
+  cursor: pointer;
+  transition: all 0.3 ease transform 0.9s;
+}
+
+.custom-button:hover {
+  background-color: var(--hover-color);
+  transform: scale(0.9);
+}

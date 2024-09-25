@@ -1,524 +1,129 @@
-/* Import Poppins font from Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
-/* Apply Poppins font to the entire body */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* overflow: hidden; */
+}
 body {
-  background-color: #181A1B;
-  color: #ffffff;
-  margin: 0;
-  padding: 0;
-  font-family: 'Poppins', sans-serif;
-}
-
-.sign-up-link {
-  text-decoration: none;
-  color: #007bff;
-}
-
-.sign-up-link:hover {
-  text-decoration: underline;
-}
-
-.auth-link {
-  text-decoration: none;
-  color: #007bff;
-}
-
-.auth-link:hover {
-  text-decoration: underline;
-}
-
-body {
-  padding-top: 70px; /* Adjust according to the height of your navbar */
-}
-
-.container {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-}
-
-.custom-navbar {
-  background-color: #1b1e1f !important;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 2px 4px 0px !important;
-}
-
-.custom-navbar .nav-link,
-.custom-navbar .navbar-brand,
-.custom-navbar .bi-bag {
-  color: #fff !important;
-}
-
-.custom-navbar .btn-outline-secondary {
-  border-color: #fff !important;
-  color: #fff !important;
-}
-
-.custom-navbar .btn-outline-secondary:hover {
-  background-color: #fff !important;
-  color: #1b1e1f !important;
-}
-
-.custom-navbar .btn-dark {
-  background-color: #fff !important;
-  color: #1b1e1f !important;
-  border-color: #fff !important;
-}
-
-.custom-navbar .btn-dark:hover {
-  background-color: #1b1e1f !important;
-  color: #fff !important;
-  border-color: #1b1e1f !important;
-}
-
-.signin-container {
-  background-color: #181A1B;
-  color: #ffffff;
-}
-
-.signin-card {
-  background-color: #181A1B;
-  color: #ffffff;
-  border: none;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Light white shadow */
-}
-
-.signin-link {
-  text-decoration: none;
-  color: #007bff; /* Bootstrap blue color for links */
-}
-
-.signin-link:hover {
-  color: #0056b3; /* Darker blue on hover */
-}
-
-.containerColor {
-  background-color: black;
-  color: #ffffff;
-}
-
-.cardcolor {
-  background-color: #181A1B;
-  color: #ffffff;
-  border: none;
-  box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1); /* Light white shadow */
-}
-
-.cardcolor .form-control {
-  background-color: #333;
-  color: #ffffff;
-}
-
-.cardcolor .form-control::placeholder {
-  color: #aaaaaa;
-}
-
-.cardcolor .form-label {
-  color: #ffffff;
-}
-
-.cardcolor .btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-.cardcolor .btn-primary:hover {
-  background-color: #0056b3;
-  border-color: #0056b3;
-}
-
-.cardcolor .nav-link {
-  color: #007bff;
-}
-
-.cardcolor .nav-link:hover {
-  color: #0056b3;
-}
-
-.bottommrgn {
-  margin-bottom: 1rem;
-}
-
-.no-arrow .dropdown-toggle::after {
-  display: none;
-}
-
-.cardcolor {
-  border-radius: 0.25rem;
-  padding: 2rem;
-}
-
-.signin-container {
-  border-radius: 0.25rem;
-}
-
-.password-input-container {
-  position: relative;
-  width: 100%;
-}
-
-.password-input {
-  padding-right: 2.5rem;
-}
-
-.password-toggle-icon {
-  position: absolute;
-  top: 50%;
-  right: 0.75rem;
-  transform: translateY(-50%);
-  cursor: pointer;
-  color: #6c757d;
-  background-color: transparent;
-}
-
-/* Profile Page Styles */
-.profile-container {
-  /* max-width: 900px; */
-  margin: 2rem auto;
-  padding: 0 1rem;
-  color: #ffffff;
-}
-
-.profile-card {
-  background-color: #1f1f1f;
-  color:#ffffff;
-  border: none;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.cover-photo {
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-  height: 200px;
-  object-fit: cover;
-}
-
-.profile-avatar {
-  width: 150px;
-  height: 150px;
-  border: 4px solid #181A1B;
-  margin-top: -75px;
-}
-
-.profile-name {
-  color:#ffffff;
-  font-size: 1.8rem;
-  margin: 0;
-}
-
-.profile-expertise {
-  color:#ffffff;
-  font-size: 1.2rem;
-  color: #ccc;
-}
-
-.profile-details-card {
-  color:#ffffff;
-  background-color: #1f1f1f;
-  border: none;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.profile-details-card p {
-  margin: 0.5rem 0;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
-
-.btn-secondary {
-  background-color: #6c757d;
-  border-color: #6c757d;
-}
-
-.btn-secondary:hover {
-  background-color: #5a6268;
-}
-
-/*Css for UserProfile*/
-.cover-photo-container {
-  position: relative;
-  width: 100%;
-  height: 200px;
-  overflow: hidden;
-  margin-bottom: 20px;
-}
-
-.cover-photo {
-  width: 100%;
-  height: auto;
-}
-
-.cover-photo-placeholder {
-  width: 100%;
-  height: 200px;
-  background-color: #e9ecef;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #6c757d;
-}
-
-.profile-pic-container {
-  display: flex;
-  flex-direction: column;
-  align-items: left;
-  margin-bottom: 20px;
-}
-
-.profile-pic {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.profile-pic-placeholder {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  background-color: #e9ecef;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #6c757d;
-}
-
-.user-details {
-  text-align: left;
-}
-
-.doctor-list {
-  margin-top: 20px;
-}
-
-.doctor-list h5 {
-  margin-bottom: 20px;
-}
-
-.doctor-card {
-  height: 100%;
-}
-
-.appointments-list {
-  margin-top: 20px;
-}
-
-.appointments-list h5 {
-  margin-bottom: 20px;
-}
-
-.appointment-card {
-  height: 100%;
-}
-.purchases-list {
-  margin-top: 20px;
-}
-
-.purchases-list h5 {
-  margin-bottom: 20px;
-}
-
-.purchase-card {
-  height: 100%;
-}
-
-
-/* Container for Appointments */
-.appointments-container {
-  margin: 20px auto;
-  width: 90%;
-  max-width: 1200px;
-  background-color: #f9f9f9;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* Toggle bar styles */
-.toggle-bar {
-  font-size: 1.5rem;
-  color: #333;
-  cursor: pointer;
-  text-align: center;
-  margin-bottom: 20px;
-  transition: color 0.3s ease;
-}
-
-.toggle-bar:hover {
-  color: #007bff;
-}
-
-/* Table styles */
-.appointments-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: blue;
-}
-
-.appointments-table th, 
-.appointments-table td {
-  padding: 12px 15px;
-  text-align: left;
-}
-
-.appointments-table th {
-  background-color: #007bff;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.appointments-table th:hover {
-  background-color: #0056b3;
-}
-
-.appointments-table td {
-  border-bottom: 1px solid #ddd;
-}
-
-.appointments-table tbody tr:hover {
-  background-color: #f1f1f1;
-}
-
-.appointments-table tbody tr {
-  transition: background-color 0.3s ease;
-}
-
-/* Status coloring */
-.status-pending {
-  color: #ff9800;
-  font-weight: bold;
-}
-
-.status-confirmed {
-  color: #4caf50;
-  font-weight: bold;
-}
-
-.status-cancelled {
-  color: #f44336;
-  font-weight: bold;
-}
-
-
-.profile-container {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-
-.profile-card {
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  border-radius: 1rem;
-  overflow: hidden;
-}
-
-.cover-photo {
-  height: 200px;
-  object-fit: cover;
-}
-
-.profile-pic-label {
-  cursor: pointer;
-}
-
-.profile-avatar {
-  width: 100px;
-  height: 100px;
-  object-fit: cover;
-  border: 4px solid #fff;
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-}
-
-.profile-name {
-  font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-.profile-expertise {
-  font-size: 1.2rem;
-  color: #6c757d;
-}
-
-.profile-details-card {
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-  border-radius: 1rem;
-}
-
-
-/* Common Styles for Both Components */
-
-.container {
-  margin-top: 20px;
-}
-
-.toggle-bar {
-  font-size: 1.5em;
-  cursor: pointer;
-  padding: 10px;
-  background-color: #007bff;
-  color: #fff;
-  text-align: center;
-  border-radius: 5px;
-}
-
-.toggle-bar:hover {
-  background-color: #0056b3;
-}
-
-.transactions-table,
-.appointments-table {
-  width: 100%;
-  margin-top: 15px;
-  border-collapse: collapse;
-  box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
-}
-
-.transactions-table th,
-.appointments-table th {
-  background-color: #f8f9fa;
-  color: #343a40;
-  padding: 10px;
-  text-align: left;
-  cursor: pointer;
-}
-
-.transactions-table th:hover,
-.appointments-table th:hover {
-  background-color: #e9ecef;
-}
-
-.transactions-table td,
-.appointments-table td {
-  padding: 10px;
-  border-bottom: 1px solid #dee2e6;
-}
-
-.transactions-table tr:hover,
-.appointments-table tr:hover {
-  background-color: #f1f1f1;
-}
-
-.status-Completed {
-  color: green;
-  font-weight: bold;
-}
-
-.status-Pending {
-  color: orange;
-  font-weight: bold;
-}
-
-.status-Canceled {
-  color: red;
-  font-weight: bold;
+    font-family: "Poppins", sans-serif;
+    /* background-color: #d7edf19f; */
+    /* background-color: #5291b081; */
+    background-color: #7d848838;
+    overflow-x: hidden;
+}
+
+.circles {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    z-index:-1;
+    /* border: 5px solid green; */
+}
+
+.circles li {
+    position: absolute;
+    display: block;
+    list-style: none;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    background-color: #3d52a02a;
+    animation: animate 25s linear infinite;
+    bottom: -150px;
+    z-index: 0;
+}
+
+.circles li:nth-child(1) {
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    animation-delay: 0s;
+}
+
+.circles li:nth-child(2) {
+    left: 10%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 2s;
+    animation-duration: 12s;
+}
+
+.circles li:nth-child(3) {
+    left: 70%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 4s;
+}
+
+.circles li:nth-child(4) {
+    left: 40%;
+    width: 60px;
+    height: 60px;
+    animation-delay: 0s;
+    animation-duration: 18s;
+}
+
+.circles li:nth-child(5) {
+    left: 65%;
+    width: 20px;
+    height: 20px;
+    animation-delay: 0s;
+}
+
+.circles li:nth-child(6) {
+    left: 75%;
+    width: 110px;
+    height: 110px;
+    animation-delay: 3s;
+}
+
+.circles li:nth-child(7) {
+    left: 35%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 7s;
+}
+
+.circles li:nth-child(8) {
+    left: 50%;
+    width: 25px;
+    height: 25px;
+    animation-delay: 15s;
+    animation-duration: 45s;
+}
+
+.circles li:nth-child(9) {
+    left: 20%;
+    width: 15px;
+    height: 15px;
+    animation-delay: 2s;
+    animation-duration: 35s;
+}
+
+.circles li:nth-child(10) {
+    left: 5%;
+    width: 150px;
+    height: 150px;
+    animation-delay: 0s;
+    animation-duration: 15s;
+}
+
+@keyframes animate {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 1;
+        border-radius: 0;
+    }
+
+    100% {
+        transform: translateY(-1000px) rotate(720deg);
+        opacity: 0;
+        border-radius: 50%;
+    }
 }

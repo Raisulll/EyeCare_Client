@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
+import styled from "styled-components";
+import "./OTP.css"; // Add custom styles here
 import "../../App.css";
 
 function OTP() {
@@ -10,10 +11,9 @@ function OTP() {
   const { email } = location.state;
 
   const handleChange = (element, index) => {
-    if (isNaN(element.value)) return false;
+    if (isNaN(element.value)) return;
     setOtp([...otp.map((d, idx) => (idx === index ? element.value : d))]);
 
-    // Focus next input box
     if (element.nextSibling) {
       element.nextSibling.focus();
     }
@@ -22,60 +22,119 @@ function OTP() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const enteredOtp = otp.join("");
-    console.log("OTP entered: ", enteredOtp);
 
     const result = await fetch("http://localhost:5000/auth/verifyotp", {
       method: "POST",
-      body: JSON.stringify({ otp: enteredOtp, email: email }),
+      body: JSON.stringify({ otp: enteredOtp, email }),
       headers: {
         "Content-Type": "application/json",
       },
     });
 
-    console.log(result);
     if (result.status === 200) {
-      navigate("/resetpassword", { state: { email: email } });
+      navigate("/resetpassword", { state: { email } });
     } else {
       console.log("OTP Verification Failed");
     }
   };
 
   return (
-    <Container
-      className="d-flex justify-content-center align-items-center containerColor"
-      style={{ height: "100vh" }}
-    >
-      <Row className="w-100 justify-content-center">
-        <Col md={8} lg={6}>
-          <Card className="cardcolor">
-            <Card.Body>
-              <Card.Title className="text-center mb-4">Enter OTP</Card.Title>
-              <Form onSubmit={handleSubmit}>
-                <div className="d-flex justify-content-center mb-4">
-                  {otp.map((data, index) => (
-                    <Form.Control
-                      type="text"
-                      name="otp"
-                      maxLength="1"
-                      key={index}
-                      value={data}
-                      onChange={(e) => handleChange(e.target, index)}
-                      onFocus={(e) => e.target.select()}
-                      className="otpInput mx-1"
-                      style={{ width: "40px", textAlign: "center" }}
-                    />
-                  ))}
-                </div>
-                <Button variant="primary" type="submit" className="w-100">
-                  Verify OTP
-                </Button>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <ul className="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      <MainContainer>
+        <FormContainer>
+          <h1>Enter OTP</h1>
+          <StyledForm onSubmit={handleSubmit}>
+            <OtpWrapper>
+              {otp.map((data, index) => (
+                <OtpInput
+                  type="text"
+                  maxLength="1"
+                  key={index}
+                  value={data}
+                  onChange={(e) => handleChange(e.target, index)}
+                  onFocus={(e) => e.target.select()}
+                />
+              ))}
+            </OtpWrapper>
+            <StyledButton type="submit">Verify OTP</StyledButton>
+          </StyledForm>
+        </FormContainer>
+      </MainContainer>
+    </>
   );
 }
+
+const MainContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+`;
+
+const FormContainer = styled.div`
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 100%;
+  max-width: 400px;
+`;
+
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const OtpWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+`;
+
+const OtpInput = styled.input`
+  width: 40px;
+  height: 40px;
+  margin: 0 5px;
+  font-size: 20px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: border-color 0.2s;
+
+  &:focus {
+    border-color: #645bff;
+  }
+`;
+
+const StyledButton = styled.button`
+  background-color: #645bff;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #4a47d6;
+  }
+`;
 
 export default OTP;

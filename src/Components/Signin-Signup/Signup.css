@@ -1,0 +1,30 @@
+.mainDiv{
+    display: flex;
+    /* flex-direction: row-reverse; */
+    justify-content: space-around;
+    align-items: center;
+    /* height: 100vh; */
+    /* background-color: #f5f5f5; */
+    /* overflow: hidden; */
+}
+
+.signupForm{
+    width: 45%;
+    padding: 20px;
+    background-color: #8ea9b702;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    border-radius: 20px;
+    margin: 30px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.267);
+    /* border: 2px solid #5291b0; */
+}
+
+.signupImage{
+    width: 40%;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    /* border: 2px solid #5291b0; */
+}

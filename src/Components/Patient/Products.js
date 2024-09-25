@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Card from "./../Others/Card";
+import "./Products.css";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Products = () => {
         const response = await fetch(`http://localhost:5000/gets/products`);
         const data = await response.json();
         setProducts(data);
-        console.log(data);
+        // console.log(data);
       } catch (error) {
         console.error("Error fetching products:", error);
       }
@@ -24,11 +25,22 @@ const Products = () => {
 
   return (
     <div className="products-container">
-      <h2>Products</h2>
+      {/* <ul className="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul> */}
       <div className="products">
         {products.map((product) => (
-          <Card
-            key={product.PRODUCT_ID}  
+          <Card className="product-card"
+            key={product.PRODUCT_ID}
             title={product.PRODUCT_NAME}
             description={product.PRODUCT_DESCRIPTION}
             price={product.PRODUCT_PRICE}
@@ -36,6 +48,7 @@ const Products = () => {
             userId={userId}
             productId={product.PRODUCT_ID}
             quantity={product.QUANTITY}
+            image_url={product.PRODUCT_IMAGE}
           />
         ))}
       </div>

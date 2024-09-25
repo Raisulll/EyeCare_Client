@@ -1,470 +1,469 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  Modal,
-  Row,
-} from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import "../../App.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import styled from "styled-components";
+import "./UserProfile.css";
 
-const UserProfile = () => {
-  const [user, setUser] = useState(null);
-  const [doctors, setDoctors] = useState([]);
-  const [appointments, setAppointments] = useState([]);
-  const [prevAppointments, setPrevAppointments] = useState([]);
-  const [times, setTimes] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedDoctor, setSelectedDoctor] = useState("");
+const UserProfile = (props) => {
+  const [patientData, setPatientData] = useState({});
+  const [imagePreview, setImagePreview] = useState(null);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [dateOfBirth, setDateOfBirth] = useState("");
+  const [district, setDistrict] = useState("");
+  const [area, setArea] = useState("");
+  const [roadNumber, setRoadNumber] = useState("");
+
   const localdata = JSON.parse(localStorage.getItem("user"));
-  const userId = localdata.PatientId;
-  const [appointment, setAppointment] = useState({
-    doctor: "",
-    time: "",
-    date: "",
-    patientId: parseInt(userId),
-  });
-  const [doctortimes, setDoctorTimes] = useState([]);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchPatientDaata = async () => {
+    const fetchPatientData = async () => {
       try {
-        console.log(localdata);
-        const storedUser = await fetch(
+        const patient = await fetch(
           `http://localhost:5000/gets/patientdata?patientid=${localdata.PatientId}`
         );
-        const temp = await storedUser.json();
-        setUser(temp);
-        console.log(temp);
+        const temp = await patient.json();
+        setPatientData(temp);
+        setImagePreview(temp.PATIENT_IMAGE);
+        setFullName(temp.PATIENT_NAME);
+        setEmail(temp.PATIENT_MAIL);
+        setPhoneNumber(temp.PATIENT_PHONE);
+        //change date format
+        const date = new Date(temp.PATIENT_DOB);
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1;
+        const dt = date.getDate();
+        if (dt < 10) {
+          setDateOfBirth(`${year}-0${month}-0${dt}`);
+        } else {
+          setDateOfBirth(`${year}-0${month}-${dt}`);
+        }
+        setDistrict(temp.PATIENT_DISTRICT);
+        setArea(temp.PATIENT_AREA);
+        setRoadNumber(temp.PATIENT_ROADNUMBER);
       } catch (error) {
         console.log(error);
       }
     };
-    fetchPatientDaata();
-
-    // Fetch upcomming appointments for the user
-    console.log(localdata.patientId);
-    fetchUpcommingAppointments(localdata.patientId);
-
-    fetchPreviousAppointments(localdata.patientId);
-    // Fetch doctors from the API
-    fetchDoctors();
+    fetchPatientData();
   }, []);
 
-  const fetchDoctors = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/doctors");
-      if (!response.ok) throw new Error("Failed to fetch doctors");
-      const data = await response.json();
-      const formattedDoctors = data.map((doctor) => ({
-        id: doctor.DOCTOR_ID,
-        name: doctor.DOCTOR_NAME,
-        experience: doctor.DOCTOR_SPECIALITY,
-        payment: doctor.DOCTOR_PAYMENT,
-      }));
-      console.log(formattedDoctors);
-      setDoctors(formattedDoctors);
-    } catch (error) {
-      console.error("Error fetching doctors:", error);
-      alert(error.message);
-    }
+  const handleImageClick = () => {
+    document.getElementById("file").click();
   };
 
-  // Fetch upcomming appointments for a specific patient
-  const fetchUpcommingAppointments = async (patientId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/upcommingappointments?patientId=${localdata.PatientId}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch appointments");
-      const data = await response.json();
-      console.log(data);
-      setAppointments(data.length ? data : null); // Handle null if no appointments
-    } catch (error) {
-      console.error("Error fetching appointments:", error);
-      alert(error.message);
-    }
-  };
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64String = reader.result;
+        setImagePreview(base64String);
+        try {
+          const res = await fetch(
+            "http://localhost:5000/upload/patientProfile",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                imageBase64: base64String,
+                patientId: localdata.PatientId,
+              }),
+            }
+          );
 
-  // Fetch previous appointments for a specific patient
-  const fetchPreviousAppointments = async (patientId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/previousappointments?patientId=${localdata.PatientId}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch appointments");
-      const data = await response.json();
-      console.log(data);
-      setPrevAppointments(data.length ? data : null); // Handle null if no appointments
-    } catch (error) {
-      console.error("Error fetching appointments:", error);
-      alert(error.message);
-    }
-  };
-
-  // Fetch time slots for a specific doctor
-  const fetchTimeSlots = async (doctorId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/doctorstime?doctorid=${doctorId}`
-      );
-      if (!response.ok) throw new Error("Failed to fetch time slots");
-
-      const data = await response.json();
-      console.log("Time slots data:", data);
-
-      if (!data || !data[0] || !data[0].DOCTOR_TIMESLOT) {
-        throw new Error("Invalid data structure received from API");
-      }
-      const timeRange = data[0].DOCTOR_TIMESLOT;
-      const timeSlots = generateTimeSlots(timeRange);
-      setDoctorTimes(timeSlots);
-    } catch (error) {
-      console.error(
-        `Error fetching time slots for doctor ID: ${doctorId}`,
-        error
-      );
-      alert(error.message);
-    }
-  };
-
-  const generateTimeSlots = (timeRange) => {
-    console.log("Time range:", timeRange);
-
-    if (
-      !timeRange ||
-      typeof timeRange !== "string" ||
-      !timeRange.includes("-")
-    ) {
-      console.error("Invalid time range provided:", timeRange);
-      return [];
-    }
-
-    const slots = [];
-    let [startTime, endTime] = timeRange.split("-").map((time) => time.trim());
-
-    if (!startTime || !endTime) {
-      console.error("Invalid start or end time:", startTime, endTime);
-      return [];
-    }
-
-    console.log("Converted time range:", startTime, endTime);
-    console.log("Type of startTime:", typeof startTime);
-    let newStartTime = parseInt(startTime);
-    let newEndTime = parseInt(endTime);
-    let turn = 1;
-
-    while (newStartTime < newEndTime) {
-      if (turn === 1) {
-        slots.push(
-          `${newStartTime.toString()}:00 PM to ${newStartTime.toString()}:30 PM`
-        );
-        turn = 2;
-      } else {
-        slots.push(
-          `${newStartTime.toString()}:30 PM to ${(
-            newStartTime + 1
-          ).toString()}:00 PM`
-        );
-        turn = 1;
-        newStartTime++;
-      }
-    }
-
-    console.log("Generated slots:", slots);
-    return slots;
-  };
-
-  const handleShowModal = (doctorId) => {
-    console.log("Closing modal...", userId);
-    console.log("Doctor ID:", doctorId);
-
-    const selectedDoc = doctors.find((doc) => doc.id === doctorId);
-
-    setSelectedDoctor(doctorId);
-    setAppointment((prev) => ({
-      ...prev,
-      doctor: doctorId,
-      patientId: userId,
-      payment: selectedDoc ? selectedDoc.payment : "",
-    }));
-
-    fetchTimeSlots(doctorId);
-    setShowModal(true);
-  };
-
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedDoctor("");
-    // setAppointment({ doctor: "", time: "", date: "",patientId:userId });
-    setTimes([]);
-  };
-
-  const handleBookAppointment = async () => {
-    const patientId = localdata.PatientId;
-    appointment.patientId = patientId;
-    // console.log("User ID:", userId);
-    console.log("Appointment", appointment);
-    //push patient id to appointment object
-    // setAppointment((prev) => ({ ...prev, patientId: patientId }));
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/appointmentsdata",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ appointment }),
+          const data = await res.json();
+          if (res.ok) {
+            console.log("Image uploaded successfully:", data);
+            // localStorage.setItem("user", JSON.stringify(data));
+            let oldData = JSON.parse(localStorage.getItem("user"));
+            oldData.patientImage = data.url;
+            localStorage.setItem("user", JSON.stringify(oldData));
+            props.setUser(localStorage.getItem("user"));
+            toast.success("Image Upload Successful!", {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          } else {
+            console.error("Image upload failed:", data.message);
+            toast.error("Image Upload Failed", {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          }
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          toast.error("Error uploading image.");
         }
-      );
-      console.log("Appointment booking response:", response);
-      if (!response.ok) throw new Error("Failed to book appointment");
+      };
 
-      alert("Appointment successfully booked!");
-      fetchUpcommingAppointments(patientId);
-      handleCloseModal();
-    } catch (error) {
-      console.error("Error booking appointment:", error);
-      alert(error.message);
+      reader.readAsDataURL(file);
     }
   };
 
-  const findDoctorName = (doctorId) => {
-    const doctor = doctors.find((doc) => doc.id === doctorId);
-    return doctor ? doctor.name : "";
-  };
+  const updatePatientData = async () => {
+    console.log("updatePatientData");
+    //check if the phone number is 11 digits if not show toast error
+    if (phoneNumber.length !== 11) {
+      toast.error("Invalid Phone Number!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+      return;
+    }
 
-  if (!user) {
-    return <div>Loading...</div>;
-  }
+    //change date format
+    const date = new Date(dateOfBirth);
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const dt = date.getDate();
+    const newDate = `${year}-${month}-${dt}`;
+    const data = {
+      patientId: localdata.PatientId,
+      patientName: fullName,
+      patientPhone: phoneNumber,
+      patientDOB: newDate,
+      patientDistrict: district,
+      patientArea: area,
+      patientRoadNumber: roadNumber,
+    };
+    console.log("Data:", data);
+    try {
+      const res = await fetch("http://localhost:5000/edit/patientProfileData", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+      if (res.ok) {
+        console.log("Patient data updated successfully:", result);
+        toast.success("Data Updated Successfully!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      } else {
+        console.error("Failed to update patient data:", result.message);
+        toast.error("Failed to update data!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+      }
+    } catch (error) {
+      console.error("Error updating patient data:", error);
+      toast.error("Error updating data!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
+  };
 
   return (
-    <Container className="mt-5 mb-5">
-      <Row className="justify-content-center">
-        <Col md={10} lg={8}>
-          <Card className="cardcolor">
-            <Card.Body>
-              <div className="cover-photo-container">
-                <img
-                  src="https://hips.hearstapps.com/hmg-prod/images/house-of-the-dragon-3-1-6674876bce7cd.jpg"
-                  alt="Cover"
-                  className="cover-photo"
-                />
-              </div>
-              <div className="profile-pic-container">
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYrGAWh74hhpy1hzIQKhmZ145ivdaePqlGFw&s"
-                  alt="Profile"
-                  className="profile-pic"
-                />
-              </div>
-              <Card.Title className="text-center mb-4">User Profile</Card.Title>
-              <div className="user-details">
-                <p>
-                  <strong>Name:</strong> {user.PATIENT_NAME}
-                </p>
-                <p>
-                  <strong>Email:</strong> {user.PATIENT_MAIL}
-                </p>
-                <p>
-                  <strong>Phone:</strong> {user.PATIENT_PHONE}
-                </p>
-                <p>
-                  <strong>Date of Birth:</strong> {user.PATIENT_DOB}
-                </p>
-                <p>
-                  <strong>District:</strong> {user.PATIENT_DISTRICT}
-                </p>
-                <p>
-                  <strong>Area:</strong> {user.PATIENT_AREA}
-                </p>
-                <p>
-                  <strong>Road Number:</strong> {user.PATIENT_ROADNUMBER}
-                </p>
-                <p>
-                  <strong>Gender:</strong> {user.PATIENT_GENDER}
-                </p>
-              </div>
-
-              <div className="appointments-list mt-5">
-                <h5>Upcomming Appointments</h5>
-                {appointments && appointments.length > 0 ? (
-                  <Row>
-                    {appointments.map((appointment) => (
-                      <Col
-                        key={appointment.APPOINTMENT_ID}
-                        md={4}
-                        className="mb-3"
-                      >
-                        <Card className="appointment-card">
-                          <Card.Body>
-                            <Card.Title>{appointment.DOCTOR_NAME}</Card.Title>
-                            <Card.Text>
-                              <strong>Date:</strong>{" "}
-                              {appointment.APPOINTMENT_DATE}
-                              <br />
-                              <strong>Time:</strong>{" "}
-                              {appointment.APPOINTMENT_TIME}
-                              <br />
-                              <strong>Status:</strong>{" "}
-                              {appointment.APPOINTMENT_STATUS}
-                              <br />
-                            </Card.Text>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    ))}
-                  </Row>
-                ) : (
-                  <p>No upcomming appointments found.</p>
-                )}
-              </div>
-
-              <div className="appointments-list mt-5">
-                <h5>Previous Appointments</h5>
-                {prevAppointments && prevAppointments.length > 0 ? (
-                  <Row>
-                    {prevAppointments.map((appointment) => (
-                      <Col
-                        key={appointment.APPOINTMENT_ID}
-                        md={4}
-                        className="mb-3"
-                      >
-                        <Card className="appointment-card" onClick={()=>{navigate(`/viewprescription/?appointmentId=${appointment.APPOINTMENT_ID}`)}}>
-                          <Card.Body>
-                            <Card.Title>{appointment.DOCTOR_NAME}</Card.Title>
-                            <Card.Text>
-                              <strong>Date:</strong>{" "}
-                              {appointment.APPOINTMENT_DATE}
-                              <br />
-                              <strong>Time:</strong>{" "}
-                              {appointment.APPOINTMENT_TIME}
-                              <br />
-                              <strong>Status:</strong>{" "}
-                              {appointment.APPOINTMENT_STATUS}
-                              <br />
-                            </Card.Text>
-                          </Card.Body>
-                        </Card>
-                      </Col>
-                    ))}
-                  </Row>
-                ) : (
-                  <p>No previous appointments found.</p>
-                )}
-              </div>
-
-              <div className="doctor-list mt-5">
-                <h5>Available Doctors</h5>
-                <Row>
-                  {doctors.map((doctor) => (
-                    <Col key={doctor.id} md={4} className="mb-3">
-                      <Card className="doctor-card">
-                        <Card.Body>
-                          <Card.Title>{doctor.name}</Card.Title>
-                          <Card.Text>Experience: {doctor.experience}</Card.Text>
-                          <Button
-                            variant="primary"
-                            onClick={() => handleShowModal(doctor.id)}
-                          >
-                            Book Appointment
-                          </Button>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </div>
-
-              <div className="appointments-list mt-5">
-                <Button
-                  variant="secondary"
-                  onClick={() => navigate("/patienttransaction")}
-                >
-                  previous Transaction
-                </Button>
-              </div>
-            </Card.Body>
-          </Card>
-        </Col>
-      </Row>
-
-      <Modal show={showModal} onHide={handleCloseModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Book Appointment</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <Card>
-            <Card.Body>
-              <Card.Title className="text-center mb-4">
-                Make appointment with Dr {findDoctorName(selectedDoctor)}
-              </Card.Title>
-              <Form>
-                <Form.Group controlId="appointmentDate">
-                  <Form.Label>Select Date</Form.Label>
-                  <Form.Control
-                    type="date"
-                    value={appointment.date}
-                    onChange={(e) =>
-                      setAppointment((prev) => ({
-                        ...prev,
-                        date: e.target.value,
-                      }))
-                    }
-                    required
-                  ></Form.Control>
-                </Form.Group>
-                <Form.Group controlId="appointmentTime">
-                  <Form.Label>Select Time Slot</Form.Label>
-                  <Form.Control
-                    as="select"
-                    name="time"
-                    value={appointment.time}
-                    onChange={(e) =>
-                      setAppointment((prev) => ({
-                        ...prev,
-                        time: e.target.value,
-                      }))
-                    }
-                    required
-                  >
-                    <option value="">Select a time slot</option>
-                    {doctortimes.map((time) => (
-                      <option key={time} value={time}>
-                        {time}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Form.Group>
-                <Form.Group controlId="appointmentPayment">
-                  <Form.Label>Remuneration</Form.Label>
-                  <Form.Control
-                    type="text"
-                    value={appointment.payment}
-                    readOnly
-                  />
-                </Form.Group>
-              </Form>
-            </Card.Body>
-          </Card>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseModal}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleBookAppointment}>
-            Book Appointment
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </Container>
+    <div className="firstdiv">
+      <ul className="circles">
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+        <li></li>
+      </ul>
+      <ToastContainer />
+      <div className="second">
+        <div onClick={handleImageClick}>
+          <img className="profile-image" src={imagePreview} alt="profile" />
+          <input
+            className="profile-image-input"
+            type="file"
+            id="file"
+            style={{ display: "none" }}
+            onChange={handleImageChange}
+          />
+        </div>
+        <div className="vitorer-div">
+          <StyledWrapper>
+            <div className="input-container">
+              <input
+                type="text"
+                id="fullName"
+                value={fullName}
+                onChange={(e) => setFullName(e.target.value)}
+                required
+              />
+              <label htmlFor="fullName" className="label">
+                Full Name
+              </label>
+              <div className="underline" />
+            </div>
+          </StyledWrapper>
+          <StyledWrapper>
+            <div className="input-container">
+              <input type="email" id="email" value={email} readOnly required />
+              <label htmlFor="email" className="label">
+                Email
+              </label>
+              <div className="underline" />
+            </div>
+          </StyledWrapper>
+        </div>
+        <div className="vitorer-div">
+          <StyledWrapper>
+            <div className="input-container">
+              <input
+                type="text"
+                id="phoneNumber"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                required
+              />
+              <label htmlFor="phoneNumber" className="label">
+                Phone Number
+              </label>
+              <div className="underline" />
+            </div>
+          </StyledWrapper>
+          <StyledWrapper>
+            <div className="input-container">
+              <input
+                type="date"
+                id="dateOfBirth"
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
+                required
+                style={{ color: dateOfBirth ? "black" : "transparent" }}
+              />
+              <label htmlFor="dateOfBirth" className="label">
+                Date of Birth
+              </label>
+              <div className="underline" />
+            </div>
+          </StyledWrapper>
+        </div>
+        <div className="vitorer-div">
+          <StyledWrapper>
+            <div className="input-container">
+              <input
+                type="text"
+                id="district"
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+                required
+              />
+              <label htmlFor="district" className="label">
+                District
+              </label>
+              <div className="underline" />
+            </div>
+          </StyledWrapper>
+          <StyledWrapper>
+            <div className="input-container">
+              <input
+                type="text"
+                id="area"
+                value={area}
+                onChange={(e) => setArea(e.target.value)}
+                required
+              />
+              <label htmlFor="area" className="label">
+                Area
+              </label>
+              <div className="underline" />
+            </div>
+          </StyledWrapper>
+        </div>
+        <div className="vitorer-div last-div">
+          <StyledWrapper>
+            <div className="input-container">
+              <input
+                type="text"
+                id="roadNumber"
+                value={roadNumber}
+                onChange={(e) => setRoadNumber(e.target.value)}
+                required
+              />
+              <label htmlFor="roadNumber" className="label">
+                Road Number
+              </label>
+              <div className="underline" />
+            </div>
+          </StyledWrapper>
+          <div className="button-div">
+            <StyledWrapper>
+              <button onClick={updatePatientData}>
+                Update
+                <div className="arrow-wrapper">
+                  <div className="arrow" />
+                </div>
+              </button>
+            </StyledWrapper>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
+
+const StyledWrapper = styled.div`
+  .input-container {
+    position: relative;
+    margin: 15px auto;
+    width: 20vw;
+  }
+
+  .input-container input[type="text"],
+  .input-container input[type="email"],
+  .input-container input[type="date"],
+  .input-container input[type="password"],
+  .input-container input[type="number"],
+  .input-container select {
+    font-size: 16px;
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #000;
+    padding: 5px 0;
+    background-color: transparent;
+    outline: none;
+  }
+
+  .input-container .label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #000;
+    transition: all 0.3s ease;
+    pointer-events: none;
+  }
+
+  .input-container input:focus ~ .label,
+  .input-container input:valid ~ .label,
+  .input-container input[readonly] ~ .label,
+  .input-container select:focus ~ .label,
+  .input-container select:valid ~ .label {
+    top: -20px;
+    font-size: 16px;
+    color: #263238;
+  }
+
+  .input-container .underline {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: #263238;
+    transform: scaleX(0);
+    transition: all 0.3s ease;
+  }
+
+  .input-container input:focus ~ .underline,
+  .input-container input:valid ~ .underline {
+    transform: scaleX(1);
+  }
+
+  button {
+    --primary-color: #645bff;
+    --secondary-color: #fff;
+    --hover-color: #111;
+    --arrow-width: 10px;
+    --arrow-stroke: 2px;
+    box-sizing: border-box;
+    border: 0;
+    border-radius: 20px;
+    color: var(--secondary-color);
+    padding: 1em 1.8em;
+    background: var(--primary-color);
+    display: flex;
+    transition: 0.2s background;
+    align-items: center;
+    gap: 0.6em;
+    font-weight: bold;
+  }
+
+  button .arrow-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  button .arrow {
+    margin-top: 1px;
+    width: var(--arrow-width);
+    background: var(--primary-color);
+    height: var(--arrow-stroke);
+    position: relative;
+    transition: 0.2s;
+  }
+
+  button .arrow::before {
+    content: "";
+    box-sizing: border-box;
+    position: absolute;
+    border: solid var(--secondary-color);
+    border-width: 0 var(--arrow-stroke) var(--arrow-stroke) 0;
+    display: inline-block;
+    top: -3px;
+    right: 3px;
+    transition: 0.2s;
+    padding: 3px;
+    transform: rotate(-45deg);
+  }
+
+  button:hover {
+    background-color: var(--hover-color);
+  }
+
+  button:hover .arrow {
+    background: var(--secondary-color);
+  }
+
+  button:hover .arrow:before {
+    right: 0;
+  }
+`;
 
 export default UserProfile;

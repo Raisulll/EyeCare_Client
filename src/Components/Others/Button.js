@@ -1,8 +1,12 @@
 import React from "react";
-import "../App.css";
+import "./Button.css";
 
-const Button = () => {
-  return <button className="custom-button">Hover Me!</button>;
+const Button = ({ label, onClick }) => {
+  return (
+    <button className="custom-button" onClick={onClick}>
+      {label}
+    </button>
+  );
 };
 
 export default Button;

@@ -1,0 +1,34 @@
+/* Global styles for OTP page */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+.otpInput {
+  font-size: 20px;
+  text-align: center;
+  margin: 0 5px;
+  padding: 5px;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  transition: border-color 0.3s ease;
+}
+
+.otpInput:focus {
+  border-color: #645bff;
+}
+
+.containerColor {
+  background-color: #f0f0f0;
+}
+
+.cardcolor {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
