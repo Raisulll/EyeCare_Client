@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 import styled from "styled-components";
 import CartItem from "./CartItem";
 import { toast, ToastContainer } from "react-toastify";
@@ -39,7 +38,7 @@ const Cart = () => {
         setDeliveryAgencies(temp);
 
         if (temp.length > 0) {
-          setSelectedAgency(temp[0]); // Set default selected agency
+          setSelectedAgency(temp[0]); 
         }
       } catch (error) {
         console.error("Error fetching delivery agencies:", error);
@@ -49,7 +48,7 @@ const Cart = () => {
   }, []);
 
   useEffect(() => {
-    updateTotalAmount(selectedAgency); // Recalculate total whenever cart or agency changes
+    updateTotalAmount(selectedAgency); 
   }, [cartItems, selectedAgency]);
 
   const updateQuantity = (productId, newQuantity) => {
@@ -94,11 +93,7 @@ const Cart = () => {
       });
       return;
     }
-
-    const uuid = uuidv4();
-    const sixDigitOrderId = uuid.substr(0, 6);
     const data = {
-      orderId: sixDigitOrderId,
       patientId: localdata.PatientId,
       deliveryAgencyId: selectedAgency.DELIVERY_AGENCY_ID,
     };

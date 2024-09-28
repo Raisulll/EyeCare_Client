@@ -37,6 +37,7 @@ import ProductDetails from "./Components/Patient/ProductDetails";
 import AllDoctors from "./Components/Others/AllDoctors";
 import AllAppointments from "./Components/Patient/AllAppointments";
 import ViewDoctorProfile from "./Components/Doctor/ViewDoctorProfile";
+import AddToSupply from "./Components/Others/AddProductSupply";
 function App() {
   return (
     <div className="App">
@@ -85,6 +86,7 @@ function AppContent() {
             <Route path="/deliveryprofile" element={<DeliveryProfile />} />
             <Route path="/alldoctors" element={<AllDoctors />} />
             <Route path="/allappointments" element={<AllAppointments />} />
+            <Route path="/addproducttosupply" element={<AddToSupply />} />
             <Route path="/viewdoctorprofile/:doctorId" element={<ViewDoctorProfile />} />
           </Route>
 

@@ -39,9 +39,9 @@ const UserProfile = (props) => {
         } else {
           setDateOfBirth(`${year}-0${month}-${dt}`);
         }
-        setDistrict(temp.PATIENT_DISTRICT);
-        setArea(temp.PATIENT_AREA);
-        setRoadNumber(temp.PATIENT_ROADNUMBER);
+        setDistrict(temp.PATIENT_ADDRESS.PATIENT_DISTRICT);
+        setArea(temp.PATIENT_ADDRESS.PATIENT_AREA);
+        setRoadNumber(temp.PATIENT_ADDRESS.PATIENT_ROADNUMBER);
       } catch (error) {
         console.log(error);
       }

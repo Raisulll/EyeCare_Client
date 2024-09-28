@@ -10,9 +10,9 @@ function NavigationBar(props) {
   const navigate = useNavigate();
   const localdata = JSON.parse(localStorage.getItem("user"));
   let jsonUser = props.user;
-  let useType = "nai";
+  let userType = "nai";
   if (localdata) {
-    useType = localdata.usertype;
+    userType = localdata.usertype;
   }
   if (typeof props.user === "string") {
     jsonUser = JSON.parse(props.user);
@@ -41,12 +41,15 @@ function NavigationBar(props) {
   };
 
   const userprofile = () => {
-    console.log(useType);
-    if (useType === "doctor") {
+    console.log(userType);
+    if (userType === "doctor") {
       navigate("/doctorprofile");
-    } else if (useType === "hospital") {
+    } else if (userType === "hospital") {
       navigate("/hospitalprofile");
-    } else {
+    } else if (userType === "shop") {
+      navigate("/shopprofile");
+    }
+    else {
       navigate("/profile");
     }
   };
@@ -63,25 +66,30 @@ function NavigationBar(props) {
         <h2 className="navTitle">EyeCare</h2>
       </div>
       <div className="navLinks">
-        {useType === "patient" && (
+        {userType === "patient" && (
           <li>
             <Link to="/home">Home</Link>
           </li>
         )}
-        {useType === "patient" && (
+        {userType === "patient" && (
           <li>
             <Link to="/products">Products</Link>
           </li>
         )}
-        {useType === "patient" && (
+        {userType === "patient" && (
           <li>
             <Link to="alldoctors">Doctors</Link>
+          </li>
+        )}
+        {userType === "admin" && (
+          <li>
+            <Link to="/addproducttosupply">Add Product</Link>
           </li>
         )}
       </div>
       {user && (
         <div className="navIcons">
-          {useType === "patient" && (
+          {userType === "patient" && (
             <li>
               <Link to="/cart">
                 <i className="bi bi-bag navIcon"></i>
