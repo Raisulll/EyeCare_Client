@@ -8,14 +8,19 @@ function NavigationBar(props) {
   const [user, setUser] = useState(localStorage.getItem("user"));
   const [dropdownActive, setDropdownActive] = useState(false);
   const navigate = useNavigate();
+  const localdata = JSON.parse(localStorage.getItem("user"));
   let jsonUser = props.user;
+  let useType = "nai";
+  if (localdata) {
+    useType = localdata.usertype;
+  }
   if (typeof props.user === "string") {
     jsonUser = JSON.parse(props.user);
   } else {
     jsonUser = props.user;
   }
 
-  console.log(jsonUser);
+  // console.log(jsonUser);
 
   useEffect(() => {
     const handleStorageChange = () => {
@@ -36,10 +41,10 @@ function NavigationBar(props) {
   };
 
   const userprofile = () => {
-    const userType = localStorage.getItem("usertype");
-    if (userType === "doctor") {
+    console.log(useType);
+    if (useType === "doctor") {
       navigate("/doctorprofile");
-    } else if (userType === "hospital") {
+    } else if (useType === "hospital") {
       navigate("/hospitalprofile");
     } else {
       navigate("/profile");
@@ -50,7 +55,6 @@ function NavigationBar(props) {
     setDropdownActive(!dropdownActive);
   };
 
-  const userType = localStorage.getItem("usertype"); // Get the userType from localStorage
 
   return (
     <header className="navHeader">
@@ -59,35 +63,43 @@ function NavigationBar(props) {
         <h2 className="navTitle">EyeCare</h2>
       </div>
       <div className="navLinks">
-        <li>
-          <Link to="/home">Home</Link>
-        </li>
-        <li>
-          <Link to="/products">Products</Link>
-        </li>
-        <li>
-          <Link to="alldoctors">Doctors</Link>
-        </li>
+        {useType === "patient" && (
+          <li>
+            <Link to="/home">Home</Link>
+          </li>
+        )}
+        {useType === "patient" && (
+          <li>
+            <Link to="/products">Products</Link>
+          </li>
+        )}
+        {useType === "patient" && (
+          <li>
+            <Link to="alldoctors">Doctors</Link>
+          </li>
+        )}
       </div>
       {user && (
         <div className="navIcons">
-          <li>
-            <Link to="/cart">
-              <i className="bi bi-bag navIcon"></i>
-            </Link>
-          </li>
+          {useType === "patient" && (
+            <li>
+              <Link to="/cart">
+                <i className="bi bi-bag navIcon"></i>
+              </Link>
+            </li>
+          )}
           <li className={`dropdown ${dropdownActive ? "active" : ""}`}>
             <Link to="#" className="navProfileIcon" onClick={toggleDropdown}>
               <img
-                src={jsonUser.patientImage}
+                src={jsonUser?.patientImage}
                 alt="Profile"
                 className="navProfileImage"
               />
             </Link>
             <div className="dropdownContent">
-              <Link to="/profile" onClick={userprofile}>
+              <button className="navBtn1" onClick={userprofile}>
                 View Profile
-              </Link>
+              </button>
               <StyledWrapper>
                 <button className="noselect" onClick={handleLogout}>
                   <span className="text">Logout</span>

@@ -13,14 +13,7 @@ const AllDoctors = () => {
         if (!response.ok) throw new Error("Failed to fetch doctors");
         const data = await response.json();
         console.log("data", data);
-        const formattedDoctors = data.map((doctor) => ({
-          id: doctor.DOCTOR_ID,
-          name: doctor.DOCTOR_NAME,
-          experience: doctor.DOCTOR_SPECIALITY,
-          payment: doctor.DOCTOR_PAYMENT,
-          image: doctor.DOCTOR_IMAGE,
-        }));
-        setDoctors(formattedDoctors);
+        setDoctors(data);
       } catch (error) {
         console.error("Error fetching doctors:", error);
         alert(error.message);
@@ -39,6 +32,13 @@ const AllDoctors = () => {
       );
       const data = await response.json();
       console.log("Search results:", data);
+      const formattedDoctors = data.map((doctor) => ({
+        id: doctor.DOCTOR_ID,
+        name: doctor.DOCTOR_NAME,
+        experience: doctor.DOCTOR_SPECIALITY,
+        payment: doctor.DOCTOR_PAYMENT,
+        image: doctor.DOCTOR_IMAGE,
+      }));
       setDoctors(data);
       console.log("Doctors fetched successfully", doctors);
     } catch (error) {
@@ -96,10 +96,10 @@ const AllDoctors = () => {
             <DoctorCard
               className="doctor-card"
               key={index}
-              image={doctor.image}
-              name={doctor.name}
-              role={doctor.experience}
-              doctorId={doctor.id}
+              image={doctor.DOCTOR_IMAGE}
+              name={doctor.DOCTOR_NAME}
+              role={doctor.DOCTOR_SPECIALITY}
+              doctorId={doctor.DOCTOR_ID}
             />
           ))}
       </div>

@@ -21,14 +21,7 @@ const Home = () => {
         const response = await fetch("http://localhost:5000/api/doctors");
         if (!response.ok) throw new Error("Failed to fetch doctors");
         const data = await response.json();
-        const formattedDoctors = data.map((doctor) => ({
-          id: doctor.DOCTOR_ID,
-          name: doctor.DOCTOR_NAME,
-          experience: doctor.DOCTOR_SPECIALITY,
-          payment: doctor.DOCTOR_PAYMENT,
-          image: doctor.DOCTOR_IMAGE || "https://via.placeholder.com/100",
-        }));
-        setDoctors(formattedDoctors);
+        setDoctors(data);
         console.log(doctors);
       } catch (error) {
         console.error("Error fetching doctors:", error);
@@ -47,8 +40,6 @@ const Home = () => {
         data.forEach((appointment) => {
           const date = new Date(appointment.APPOINTMENT_DATE);
           appointment.APPOINTMENT_DATE = date.toDateString();
-          // const time = new Date(appointment.APPOINTMENT_TIME);
-          // appointment.APPOINTMENT_TIME = time.toLocaleTimeString();
         });
         setPreviousAppointments(data);
       } catch (error) {
@@ -89,13 +80,13 @@ const Home = () => {
     <div className="home-container">
       <div className="doctor-image">
         <div className="doctor-list" onClick={() => navigate("/alldoctors")}>
-          {doctors.slice(0, 3).map((doctor) => (
+          {doctors.slice(0, 3).map((doctor,index) => (
             <DoctorCard
-              key={doctor.id}
-              image={doctor.image}
-              name={doctor.name}
-              role={doctor.experience}
-              doctorId={doctor.id}
+              key={index}
+              image={doctor.DOCTOR_IMAGE}
+              name={doctor.DOCTOR_NAME}
+              role={doctor.DOCTOR_SPECIALITY}
+              doctorId={doctor.DOCTOR_ID}
             />
           ))}
           <button className="home-button" onClick={() => navigate("/alldoctors")}>
@@ -114,9 +105,9 @@ const Home = () => {
           className="doctor-list"
           onClick={() => navigate("/allappointments")}
         >
-          {upcomingAppointments.slice(0, 3).map((appointment) => (
+          {upcomingAppointments.slice(0, 3).map((appointment, index) => (
             <DoctorAppointmentCard
-              key={appointment.APPOINTMENT_ID}
+              key={index}
               image={appointment.DOCTOR_IMAGE}
               name={appointment.DOCTOR_NAME}
               date={appointment.APPOINTMENT_DATE}

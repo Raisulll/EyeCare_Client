@@ -163,3 +163,21 @@ a {
   object-fit: cover;
   aspect-ratio: 1/1;
 }
+
+.navBtn1 {
+  all:unset;
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  padding: 0.5em 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 80%;
+  text-align: center;
+  /* align-items: center; */
+  margin-bottom: 5px;
+}
+.navBtn1:hover {
+  background-color: var(--blue-dark);
+}
+
