@@ -8,10 +8,17 @@
 }
 body {
     font-family: "Poppins", sans-serif;
-    /* background-color: #d7edf19f; */
+    /* background-color: #c74a199f; */
     /* background-color: #5291b081; */
     background-color: #7d848838;
     overflow-x: hidden;
+}
+
+main{
+  /* background-color: red; */
+  width: 100%;
+  /* display: flex; */
+  /* justify-content: center; */
 }
 
 .circles {

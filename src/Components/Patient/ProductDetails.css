@@ -1,0 +1,51 @@
+.div-one{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  width: 100%;
+  height: 75vh;
+  /* border: 2px solid black; */
+}
+
+.container{
+  display: flex;
+  margin: 20px;
+  height: 100%;
+  width: 100%;
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  border-radius: 20px;
+  align-items: center;
+}
+.container .div-two{
+  margin: 20px;
+  border-radius: 20px;
+  height: 93%;
+  width: 60%;
+  object-fit: contain;
+  z-index: -1;
+  /* border: 5px solid black; */
+}
+
+
+.div-two img{
+  width: 100%;
+  /* height: 100%; */
+  object-fit: contain;
+  border-radius: 20px;
+  border: 2px solid rgb(119, 116, 116);
+}
+
+.div-three{
+  height: 520px;
+  width: 450px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+
+
+

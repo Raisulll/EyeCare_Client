@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./Card.css";
 const Card = ({
   title,
@@ -9,15 +10,17 @@ const Card = ({
   productId,
   quantity,
   image_url,
+  shopName,
 }) => {
-  const handleSubmit = async () => {
-    console.log("Add to cart clicked");
-    console.log(userId, productId, shopId);
-    const data = {
-      userId: userId,
-      productId: productId,
-      shopId: shopId,
-    };
+  const navigate = useNavigate();
+  // const handleSubmit = async () => {
+  //   console.log("Add to cart clicked");
+  //   console.log(userId, productId, shopId);
+  //   const data = {
+  //     userId: userId,
+  //     productId: productId,
+  //     shopId: shopId,
+  //   };
 
     // try {
     //   const result = await fetch("http://localhost:5000/sets/addtocart", {
@@ -36,10 +39,24 @@ const Card = ({
     // } catch (error) {
     //   console.error("Error adding product to cart:", error);
     // }
+  // };
+  const goToProductDetails = () => {
+    const data = {
+      title: title,
+      description: description,
+      price: price,
+      image_url: image_url,
+      shopId: shopId,
+      userId: userId,
+      productId: productId,
+      quantity: quantity,
+      shopName: shopName
+    };
+    navigate("/productDetails", { state: data });
   };
 
   return (
-    <div className="cardWrapper" onClick={handleSubmit}>
+    <div className="cardWrapper" onClick={goToProductDetails}>
       <img src={image_url} alt="product" className="cardImage" />
       <div className="PriceTag">
         <div>

@@ -1,0 +1,30 @@
+.doctor-image{
+    width: 100%;
+    height: 370px;
+    display: flex;
+}
+
+.doctor-image .doctor-list{
+    width: 70%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    /* border: 2px solid #322c4d; */
+}
+
+.home-button{
+  all:unset;
+  cursor: pointer;
+}
+.home-button:hover{
+  color: #322c4d;
+}
+
+.doctor-image .image-home1{
+    width: 30%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

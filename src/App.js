@@ -33,7 +33,10 @@ import ResetPassword from "./Components/Signin-Signup/ResetPassword";
 import ShopSignUp from "./Components/Signin-Signup/ShopSignUp";
 import SignUp from "./Components/Signin-Signup/SignUp";
 import SignIn from "./Components/Signin-Signup/Signin";
-
+import ProductDetails from "./Components/Patient/ProductDetails";
+import AllDoctors from "./Components/Others/AllDoctors";
+import AllAppointments from "./Components/Patient/AllAppointments";
+import ViewDoctorProfile from "./Components/Doctor/ViewDoctorProfile";
 function App() {
   return (
     <div className="App">
@@ -50,7 +53,7 @@ function AppContent() {
   return (
     <>
       {/* Render Nav only if not on the landing page */}
-      {location.pathname !== "/" && <Nav user={user} />}
+      {location.pathname !== "/"  && <Nav user={user} />}
 
       <main>
         <Routes>
@@ -80,6 +83,9 @@ function AppContent() {
             <Route path="/products" element={<Products />} />
             <Route path="/card" element={<Card />} />
             <Route path="/deliveryprofile" element={<DeliveryProfile />} />
+            <Route path="/alldoctors" element={<AllDoctors />} />
+            <Route path="/allappointments" element={<AllAppointments />} />
+            <Route path="/viewdoctorprofile/:doctorId" element={<ViewDoctorProfile />} />
           </Route>
 
           <Route path="/" element={<Banner />} />
@@ -101,6 +107,7 @@ function AppContent() {
           <Route path="/DoctorAppointment" element={<DoctorAppointments />} />
           <Route path="/GetAppointment" element={<GetAppointment />} />
           <Route path="/deliverysignup" element={<DeliverySignUp />} />
+          <Route path="/productdetails" element={<ProductDetails />} />
         </Routes>
       </main>
     </>

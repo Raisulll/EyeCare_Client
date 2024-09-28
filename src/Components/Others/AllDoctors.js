@@ -1,25 +1,33 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import Card from "./../Others/Card";
-import "./Products.css";
+import DoctorCard from "./DoctorCard";
+import "./AllDoctors.css";
 
-const Products = () => {
-  const userId = JSON.parse(localStorage.getItem("user")).PatientId;
-  console.log(userId);
-  const [products, setProducts] = useState([]);
+const AllDoctors = () => {
+  const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
+    const fetchDoctors = async () => {
       try {
-        const response = await fetch(`http://localhost:5000/gets/products`);
+        const response = await fetch("http://localhost:5000/api/doctors");
+        if (!response.ok) throw new Error("Failed to fetch doctors");
         const data = await response.json();
-        setProducts(data);
-        console.log("Products fetched successfully", data);
+        console.log("data", data);
+        const formattedDoctors = data.map((doctor) => ({
+          id: doctor.DOCTOR_ID,
+          name: doctor.DOCTOR_NAME,
+          experience: doctor.DOCTOR_SPECIALITY,
+          payment: doctor.DOCTOR_PAYMENT,
+          image: doctor.DOCTOR_IMAGE,
+        }));
+        setDoctors(formattedDoctors);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error("Error fetching doctors:", error);
+        alert(error.message);
       }
     };
-    fetchProducts();
+
+    fetchDoctors();
   }, []);
 
   const handleSearch = async (e) => {
@@ -27,25 +35,19 @@ const Products = () => {
     console.log("Search:", search);
     try {
       const response = await fetch(
-        `http://localhost:5000/gets/productsearch?search=${search}`
+        `http://localhost:5000/api/doctorsearch?search=${search}`
       );
       const data = await response.json();
       console.log("Search results:", data);
-
-      // Set the new products data
-      setProducts(data);
-
-      // Log the new data (instead of products)
-      console.log("Products fetched successfully", products);
+      setDoctors(data);
+      console.log("Doctors fetched successfully", doctors);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
-
-
   return (
-    <div className="products-container">
+    <div className="home-container">
       <div className="search-bar">
         <StyledWrapper>
           <form className="form">
@@ -88,27 +90,18 @@ const Products = () => {
           </form>
         </StyledWrapper>
       </div>
-      <div className="products">
-        {products.length > 0 &&
-          products.map((product, index) => {
-            console.log('number of products: ', products);
-            return (
-               <Card
-                 className="product-card"
-                 key={index}
-                 title={product.PRODUCT_NAME}
-                 description={product.PRODUCT_DESCRIPTION}
-                 price={product.PRODUCT_PRICE}
-                 shopId={product.SHOP_ID}
-                 userId={userId}
-                 productId={product.PRODUCT_ID}
-                 quantity={product.QUANTITY}
-                 image_url={product.PRODUCT_IMAGE}
-                 shopName={product.SHOP_NAME}
-               />
-              //  <div>helllo</div>
-            );
-          })}
+      <div className="doctor-list">
+        {doctors &&
+          doctors.map((doctor, index) => (
+            <DoctorCard
+              className="doctor-card"
+              key={index}
+              image={doctor.image}
+              name={doctor.name}
+              role={doctor.experience}
+              doctorId={doctor.id}
+            />
+          ))}
       </div>
     </div>
   );
@@ -229,4 +222,4 @@ const StyledWrapper = styled.div`
   }
 `;
 
-export default Products;
+export default AllDoctors;

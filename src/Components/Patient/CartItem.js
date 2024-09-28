@@ -1,7 +1,10 @@
 import React, { useState } from "react";
-import { Button, Card, Col, Row } from "react-bootstrap";
+import "./CartItem.css";
 
 const CartItem = ({
+  shopId,
+  shopName,
+  productImage,
   productName,
   productPrice,
   initialQuantity,
@@ -19,6 +22,7 @@ const CartItem = ({
         productId: productId,
         quantity: newQuantity,
         patientId: JSON.parse(localStorage.getItem("user")).PatientId,
+        shopId: shopId
       };
       console.log(data.patientId, data.productId, data.quantity);
       try {
@@ -42,12 +46,13 @@ const CartItem = ({
     }
   };
 
-  const onRemove = async () => { 
+  const onRemove = async () => {
     const data = {
       productId: productId,
       patientId: JSON.parse(localStorage.getItem("user")).PatientId,
+      shopId:shopId
     };
-    console.log("data",data.patientId, data.productId);
+    console.log("data", data.patientId, data.productId, data.shopId);
     try {
       const result = await fetch("http://localhost:5000/sets/removefromcart", {
         method: "POST",
@@ -95,43 +100,25 @@ const CartItem = ({
   };
 
   return (
-    <Card className="mb-3">
-      <Card.Body>
-        <Row>
-          <Col md={6}>
-            <Card.Title>{productName}</Card.Title>
-          </Col>
-          <Col md={2}>
-            <Card.Text>${productPrice.toFixed(2)}</Card.Text>
-          </Col>
-          <Col md={2}>
-            <div className="quantity-control">
-              <Button variant="outline-secondary" onClick={decreaseQuantity}>
-                -
-              </Button>
-              <span className="mx-2">{quantity}</span>
-              <Button variant="outline-secondary" onClick={increaseQuantity}>
-                +
-              </Button>
-            </div>
-          </Col>
-          <Col md={2}>
-            <Card.Text>
-              Total: ${(productPrice * quantity).toFixed(2)}
-            </Card.Text>
-          </Col>
-          <Col md={2}>
-            <Button
-              variant="outline-danger"
-              onClick={onRemove}
-              style={{ float: "right" }}
-            >
-              Remove
-            </Button>
-          </Col>
-        </Row>
-      </Card.Body>
-    </Card>
+    <div className="cart-item">
+      <div className="cart-item-image">
+        <img src={productImage} alt={productName} />
+      </div>
+      <div className="cart-item-details">
+        <h3>{productName}</h3>
+        <span>{shopName}</span>
+        <p>${productPrice.toFixed(2)}</p>
+      </div>
+      <div className="cart-item-quantity">
+        <button onClick={increaseQuantity}>+</button>
+        <span>{quantity}</span>
+        {quantity > 1 ? (
+          <button onClick={decreaseQuantity}>-</button>
+        ) : (
+          <span class="material-symbols-outlined cart-item-remove" onClick={onRemove}>delete</span>
+        )}
+      </div>
+    </div>
   );
 };
 

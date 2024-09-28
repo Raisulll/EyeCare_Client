@@ -50,6 +50,8 @@ function NavigationBar(props) {
     setDropdownActive(!dropdownActive);
   };
 
+  const userType = localStorage.getItem("usertype"); // Get the userType from localStorage
+
   return (
     <header className="navHeader">
       <div className="navLogoname">
@@ -63,6 +65,9 @@ function NavigationBar(props) {
         <li>
           <Link to="/products">Products</Link>
         </li>
+        <li>
+          <Link to="alldoctors">Doctors</Link>
+        </li>
       </div>
       {user && (
         <div className="navIcons">
@@ -73,7 +78,6 @@ function NavigationBar(props) {
           </li>
           <li className={`dropdown ${dropdownActive ? "active" : ""}`}>
             <Link to="#" className="navProfileIcon" onClick={toggleDropdown}>
-              {/* <i className="bi bi-person-circle navIcon"></i> */}
               <img
                 src={jsonUser.patientImage}
                 alt="Profile"

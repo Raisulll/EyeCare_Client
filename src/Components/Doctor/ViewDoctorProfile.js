@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import "../Patient/UserProfile.css";
 
-const DoctorProfile = () => {
+const ViewDoctorProfile = () => {
+  const { doctorId } = useParams(); // Get doctorId from URL parameters
   const navigate = useNavigate();
   const [doctorData, setDoctorData] = useState({});
   const [imagePreview, setImagePreview] = useState(null);
@@ -15,17 +16,22 @@ const DoctorProfile = () => {
   const [district, setDistrict] = useState("");
   const [area, setArea] = useState("");
   const [roadNumber, setRoadNumber] = useState("");
-  const [specilaity, setSpeciality] = useState("");
+  const [speciality, setSpeciality] = useState("");
   const [hospital, setHospital] = useState("");
   const [timeslot, setTimeslot] = useState("");
+  const [times, setTimes] = useState([]);
+  const [appointmentDate, setAppointmentDate] = useState("");
+  const [selectedTime, setSelectedTime] = useState("");
+  const [remuneration, setRemuneration] = useState(0);
 
   const localdata = JSON.parse(localStorage.getItem("user"));
+  console.log(localdata);
 
   useEffect(() => {
     const fetchDoctorData = async () => {
       try {
         const doctor = await fetch(
-          `http://localhost:5000/gets/doctordata?doctorId=${localdata.doctorId}`
+          `http://localhost:5000/gets/doctordata?doctorId=${doctorId}`
         );
         const temp = await doctor.json();
         setDoctorData(temp);
@@ -39,13 +45,65 @@ const DoctorProfile = () => {
         setSpeciality(temp.DOCTOR_SPECIALITY);
         setHospital(temp.HOSPITAL_NAME);
         setTimeslot(temp.DOCTOR_TIMESLOT);
+        setRemuneration(temp.DOCTOR_PAYMENT);
         console.log(temp);
+        setTimes(generateTimeSlots(temp.DOCTOR_TIMESLOT));
+        console.log("Time slot:", times);
       } catch (error) {
         console.log(error);
       }
     };
+
     fetchDoctorData();
-  }, []);
+    console.log("Time slot:", times);
+  }, [doctorId]);
+
+  const generateTimeSlots = (timeRange) => {
+    console.log("Time range:", timeRange);
+
+    if (
+      !timeRange ||
+      typeof timeRange !== "string" ||
+      !timeRange.includes("-")
+    ) {
+      console.error("Invalid time range provided:", timeRange);
+      return [];
+    }
+
+    const slots = [];
+    let [startTime, endTime] = timeRange.split("-").map((time) => time.trim());
+
+    if (!startTime || !endTime) {
+      console.error("Invalid start or end time:", startTime, endTime);
+      return [];
+    }
+
+    console.log("Converted time range:", startTime, endTime);
+    console.log("Type of startTime:", typeof startTime);
+    let newStartTime = parseInt(startTime);
+    let newEndTime = parseInt(endTime);
+    let turn = 1;
+
+    while (newStartTime < newEndTime) {
+      if (turn === 1) {
+        slots.push(
+          `${newStartTime.toString()}:00 PM to ${newStartTime.toString()}:30 PM`
+        );
+        turn = 2;
+      } else {
+        slots.push(
+          `${newStartTime.toString()}:30 PM to ${(
+            newStartTime + 1
+          ).toString()}:00 PM`
+        );
+        turn = 1;
+        newStartTime++;
+      }
+    }
+
+    console.log("Generated slots:", slots);
+    return slots;
+  };
 
   const handleImageClick = () => {
     document.getElementById("file").click();
@@ -68,7 +126,7 @@ const DoctorProfile = () => {
               },
               body: JSON.stringify({
                 imageBase64: base64String,
-                doctorId: localdata.doctorId,
+                doctorId: doctorId,
               }),
             }
           );
@@ -109,10 +167,23 @@ const DoctorProfile = () => {
     }
   };
 
-  const updateDoctorData = async () => {
-    console.log("updatePatientData");
-    if (phone.length !== 11) {
-      toast.error("Invalid Phone Number!", {
+  const handleConfirmAppointment = () => {
+    const data = {
+      doctor: doctorId,
+      time: selectedTime,
+      date: appointmentDate,
+      patientId: localdata.PatientId,
+    };
+    console.log("Appointment data:", data);
+    try {
+      fetch("http://localhost:5000/api/appointmentsdata", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data }),
+      });
+      toast.success("Appointment successfully booked!", {
         position: "top-right",
         autoClose: 2500,
         hideProgressBar: false,
@@ -122,58 +193,10 @@ const DoctorProfile = () => {
         progress: undefined,
         theme: "colored",
       });
-      return;
-    }
-
-    const data = {
-      doctorId: localdata.doctorId,
-      doctorName: fullName,
-      doctorMail: mail,
-      doctorPhone: phone,
-      doctorDistrict: district,
-      doctorArea: area,
-      doctorRoadNumber: roadNumber,
-      doctorSpeciality: specilaity,
-    };
-    console.log("Data:", data);
-    try {
-      const res = await fetch("http://localhost:5000/edit/doctorProfileData", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-
-      const result = await res.json();
-      if (res.ok) {
-        console.log("Patient data updated successfully:", result);
-        toast.success("Data Updated Successfully!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else {
-        console.error("Failed to update patient data:", result.message);
-        toast.error("Failed to update data!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
+      navigate("/home");
     } catch (error) {
-      console.error("Error updating patient data:", error);
-      toast.error("Error updating data!", {
+      console.error("Error booking appointment:", error);
+      toast.error("Failed to book appointment", {
         position: "top-right",
         autoClose: 2500,
         hideProgressBar: false,
@@ -185,7 +208,6 @@ const DoctorProfile = () => {
       });
     }
   };
-
   return (
     <div className="firstdiv">
       <ul className="circles">
@@ -219,7 +241,7 @@ const DoctorProfile = () => {
                 type="text"
                 id="fullName"
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                readOnly
                 required
               />
               <label htmlFor="fullName" className="label">
@@ -245,7 +267,7 @@ const DoctorProfile = () => {
                 type="text"
                 id="phoneNumber"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                readOnly
                 required
               />
               <label htmlFor="phoneNumber" className="label">
@@ -258,12 +280,12 @@ const DoctorProfile = () => {
             <div className="input-container">
               <input
                 type="text"
-                id="phoneNumber"
-                value={specilaity}
-                onChange={(e) => setSpeciality(e.target.value)}
+                id="speciality"
+                value={speciality}
+                readOnly
                 required
               />
-              <label htmlFor="phoneNumber" className="label">
+              <label htmlFor="speciality" className="label">
                 Doctor Speciality
               </label>
               <div className="underline" />
@@ -277,7 +299,7 @@ const DoctorProfile = () => {
                 type="text"
                 id="district"
                 value={district}
-                onChange={(e) => setDistrict(e.target.value)}
+                readOnly
                 required
               />
               <label htmlFor="district" className="label">
@@ -288,13 +310,7 @@ const DoctorProfile = () => {
           </StyledWrapper>
           <StyledWrapper>
             <div className="input-container">
-              <input
-                type="text"
-                id="area"
-                value={area}
-                onChange={(e) => setArea(e.target.value)}
-                required
-              />
+              <input type="text" id="area" value={area} readOnly required />
               <label htmlFor="area" className="label">
                 Area
               </label>
@@ -309,7 +325,7 @@ const DoctorProfile = () => {
                 type="text"
                 id="roadNumber"
                 value={roadNumber}
-                onChange={(e) => setRoadNumber(e.target.value)}
+                readOnly
                 required
               />
               <label htmlFor="roadNumber" className="label">
@@ -322,52 +338,99 @@ const DoctorProfile = () => {
             <div className="input-container">
               <input
                 type="text"
-                id="roadNumber"
+                id="hospital"
                 value={hospital}
-                onChange={(e) => setHospital(e.target.value)}
+                readOnly
                 required
               />
-              <label htmlFor="roadNumber" className="label">
+              <label htmlFor="hospital" className="label">
                 Hospital Name
               </label>
               <div className="underline" />
             </div>
           </StyledWrapper>
         </div>
-        <div className="vitorer-div last-div">
+        <div className="vitorer-div">
           <StyledWrapper>
             <div className="input-container">
               <input
                 type="text"
                 id="timeSlot"
                 value={timeslot}
-                onChange={(e) => setTimeslot(e.target.value)}
+                readOnly
                 required
               />
-              <label htmlFor="roadNumber" className="label">
+              <label htmlFor="timeSlot" className="label">
                 Time Slot
               </label>
               <div className="underline" />
             </div>
           </StyledWrapper>
+          <StyledWrapper>
+            <div className="input-container">
+              <input
+                type="text"
+                id="payment"
+                value={remuneration}
+                readOnly
+                required
+              />
+              <label htmlFor="remuneration" className="label">
+                Remuneration
+              </label>
+              <div className="underline" />
+            </div>
+          </StyledWrapper>
+        </div>
+        <div className="vitorer-div">
+          <StyledWrapper>
+            <div className="input-container">
+              <input
+                type="date"
+                id="appointmentDate"
+                value={appointmentDate}
+                onChange={(e) => setAppointmentDate(e.target.value)}
+                required
+                style={{ color: appointmentDate ? "black" : "transparent" }}
+              />
+              <label htmlFor="dateOfBirth" className="label">
+                Select Appointment Date
+              </label>
+              <div className="underline" />
+            </div>
+          </StyledWrapper>
+          <StyledWrapper>
+            <div className="input-container">
+              <select
+                id="selectTime"
+                value={selectedTime}
+                onChange={(e) => setSelectedTime(e.target.value)}
+                required
+              >
+                <option value="" disabled></option>
+                {times.map((time, index) => (
+                  <option key={index} value={time}>
+                    {time}
+                  </option>
+                ))}
+              </select>
+              <label htmlFor="gender" className="label">
+                Select Time Slot
+              </label>
+            </div>
+          </StyledWrapper>
+        </div>
+        <div className="vitorer-div last-div">
           <div className="button-div">
             <StyledWrapper>
-              <button onClick={updateDoctorData}>
-                Update
+              <button onClick={handleConfirmAppointment}>
+                Book Appointment
                 <div className="arrow-wrapper">
                   <div className="arrow" />
                 </div>
               </button>
             </StyledWrapper>
           </div>
-        </div>
-        <div className="navigation-buttons123">
-          <button onClick={() => navigate("/doctorappointments")}>
-            Appointments
-          </button>
-          <button onClick={() => navigate("/doctortransaction")}>
-            Transactions
-          </button>
         </div>
       </div>
     </div>
@@ -492,4 +555,4 @@ const StyledWrapper = styled.div`
   }
 `;
 
-export default DoctorProfile;
+export default ViewDoctorProfile;

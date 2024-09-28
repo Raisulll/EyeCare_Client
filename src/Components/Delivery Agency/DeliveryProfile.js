@@ -4,7 +4,7 @@ import { Card, Container, Row, Col, ListGroup, Button } from "react-bootstrap";
 const DeliveryProfile = () => {
   const [deliveryData, setDeliveryData] = useState({});
   const [orders, setOrders] = useState([]);
-  const deliveryId = 2; // Replace this with dynamic deliveryId if needed
+  const deliveryId = JSON.parse(localStorage.getItem("user")).deliveryId;
 
   useEffect(() => {
     // Fetch delivery agency data
@@ -14,8 +14,8 @@ const DeliveryProfile = () => {
           `http://localhost:5000/gets/deliverydata?deliveryId=${deliveryId}`
         );
         const temp = await delivery.json();
-        setDeliveryData(temp);
-        console.log("Delivery Data:", temp);
+        setDeliveryData(temp[0]);
+        console.log("Delivery Data1:", temp);
       } catch (error) {
         console.log("Error fetching delivery data:", error);
       }
