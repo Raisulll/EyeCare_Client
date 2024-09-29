@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import logo from "../../Assets/images/logo.png";
 import "./Nav.css";
+
 
 function NavigationBar(props) {
   const [user, setUser] = useState(localStorage.getItem("user"));
@@ -62,8 +62,13 @@ function NavigationBar(props) {
   return (
     <header className="navHeader">
       <div className="navLogoname">
-        <img className="navLogo" src={logo} alt="Logo" />
-        <h2 className="navTitle">EyeCare</h2>
+        <img
+          className="navLogo"
+          src={
+            "https://res.cloudinary.com/dnn7v3kkw/image/upload/v1727612629/EyeCare/wenuofr1cpp8qwuoo8m3.png"
+          }
+          alt="Logo"
+        />
       </div>
       <div className="navLinks">
         {userType === "patient" && (
@@ -86,6 +91,12 @@ function NavigationBar(props) {
             <Link to="/addproducttosupply">Add Product</Link>
           </li>
         )}
+        {userType === "shop" && (
+          <li>
+            <Link to="/orders">Orders</Link>
+          </li>
+        )
+        }
       </div>
       {user && (
         <div className="navIcons">
