@@ -1,11 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-// import "./HospitalProfile.css";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import styled from "styled-components";
 
 const HospitalProfile = () => {
   const navigate = useNavigate();
   const [hospitalData, setHospitalData] = useState([]);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [district, setDistrict] = useState("");
+  const [area, setArea] = useState("");
+  const [roadNumber, setRoadNumber] = useState("");
+  
   const localdata = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
@@ -17,6 +27,13 @@ const HospitalProfile = () => {
         );
         const temp = await hospital.json();
         setHospitalData(temp);
+        setImagePreview(temp.HOSPITAL_IMAGE);
+        setFullName(temp.HOSPITAL_NAME);
+        setEmail(temp.HOSPITAL_MAIL);
+        setPhone(temp.HOSPITAL_PHONE);
+        setDistrict(temp.HOSPITAL_DISTRICT);
+        setArea(temp.HOSPITAL_AREA);
+        setRoadNumber(temp.HOSPITAL_ROADNUMBER);
         console.log(temp);
       } catch (error) {
         console.log(error);
@@ -25,10 +42,67 @@ const HospitalProfile = () => {
     fetchHospitalData();
   }, []);
 
-  const handleClick = () => {
-    navigate("/schedulepage");
+  const handleImageClick = () => {
+    document.getElementById("file").click();
   };
 
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const base64String = reader.result;
+        setImagePreview(base64String);
+        try {
+          const res = await fetch(
+            "http://localhost:5000/upload/doctorProfile",
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                imageBase64: base64String,
+                doctorId: localdata.doctorId,
+              }),
+            }
+          );
+
+          const data = await res.json();
+          if (res.ok) {
+            console.log("Image uploaded successfully:", data);
+            toast.success("Image Upload Successful!", {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          } else {
+            console.error("Image upload failed:", data.message);
+            toast.error("Image Upload Failed", {
+              position: "top-right",
+              autoClose: 2500,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: false,
+              draggable: true,
+              progress: undefined,
+              theme: "colored",
+            });
+          }
+        } catch (error) {
+          console.error("Error uploading image:", error);
+          toast.error("Error uploading image.");
+        }
+      };
+
+      reader.readAsDataURL(file);
+    }
+  };
   const SeeMoreSttaf = () => {
     navigate("/staffpage");
   };

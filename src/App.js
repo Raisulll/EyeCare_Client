@@ -7,15 +7,20 @@ import DoctorEditProfile from "./Components/Doctor/DoctorEditProfile";
 import DoctorProfile from "./Components/Doctor/DoctorProfile";
 import DoctorTransaction from "./Components/Doctor/DoctorTransaction";
 import Prescription from "./Components/Doctor/Prescription";
+import ViewDoctorProfile from "./Components/Doctor/ViewDoctorProfile";
 import Hospital from "./Components/Hospital/Hospital";
+import AddToSupply from "./Components/Others/AddProductSupply";
+import AllDoctors from "./Components/Others/AllDoctors";
 import Banner from "./Components/Others/Banner";
 import Card from "./Components/Others/Card";
 import Home from "./Components/Others/Home";
 import Nav from "./Components/Others/Nav";
 import PrivateComponent from "./Components/Others/PrivateComponent";
+import AllAppointments from "./Components/Patient/AllAppointments";
 import Cart from "./Components/Patient/Cart";
 import GetAppointment from "./Components/Patient/GetAppointment";
 import PatientTransaction from "./Components/Patient/PatientTransaction";
+import ProductDetails from "./Components/Patient/ProductDetails";
 import Products from "./Components/Patient/Products";
 import UserProfile from "./Components/Patient/UserProfile";
 import ViewPrescription from "./Components/Patient/ViewPrescription";
@@ -33,11 +38,9 @@ import ResetPassword from "./Components/Signin-Signup/ResetPassword";
 import ShopSignUp from "./Components/Signin-Signup/ShopSignUp";
 import SignUp from "./Components/Signin-Signup/SignUp";
 import SignIn from "./Components/Signin-Signup/Signin";
-import ProductDetails from "./Components/Patient/ProductDetails";
-import AllDoctors from "./Components/Others/AllDoctors";
-import AllAppointments from "./Components/Patient/AllAppointments";
-import ViewDoctorProfile from "./Components/Doctor/ViewDoctorProfile";
-import AddToSupply from "./Components/Others/AddProductSupply";
+import ShopOrder from "./Components/Shop/ShopOrders";
+import DeliveryOrder from "./Components/Delivery Agency/DeliveryOrder";
+
 function App() {
   return (
     <div className="App">
@@ -87,7 +90,9 @@ function AppContent() {
             <Route path="/alldoctors" element={<AllDoctors />} />
             <Route path="/allappointments" element={<AllAppointments />} />
             <Route path="/addproducttosupply" element={<AddToSupply />} />
+            <Route path="/orders" element={<ShopOrder />} />
             <Route path="/viewdoctorprofile/:doctorId" element={<ViewDoctorProfile />} />
+            <Route path="/deliveryorders" element={<DeliveryOrder />} />
           </Route>
 
           <Route path="/" element={<Banner />} />

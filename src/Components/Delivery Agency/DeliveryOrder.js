@@ -1,10 +1,8 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, Button, ListGroup } from "react-bootstrap";
-import "./shoporder.css";
+import "../Shop/shoporder.css";
 
-
-const ShopOrders = () => {
+const DeliveryOrder = () => {
   const [order, setOrder] = useState([]);
   const localdata = JSON.parse(localStorage.getItem("user"));
 
@@ -12,17 +10,19 @@ const ShopOrders = () => {
     const fetchOrders = async () => {
       try {
         const orders = await fetch(
-          `http://localhost:5000/gets/ordersforshop?shopId=${localdata.ShopId}`
+          `http://localhost:5000/gets/ordersfordelivery?deliveryId=${localdata.deliveryId}`
         );
         const temp = await orders.json();
-        // Group orders by ORDER_ID
-        //format the date
+
+        // Format the date
         temp.forEach((order) => {
           const date = new Date(order.ORDER_DATE);
           order.ORDER_DATE = `${date.getDate()}/${
             date.getMonth() + 1
           }/${date.getFullYear()}`;
         });
+
+        // Group orders by ORDER_ID
         const groupedOrders = temp.reduce((acc, order) => {
           const { ORDER_ID } = order;
           if (!acc[ORDER_ID]) {
@@ -31,6 +31,8 @@ const ShopOrders = () => {
               PATIENT_NAME: order.PATIENT_NAME,
               ORDER_DATE: order.ORDER_DATE,
               DELIVERY_AGENCY_NAME: order.DELIVERY_AGENCY_NAME,
+              PATIENT_ADDRESS: order.PATIENT_ADDRESS, 
+              PATIENT_PHONE: order.PATIENT_PHONE,
               products: [],
             };
           }
@@ -40,54 +42,51 @@ const ShopOrders = () => {
           });
           return acc;
         }, {});
+
         setOrder(Object.values(groupedOrders));
-        console.log(Object.values(groupedOrders));
       } catch (error) {
         console.log(error);
       }
     };
     fetchOrders();
-  }, []);
+  }, [localdata.deliveryId]);
 
-  const acceptOrder = async (orderId) => {
+  const deliverOrder = async (orderId) => {
     try {
-      const response = await fetch(`http://localhost:5000/sets/acceptorder`, {
+      const response = await fetch(`http://localhost:5000/sets/done`, {
         method: "POST",
         body: JSON.stringify({ orderId }),
         headers: {
           "Content-Type": "application/json",
         },
       });
-      if (response.status === 200) {
-        setOrder((prevOrders) =>
-          prevOrders.filter((order) => order.ORDER_ID !== orderId)
-        );
-      }
     } catch (error) {
-      console.error("Error accepting order:", error);
+      console.log(error);
     }
   };
 
   return (
     <div className="order-div">
       {order.map((order) => (
-        <Card key={order.ORDER_ID} style={{ width: "18rem" }}>
+        <Card key={order.ORDER_ID} className="order-card">
           <Card.Body className="cardbody">
             <Card.Title>Order ID: {order.ORDER_ID}</Card.Title>
-            {localdata.usertype === "shop" && (
-              <Card.Subtitle className="mb-2 text-muted">
-                Patient Name: {order.PATIENT_NAME}
-              </Card.Subtitle>
-            )}
+            <Card.Subtitle className="mb-2 text-muted">
+              Patient Name: {order.PATIENT_NAME}
+            </Card.Subtitle>
+            <Card.Subtitle className="mb-2 text-muted">
+              Patient Phone: {order.PATIENT_PHONE}
+            </Card.Subtitle>
+            <Card.Subtitle className="mb-2 text-muted">
+              Patient Address:{" "}
+              {`${order.PATIENT_ADDRESS.PATIENT_ROADNUMBER}, ${order.PATIENT_ADDRESS.PATIENT_AREA}, ${order.PATIENT_ADDRESS.PATIENT_DISTRICT}`}
+            </Card.Subtitle>
             <Card.Subtitle className="mb-2 text-muted">
               Order Date: {order.ORDER_DATE}
             </Card.Subtitle>
-            <Card.Subtitle className="mb-2 text-muted">
-              Agency: {order.DELIVERY_AGENCY_NAME}
-            </Card.Subtitle>
             <ListGroup>
-              {order.products.map((product) => (
-                <ListGroup.Item key={product.PRODUCT_NAME}>
+              {order.products.map((product, index) => (
+                <ListGroup.Item key={index}>
                   {product.PRODUCT_NAME} - {product.ORDER_QUANTITY}
                 </ListGroup.Item>
               ))}
@@ -95,9 +94,9 @@ const ShopOrders = () => {
             <Button
               variant="primary"
               className="acceptorder"
-              onClick={() => acceptOrder(order.ORDER_ID)}
+              onClick={() => deliverOrder(order.ORDER_ID)}
             >
-              Accept Order
+              Mark Delivered
             </Button>
           </Card.Body>
         </Card>
@@ -106,4 +105,4 @@ const ShopOrders = () => {
   );
 };
 
-export default ShopOrders;
+export default DeliveryOrder;

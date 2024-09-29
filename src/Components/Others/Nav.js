@@ -48,6 +48,8 @@ function NavigationBar(props) {
       navigate("/hospitalprofile");
     } else if (userType === "shop") {
       navigate("/shopprofile");
+    } else if (userType === "delivery") {
+      navigate("/deliveryprofile");
     }
     else {
       navigate("/profile");
@@ -95,8 +97,12 @@ function NavigationBar(props) {
           <li>
             <Link to="/orders">Orders</Link>
           </li>
-        )
-        }
+        )}
+        {userType === "delivery" && (
+          <li>
+            <Link to="/deliveryorders">Orders</Link>
+          </li>
+        )}
       </div>
       {user && (
         <div className="navIcons">
