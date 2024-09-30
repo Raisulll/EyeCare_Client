@@ -96,8 +96,10 @@ const Cart = () => {
     const data = {
       patientId: localdata.PatientId,
       deliveryAgencyId: selectedAgency.DELIVERY_AGENCY_ID,
+      amount : totalAmount,
     };
 
+    console.log("data", data);
     try {
       const result = await fetch("http://localhost:5000/sets/placeorder", {
         method: "POST",

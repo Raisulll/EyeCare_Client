@@ -52,6 +52,7 @@ const DeliveryOrder = () => {
   }, [localdata.deliveryId]);
 
   const deliverOrder = async (orderId) => {
+    console.log(`Delivering order ${orderId}...`);
     try {
       const response = await fetch(`http://localhost:5000/sets/done`, {
         method: "POST",
@@ -60,10 +61,25 @@ const DeliveryOrder = () => {
           "Content-Type": "application/json",
         },
       });
+
+      // Check if the response is successful (status 200)
+      if (response.status === 200) {
+        // Filter out the delivered order from the UI
+        setOrder((prevOrders) =>
+          prevOrders.filter((order) => order.ORDER_ID !== orderId)
+        );
+        console.log(`Order ${orderId} marked as delivered.`);
+      } else {
+        throw new Error(
+          `Failed to mark order as delivered. Status: ${response.status}`
+        );
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error delivering order:", error);
     }
   };
+
+
 
   return (
     <div className="order-div">

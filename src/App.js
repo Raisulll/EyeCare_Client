@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
+import DeliveryOrder from "./Components/Delivery Agency/DeliveryOrder";
 import DeliveryProfile from "./Components/Delivery Agency/DeliveryProfile";
 import DoctorAppointments from "./Components/Doctor/DoctorAppointments";
 import DoctorEditProfile from "./Components/Doctor/DoctorEditProfile";
@@ -26,6 +27,7 @@ import UserProfile from "./Components/Patient/UserProfile";
 import ViewPrescription from "./Components/Patient/ViewPrescription";
 import AddProduct from "./Components/Shop/AddProduct";
 import Shop from "./Components/Shop/Shop";
+import ShopOrder from "./Components/Shop/ShopOrders";
 import UpdateProduct from "./Components/Shop/UpdateProduct";
 import DeliverySignUp from "./Components/Signin-Signup/DeliverySignUp";
 import DoctorSignUP from "./Components/Signin-Signup/DoctorSignUp";
@@ -38,8 +40,7 @@ import ResetPassword from "./Components/Signin-Signup/ResetPassword";
 import ShopSignUp from "./Components/Signin-Signup/ShopSignUp";
 import SignUp from "./Components/Signin-Signup/SignUp";
 import SignIn from "./Components/Signin-Signup/Signin";
-import ShopOrder from "./Components/Shop/ShopOrders";
-import DeliveryOrder from "./Components/Delivery Agency/DeliveryOrder";
+import PatientOrders from "./Components/Patient/PatientOrders";
 
 function App() {
   return (
@@ -57,7 +58,7 @@ function AppContent() {
   return (
     <>
       {/* Render Nav only if not on the landing page */}
-      {location.pathname !== "/"  && <Nav user={user} />}
+      {location.pathname !== "/" && <Nav user={user} />}
 
       <main>
         <Routes>
@@ -91,8 +92,12 @@ function AppContent() {
             <Route path="/allappointments" element={<AllAppointments />} />
             <Route path="/addproducttosupply" element={<AddToSupply />} />
             <Route path="/orders" element={<ShopOrder />} />
-            <Route path="/viewdoctorprofile/:doctorId" element={<ViewDoctorProfile />} />
+            <Route
+              path="/viewdoctorprofile/:doctorId"
+              element={<ViewDoctorProfile />}
+            />
             <Route path="/deliveryorders" element={<DeliveryOrder />} />
+            <Route path="/patientorders" element={<PatientOrders />} />
           </Route>
 
           <Route path="/" element={<Banner />} />
