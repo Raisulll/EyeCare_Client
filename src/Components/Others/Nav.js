@@ -108,6 +108,11 @@ function NavigationBar(props) {
             <Link to="/patientorders">Orders</Link>
           </li>
         )}
+        {userType === "hospital" && (
+          <li>
+            <Link to="/surgerySchedule">Surgery Schedule</Link>
+          </li>
+        )}
       </div>
       {user && (
         <div className="navIcons">

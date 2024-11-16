@@ -9,7 +9,6 @@ function Prescription() {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const appointmentId = params.get("appointmentId");
-  console.log(appointmentId);
 
   const [doctorName, setDoctorName] = useState("");
   const [patientName, setPatientName] = useState("");
@@ -19,7 +18,7 @@ function Prescription() {
   const [medicine, setMedicine] = useState("");
   const [glassNeeded, setGlassNeeded] = useState(false);
   const [glassDetails, setGlassDetails] = useState("");
-  const [surgeryNeede, setSurgeryNeeded] = useState(false);
+  const [surgeryNeeded, setSurgeryNeeded] = useState(false);
   const [surgeryDetails, setSurgeryDetails] = useState("");
 
   useEffect(() => {
@@ -29,15 +28,13 @@ function Prescription() {
           `http://localhost:5000/gets/appointmentinfo?appointmentId=${appointmentId}`
         );
         const data = await response.json();
-        console.log(data);
         setDoctorName(data.DOCTOR_NAME);
         setPatientName(data.PATIENT_NAME);
         const date = new Date(data.APPOINTMENT_DATE);
         const options = { year: "numeric", month: "short", day: "numeric" };
         const formattedDate = date.toLocaleDateString("en-IN", options);
         setAppointmentDate(formattedDate);
-        data.PATIENT_AGE = data.PATIENT_AGE + " years";
-        setPatientAge(data.PATIENT_AGE);
+        setPatientAge(`${data.PATIENT_AGE} years`);
       } catch (error) {
         console.error("Error fetching appointment info:", error);
       }
@@ -53,10 +50,9 @@ function Prescription() {
       patientIssue,
       medicine,
       glassDetails: glassNeeded ? glassDetails : null,
-      surgeryDetails: surgeryNeede ? surgeryDetails : null,
+      surgeryDetails: surgeryNeeded ? surgeryDetails : null,
     };
 
-    console.log(data);
     const result = await fetch("http://localhost:5000/sets/setprescription", {
       method: "POST",
       body: JSON.stringify(data),
@@ -66,10 +62,9 @@ function Prescription() {
     });
 
     if (result.status === 200) {
-      console.log("Prescription saved successfully");
       navigate("/doctorprofile");
     } else {
-      console.log("Failed to save prescription");
+      console.error("Failed to save prescription");
     }
   };
 
@@ -77,84 +72,109 @@ function Prescription() {
     <Container className="d-flex justify-content-center align-items-center mt-5 mb-5">
       <Row className="w-100 justify-content-center">
         <Col md={8} lg={6}>
-          <Card className="cardcolor">
+          <Card className="cardcolor shadow-lg p-4">
             <Card.Body>
               <Card.Title className="text-center mb-4">
-                Create Prescription
+                <h3>Create Prescription</h3>
               </Card.Title>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-3" controlId="formDoctorName">
-                  <Form.Label>Doctor's Name</Form.Label>
+                  <Form.Label className="font-weight-bold">
+                    Doctor's Name
+                  </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Dr. John Doe"
                     value={doctorName}
                     readOnly
+                    className="p-2"
+                    style={{ backgroundColor: "#f8f9fa", border: "none" }}
                   />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formPatientName">
-                  <Form.Label>Patient's Name</Form.Label>
+                  <Form.Label className="font-weight-bold">
+                    Patient's Name
+                  </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Jane Doe"
                     value={patientName}
                     readOnly
+                    className="p-2"
+                    style={{ backgroundColor: "#f8f9fa", border: "none" }}
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formPatientName">
-                  <Form.Label>Patient's Age</Form.Label>
+                <Form.Group className="mb-3" controlId="formPatientAge">
+                  <Form.Label className="font-weight-bold">
+                    Patient's Age
+                  </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Jane Doe"
                     value={patientAge}
                     readOnly
+                    className="p-2"
+                    style={{ backgroundColor: "#f8f9fa", border: "none" }}
                   />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formAppointmentDate">
-                  <Form.Label>Appointment Date</Form.Label>
-                  <Form.Control type="text" value={appointmentDate} readOnly />
+                  <Form.Label className="font-weight-bold">
+                    Appointment Date
+                  </Form.Label>
+                  <Form.Control
+                    type="text"
+                    value={appointmentDate}
+                    readOnly
+                    className="p-2"
+                    style={{ backgroundColor: "#f8f9fa", border: "none" }}
+                  />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formPatientIssue">
-                  <Form.Label>Patient Issue</Form.Label>
+                  <Form.Label className="font-weight-bold">
+                    Patient Issue
+                  </Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Patient Issue"
+                    placeholder="Enter patient issue"
                     value={patientIssue}
                     onChange={(e) => setPatientIssue(e.target.value)}
+                    className="p-2"
                   />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formMedicine">
-                  <Form.Label>Medicine</Form.Label>
+                  <Form.Label className="font-weight-bold">Medicine</Form.Label>
                   <Form.Control
                     type="text"
-                    placeholder="Prescribed Medicine"
+                    placeholder="Enter prescribed medicine"
                     value={medicine}
                     onChange={(e) => setMedicine(e.target.value)}
+                    className="p-2"
                   />
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formGlassNeeded">
                   <Form.Check
                     type="checkbox"
-                    label="Glass Needed?"
+                    label="Glasses Needed?"
                     checked={glassNeeded}
                     onChange={(e) => setGlassNeeded(e.target.checked)}
+                    className="mb-2"
                   />
                 </Form.Group>
 
                 {glassNeeded && (
                   <Form.Group className="mb-3" controlId="formGlassDetails">
-                    <Form.Label>Glass Details</Form.Label>
+                    <Form.Label className="font-weight-bold">
+                      Glass Details
+                    </Form.Label>
                     <Form.Control
                       type="text"
                       placeholder="Enter glass details"
                       value={glassDetails}
                       onChange={(e) => setGlassDetails(e.target.value)}
+                      className="p-2"
                     />
                   </Form.Group>
                 )}
@@ -163,19 +183,23 @@ function Prescription() {
                   <Form.Check
                     type="checkbox"
                     label="Surgery Needed?"
-                    checked={surgeryNeede}
+                    checked={surgeryNeeded}
                     onChange={(e) => setSurgeryNeeded(e.target.checked)}
+                    className="mb-2"
                   />
                 </Form.Group>
 
-                {surgeryNeede && (
+                {surgeryNeeded && (
                   <Form.Group className="mb-3" controlId="formSurgeryDetails">
-                    <Form.Label>Surgery Details</Form.Label>
+                    <Form.Label className="font-weight-bold">
+                      Surgery Details
+                    </Form.Label>
                     <Form.Control
                       type="text"
-                      placeholder="Enter Surgery details"
+                      placeholder="Enter surgery details"
                       value={surgeryDetails}
                       onChange={(e) => setSurgeryDetails(e.target.value)}
+                      className="p-2"
                     />
                   </Form.Group>
                 )}
@@ -183,8 +207,8 @@ function Prescription() {
                 <Button
                   variant="primary"
                   type="submit"
-                  className="w-100"
-                  onClick={handleSubmit}
+                  className="w-100 p-2"
+                  style={{ backgroundColor: "#007bff", border: "none" }}
                 >
                   Save Prescription
                 </Button>
