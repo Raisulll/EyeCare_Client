@@ -16,34 +16,41 @@ const UserProfile = (props) => {
   const [roadNumber, setRoadNumber] = useState("");
 
   const localdata = JSON.parse(localStorage.getItem("user"));
+  // console.log("localdata:", localdata);
 
   useEffect(() => {
     const fetchPatientData = async () => {
       try {
         const patient = await fetch(
-          `http://localhost:5000/gets/patientdata?patientid=${localdata.PatientId}`
+          `http://localhost:5000/gets/patientdata?patientid=${localdata.patientId}`
         );
         const temp = await patient.json();
         setPatientData(temp);
-        setImagePreview(temp.PATIENT_IMAGE);
-        setFullName(temp.PATIENT_NAME);
-        setEmail(temp.PATIENT_MAIL);
-        setPhoneNumber(temp.PATIENT_PHONE);
-        //change date format
-        const date = new Date(temp.PATIENT_DOB);
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const dt = date.getDate();
-        if (dt < 10) {
-          setDateOfBirth(`${year}-0${month}-0${dt}`);
-        } else {
-          setDateOfBirth(`${year}-0${month}-${dt}`);
-        }
-        setDistrict(temp.PATIENT_ADDRESS.PATIENT_DISTRICT);
-        setArea(temp.PATIENT_ADDRESS.PATIENT_AREA);
-        setRoadNumber(temp.PATIENT_ADDRESS.PATIENT_ROADNUMBER);
+        // console.log("Patient Data:", temp);
+        setImagePreview(
+          temp.patient_image ||
+            "https://res.cloudinary.com/dnn7v3kkw/image/upload/v1727238419/EyeCare/nef8rhqyoovq7wcsodr0.jpg"
+        );
+        setFullName(temp.patient_name);
+        setEmail(temp.patient_mail);
+        setPhoneNumber(temp.patient_phone);
+
+        // Correctly format the date
+        const dobDate = new Date(temp.patient_dob);
+        const formattedDate = isNaN(dobDate.getTime())
+          ? null
+          : dobDate.getFullYear() +
+            "-" +
+            String(dobDate.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            String(dobDate.getDate()).padStart(2, "0");
+        setDateOfBirth(formattedDate);
+
+        setDistrict(temp.patient_address.patient_district || "");
+        setArea(temp.patient_address.patient_area || "");
+        setRoadNumber(temp.patient_address.patient_roadnumber || "");
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     };
     fetchPatientData();
@@ -53,7 +60,7 @@ const UserProfile = (props) => {
     document.getElementById("file").click();
   };
 
-  const handleImageChange = (event) => {
+  const handleImageChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -70,14 +77,14 @@ const UserProfile = (props) => {
               },
               body: JSON.stringify({
                 imageBase64: base64String,
-                patientId: localdata.PatientId,
+                patientId: localdata.patientId,
               }),
             }
           );
 
           const data = await res.json();
           if (res.ok) {
-            console.log("Image uploaded successfully:", data);
+            // console.log("Image uploaded successfully:", data);
             // localStorage.setItem("user", JSON.stringify(data));
             let oldData = JSON.parse(localStorage.getItem("user"));
             oldData.patientImage = data.url;
@@ -94,7 +101,7 @@ const UserProfile = (props) => {
               theme: "colored",
             });
           } else {
-            console.error("Image upload failed:", data.message);
+            // console.error("Image upload failed:", data.message);
             toast.error("Image Upload Failed", {
               position: "top-right",
               autoClose: 2500,
@@ -107,7 +114,7 @@ const UserProfile = (props) => {
             });
           }
         } catch (error) {
-          console.error("Error uploading image:", error);
+          // console.error("Error uploading image:", error);
           toast.error("Error uploading image.");
         }
       };
@@ -117,7 +124,7 @@ const UserProfile = (props) => {
   };
 
   const updatePatientData = async () => {
-    console.log("updatePatientData");
+    // console.log("updatePatientData");
     //check if the phone number is 11 digits if not show toast error
     if (phoneNumber.length !== 11) {
       toast.error("Invalid Phone Number!", {
@@ -133,22 +140,16 @@ const UserProfile = (props) => {
       return;
     }
 
-    //change date format
-    const date = new Date(dateOfBirth);
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const dt = date.getDate();
-    const newDate = `${year}-${month}-${dt}`;
     const data = {
-      patientId: localdata.PatientId,
+      patientId: localdata.patientId,
       patientName: fullName,
       patientPhone: phoneNumber,
-      patientDOB: newDate,
+      patientDOB: dateOfBirth,
       patientDistrict: district,
       patientArea: area,
       patientRoadNumber: roadNumber,
     };
-    console.log("Data:", data);
+    // console.log("Data:", data);
     try {
       const res = await fetch("http://localhost:5000/edit/patientProfileData", {
         method: "POST",
@@ -160,7 +161,7 @@ const UserProfile = (props) => {
 
       const result = await res.json();
       if (res.ok) {
-        console.log("Patient data updated successfully:", result);
+        // console.log("Patient data updated successfully:", result);
         toast.success("Data Updated Successfully!", {
           position: "top-right",
           autoClose: 2500,
@@ -172,7 +173,7 @@ const UserProfile = (props) => {
           theme: "colored",
         });
       } else {
-        console.error("Failed to update patient data:", result.message);
+        // console.error("Failed to update patient data:", result.message);
         toast.error("Failed to update data!", {
           position: "top-right",
           autoClose: 2500,
@@ -185,7 +186,7 @@ const UserProfile = (props) => {
         });
       }
     } catch (error) {
-      console.error("Error updating patient data:", error);
+      // console.error("Error updating patient data:", error);
       toast.error("Error updating data!", {
         position: "top-right",
         autoClose: 2500,
@@ -272,7 +273,7 @@ const UserProfile = (props) => {
               <input
                 type="date"
                 id="dateOfBirth"
-                value={dateOfBirth}
+                value={dateOfBirth || ""}
                 onChange={(e) => setDateOfBirth(e.target.value)}
                 required
                 style={{ color: dateOfBirth ? "black" : "transparent" }}
