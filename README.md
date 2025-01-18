@@ -1,6 +1,6 @@
-# DBMS Project Client
+# EyeCare Client
 
-This project is a client-side application for a Database Management System (DBMS) project. It is built using React and provides a user interface for interacting with the DBMS.
+This project is a client-side application for the EyeCare system. It is built using React and provides a user interface for interacting with the EyeCare system.
 
 ## Project Features and Purpose
 
@@ -10,7 +10,7 @@ This project is a client-side application for a Database Management System (DBMS
 - Integration with external APIs
 - Responsive design for various devices
 
-The purpose of this project is to provide a user-friendly interface for managing and interacting with the database. It allows users to perform various operations such as creating, reading, updating, and deleting data, as well as visualizing and reporting on the data.
+The purpose of this project is to provide a user-friendly interface for managing and interacting with the EyeCare system. It allows users to perform various operations such as creating, reading, updating, and deleting data, as well as visualizing and reporting on the data.
 
 ## Dependencies and Environment Setup
 
@@ -23,8 +23,8 @@ To run this project, you need to have the following dependencies installed:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Raisulll/DBMS_Project_Client.git
-   cd DBMS_Project_Client
+   git clone https://github.com/Raisulll/EyeCare_Client.git
+   cd EyeCare_Client
    ```
 
 2. Install the dependencies:
