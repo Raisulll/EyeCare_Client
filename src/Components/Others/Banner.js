@@ -7,7 +7,7 @@ const Banner = () => {
   const navigate = useNavigate();
   const goto = () => {
     // Static navigation to products page
-    navigate("/products");
+    navigate("/signin");
   };
 
   return (
