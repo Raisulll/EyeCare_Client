@@ -2,7 +2,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import image from "../../Assets/images/SignIn.svg";
@@ -27,11 +27,68 @@ function SignIn(props) {
       patientEmail: email,
       patientPassword: password,
     };
-    const userInfo = await result.json();
-    localStorage.setItem("user", JSON.stringify(userInfo)); //to do - image
-    props.setUser(userInfo);
-    window.dispatchEvent(new Event("storage"));
-    navigate("/profile");
+
+    // Dummy response for successful login
+    const dummyResponse = {
+      status: 200,
+      json: async () => ({
+        userId: "12345",
+        userName: "John Doe",
+        userType: "patient",
+        userEmail: email,
+      }),
+    };
+
+    // Simulate different responses based on dummy data
+    let result;
+    if (email === "user@example.com" && password === "password") {
+      result = dummyResponse;
+    } else if (email !== "user@example.com") {
+      result = { status: 404 };
+    } else {
+      result = { status: 401 };
+    }
+
+    if (result.status === 200) {
+      const userInfo = await result.json();
+      localStorage.setItem("user", JSON.stringify(userInfo));
+      props.setUser(userInfo);
+      window.dispatchEvent(new Event("storage"));
+      navigate("/profile");
+    } else if (result.status === 401) {
+      toast.error("Invalid Password!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else if (result.status === 404) {
+      toast.error("User not exists!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    } else {
+      toast.error("Server Issue!", {
+        position: "top-right",
+        autoClose: 2500,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
+      });
+    }
   };
 
   return (
