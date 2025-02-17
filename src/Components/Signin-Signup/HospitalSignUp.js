@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Signup.css";
 import styled from "styled-components";
 import image from "../../Assets/images/SignUp.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function EyeHospitalManagerSignUp() {
   const [hospitalName, setHospitalName] = useState("");
@@ -26,159 +28,45 @@ function EyeHospitalManagerSignUp() {
     }
   }, [navigate]);
 
-  const collectData = async (e) => {
+  const collectData = (e) => {
     e.preventDefault();
-    const data = {
-      hospitalName: hospitalName,
-      hospitalMail: hospitalMail,
-      hospitalPhone: hospitalPhone,
-      hospitalDistrict: hospitalDistrict,
-      hospitalArea: hospitalArea,
-      hospitalRoadNum: hospitalRoadNum,
-      hospitalLicense: hospitalLicense,
-      hospitalPassword: hospitalPassword,
+
+    // Create dummy hospital manager data using form values
+    const dummyData = {
+      id: "hosp-001",
+      hospitalName,
+      hospitalMail,
+      hospitalPhone,
+      hospitalDistrict,
+      hospitalArea,
+      hospitalRoadNum,
+      hospitalLicense,
+      // In a real app you wouldn't store the password like this,
+      // but for dummy/demo purposes we include it
+      hospitalPassword,
     };
 
-    try {
-      const result = await fetch("http://localhost:5000/auth/hospitalsignup", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    // Save the dummy data in localStorage and simulate sign up success
+    localStorage.setItem("user", JSON.stringify(dummyData));
+    window.dispatchEvent(new Event("storage"));
+    toast.success("Sign Up Successful", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
 
-      if (result.status === 200) {
-        navigate("/otheruserssignin");
-      } else {
-        console.error("Signup failed.");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
+    // Navigate to sign in page after successful sign up
+    navigate("/otheruserssignin");
   };
 
   return (
-    // <Container className="d-flex justify-content-center align-items-center mt-5 mb-5">
-    //   <Row className="w-100 justify-content-center">
-    //     <Col md={8} lg={6}>
-    //       <Card className="cardcolor">
-    //         <Card.Body>
-    //           <Card.Title className="text-center mb-4">
-    //             Eye Hospital Manager Sign Up
-    //           </Card.Title>
-    //           <Form onSubmit={collectData}>
-    //             <Form.Group className="mb-3" controlId="formHospitalName">
-    //               <Form.Label>Hospital Name</Form.Label>
-    //               <Form.Control
-    //                 type="text"
-    //                 placeholder="Hospital Name"
-    //                 value={hospitalName}
-    //                 onChange={(e) => setHospitalName(e.target.value)}
-    //               />
-    //             </Form.Group>
-
-    //             <Form.Group className="mb-3" controlId="formBasicHospitalMail">
-    //               <Form.Label>HospitalMail address</Form.Label>
-    //               <Form.Control
-    //                 type="hospitalMail"
-    //                 placeholder="test@example.com"
-    //                 value={hospitalMail}
-    //                 onChange={(e) => setHospitalMail(e.target.value)}
-    //               />
-    //             </Form.Group>
-    //             <Form.Group className="mb-3" controlId="formHospitalPhone">
-    //               <Form.Label>Phone Number</Form.Label>
-    //               <Form.Control
-    //                 type="text"
-    //                 placeholder="Phone Number"
-    //                 value={hospitalPhone}
-    //                 onChange={(e) => setHospitalPhone(e.target.value)}
-    //               />
-    //             </Form.Group>
-
-    //             <Form.Group className="mb-3" controlId="formAddress">
-    //               <Form.Label>Address</Form.Label>
-    //               <Form.Control
-    //                 type="text"
-    //                 placeholder="HospitalDistrict"
-    //                 className="mb-2"
-    //                 value={hospitalDistrict}
-    //                 onChange={(e) => setHospitalDistrict(e.target.value)}
-    //               />
-    //               <Form.Control
-    //                 type="text"
-    //                 placeholder="HospitalArea"
-    //                 className="mb-2"
-    //                 value={hospitalArea}
-    //                 onChange={(e) => setHospitalArea(e.target.value)}
-    //               />
-    //               <Form.Control
-    //                 type="text"
-    //                 placeholder="Road Number"
-    //                 value={hospitalRoadNum}
-    //                 onChange={(e) => setHospitalRoadNum(e.target.value)}
-    //               />
-    //             </Form.Group>
-
-    //             <Form.Group className="mb-3" controlId="formHospitalLicense">
-    //               <Form.Label>Hospital License</Form.Label>
-    //               <Form.Control
-    //                 type="text"
-    //                 placeholder="Hospital License Number"
-    //                 value={hospitalLicense}
-    //                 onChange={(e) => setHospitalLicense(e.target.value)}
-    //               />
-    //             </Form.Group>
-
-    //             <Form.Group
-    //               className="mb-3"
-    //               controlId="formBasicHospitalPassword"
-    //             >
-    //               <Form.Label>HospitalPassword</Form.Label>
-    //               <div className="hospitalPassword-input-container">
-    //                 <Form.Control
-    //                   type={showHospitalPassword ? "text" : "hospitalPassword"}
-    //                   placeholder="Your HospitalPassword"
-    //                   value={hospitalPassword}
-    //                   onChange={(e) => setHospitalPassword(e.target.value)}
-    //                   className="hospitalPassword-input"
-    //                 />
-    //                 <FontAwesomeIcon
-    //                   icon={showHospitalPassword ? faEye : faEyeSlash}
-    //                   className="hospitalPassword-toggle-icon"
-    //                   onClick={() =>
-    //                     setShowHospitalPassword(!showHospitalPassword)
-    //                   }
-    //                 />
-    //               </div>
-    //             </Form.Group>
-
-    //             <Button variant="primary" type="submit" className="w-100">
-    //               Sign Up
-    //             </Button>
-    //           </Form>
-    //         </Card.Body>
-    //         <div className="text-center mt-3 bottommrgn">
-    //           <span>Already have an account? </span>
-    //           <NavLink to="/otheruserssignin" className="auth-link">
-    //             Sign In
-    //           </NavLink>
-    //         </div>
-    //         <div className="text-center mt-3">
-    //           <span>
-    //             Are you a Doctor, Shop Owner, or Eye Hospital Manager?{" "}
-    //           </span>
-    //           <NavLink to="/otheruserssignup" className="auth-link">
-    //             Other User Sign Up
-    //           </NavLink>
-    //         </div>
-    //       </Card>
-    //     </Col>
-    //   </Row>
-    // </Container>
     <div className="mainDiv">
-      <ul class="circles">
+      <ul className="circles">
         <li></li>
         <li></li>
         <li></li>
@@ -310,6 +198,12 @@ function EyeHospitalManagerSignUp() {
               onChange={(e) => setHospitalPassword(e.target.value)}
               required
             />
+            <FontAwesomeIcon
+              icon={showHospitalPassword ? faEye : faEyeSlash}
+              className="hospitalPassword-toggle-icon"
+              onClick={() => setShowHospitalPassword(!showHospitalPassword)}
+              style={{ cursor: "pointer", color: "#000", top: "7px" }}
+            />
             <label htmlFor="password" className="label">
               Password
             </label>
@@ -324,6 +218,18 @@ function EyeHospitalManagerSignUp() {
             </div>
           </button>
         </StyledWrapper>
+        <div className="text-center mt-3">
+          <span>Already have an account? </span>
+          <NavLink to="/otheruserssignin" className="auth-link">
+            Sign In
+          </NavLink>
+        </div>
+        <div className="text-center mt-3">
+          <span>Are you a Doctor, Shop Owner, or Eye Hospital Manager? </span>
+          <NavLink to="/otheruserssignup" className="auth-link">
+            Other User Sign Up
+          </NavLink>
+        </div>
       </form>
     </div>
   );
@@ -445,6 +351,5 @@ const StyledWrapper = styled.div`
     right: 0;
   }
 `;
-
 
 export default EyeHospitalManagerSignUp;

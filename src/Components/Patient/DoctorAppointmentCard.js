@@ -1,17 +1,23 @@
 import React from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
 
-const DoctorAppointmentCard = ({ image, name, date, time, doctorId, appointmentId, hospital, status}) => {
-  const navigate = useNavigate();
-
+const DoctorAppointmentCard = ({
+  image,
+  name,
+  date,
+  time,
+  doctorId,
+  appointmentId,
+  hospital,
+  status,
+}) => {
   const handleClick = () => {
     console.log("Appointment ID:", appointmentId, "Status:", status);
     if (status === "Completed") {
-      navigate(`/viewprescription/?appointmentId=${appointmentId}`);
+      alert(`Viewing prescription for Appointment ID: ${appointmentId}`);
+    } else {
+      alert(`Navigating to doctor profile for Doctor ID: ${doctorId}`);
     }
-    // navigate(`/viewdoctorprofile/${doctorId}`); // Navigate to doctor profile using doctorId
-    // console.log("Doctor ID:", doctorId);
   };
 
   return (

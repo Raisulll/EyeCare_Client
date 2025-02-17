@@ -1,109 +1,104 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import { Card, Button, ListGroup } from "react-bootstrap";
-import "./shoporder.css";
+import React, { useState, useEffect } from "react";
 
-
-const ShopOrders = () => {
-  const [order, setOrder] = useState([]);
-  const localdata = JSON.parse(localStorage.getItem("user"));
+const OrdersComponent = ({ localdata }) => {
+  const [loading, setLoading] = useState(true);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const orders = await fetch(
-          `http://localhost:5000/gets/ordersforshop?shopId=${localdata.ShopId}`
-        );
-        const temp = await orders.json();
-        // Group orders by ORDER_ID
-        //format the date
-        temp.forEach((order) => {
-          const date = new Date(order.ORDER_DATE);
-          order.ORDER_DATE = `${date.getDate()}/${
-            date.getMonth() + 1
-          }/${date.getFullYear()}`;
-        });
-        const groupedOrders = temp.reduce((acc, order) => {
-          const { ORDER_ID } = order;
-          if (!acc[ORDER_ID]) {
-            acc[ORDER_ID] = {
-              ORDER_ID,
-              PATIENT_NAME: order.PATIENT_NAME,
-              ORDER_DATE: order.ORDER_DATE,
-              DELIVERY_AGENCY_NAME: order.DELIVERY_AGENCY_NAME,
-              products: [],
-            };
-          }
-          acc[ORDER_ID].products.push({
-            PRODUCT_NAME: order.PRODUCT_NAME,
-            ORDER_QUANTITY: order.ORDER_QUANTITY,
-          });
-          return acc;
-        }, {});
-        setOrder(Object.values(groupedOrders));
-        console.log(Object.values(groupedOrders));
-      } catch (error) {
-        console.log(error);
+    // Static dummy data
+    const dummyOrders = [
+      {
+        ORDER_ID: 1,
+        PATIENT_NAME: "John Doe",
+        ORDER_DATE: "2023-10-01T12:00:00Z",
+        DELIVERY_AGENCY_NAME: "Quick Delivery",
+        PRODUCT_NAME: "Painkiller",
+        ORDER_QUANTITY: 2,
+      },
+      {
+        ORDER_ID: 1,
+        PATIENT_NAME: "John Doe",
+        ORDER_DATE: "2023-10-01T12:00:00Z",
+        DELIVERY_AGENCY_NAME: "Quick Delivery",
+        PRODUCT_NAME: "Bandages",
+        ORDER_QUANTITY: 5,
+      },
+      {
+        ORDER_ID: 2,
+        PATIENT_NAME: "Jane Smith",
+        ORDER_DATE: "2023-10-02T14:30:00Z",
+        DELIVERY_AGENCY_NAME: "Fast Ship",
+        PRODUCT_NAME: "Antibiotics",
+        ORDER_QUANTITY: 1,
+      },
+      {
+        ORDER_ID: 2,
+        PATIENT_NAME: "Jane Smith",
+        ORDER_DATE: "2023-10-02T14:30:00Z",
+        DELIVERY_AGENCY_NAME: "Fast Ship",
+        PRODUCT_NAME: "Vitamins",
+        ORDER_QUANTITY: 3,
+      },
+    ];
+
+    // Format the date using toLocaleDateString
+    dummyOrders.forEach((order) => {
+      order.ORDER_DATE = new Date(order.ORDER_DATE).toLocaleDateString();
+    });
+
+    // Group orders by ORDER_ID
+    const groupedOrders = dummyOrders.reduce((acc, order) => {
+      const { ORDER_ID } = order;
+      if (!acc[ORDER_ID]) {
+        acc[ORDER_ID] = {
+          ORDER_ID,
+          PATIENT_NAME: order.PATIENT_NAME,
+          ORDER_DATE: order.ORDER_DATE,
+          DELIVERY_AGENCY_NAME: order.DELIVERY_AGENCY_NAME,
+          products: [],
+        };
       }
-    };
-    fetchOrders();
+      acc[ORDER_ID].products.push({
+        PRODUCT_NAME: order.PRODUCT_NAME,
+        ORDER_QUANTITY: order.ORDER_QUANTITY,
+      });
+      return acc;
+    }, {});
+
+    setOrders(Object.values(groupedOrders));
+    setLoading(false);
   }, []);
 
-  const acceptOrder = async (orderId) => {
-    try {
-      const response = await fetch(`http://localhost:5000/sets/acceptorder`, {
-        method: "POST",
-        body: JSON.stringify({ orderId }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (response.status === 200) {
-        setOrder((prevOrders) =>
-          prevOrders.filter((order) => order.ORDER_ID !== orderId)
-        );
-      }
-    } catch (error) {
-      console.error("Error accepting order:", error);
-    }
-  };
+  if (loading) return <div>Loading orders...</div>;
 
   return (
-    <div className="order-div">
-      {order.map((order) => (
-        <Card key={order.ORDER_ID} style={{ width: "18rem" }}>
-          <Card.Body className="cardbody">
-            <Card.Title>Order ID: {order.ORDER_ID}</Card.Title>
-            {localdata.usertype === "shop" && (
-              <Card.Subtitle className="mb-2 text-muted">
-                Patient Name: {order.PATIENT_NAME}
-              </Card.Subtitle>
-            )}
-            <Card.Subtitle className="mb-2 text-muted">
-              Order Date: {order.ORDER_DATE}
-            </Card.Subtitle>
-            <Card.Subtitle className="mb-2 text-muted">
-              Agency: {order.DELIVERY_AGENCY_NAME}
-            </Card.Subtitle>
-            <ListGroup>
-              {order.products.map((product) => (
-                <ListGroup.Item key={product.PRODUCT_NAME}>
-                  {product.PRODUCT_NAME} - {product.ORDER_QUANTITY}
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-            <Button
-              variant="primary"
-              className="acceptorder"
-              onClick={() => acceptOrder(order.ORDER_ID)}
-            >
-              Accept Order
-            </Button>
-          </Card.Body>
-        </Card>
+    <div>
+      <h1>Orders</h1>
+      {orders.map((order) => (
+        <div
+          key={order.ORDER_ID}
+          style={{
+            marginBottom: "20px",
+            border: "1px solid #ccc",
+            padding: "10px",
+          }}
+        >
+          <h2>Order ID: {order.ORDER_ID}</h2>
+          <p>Patient: {order.PATIENT_NAME}</p>
+          <p>Order Date: {order.ORDER_DATE}</p>
+          <p>Delivery Agency: {order.DELIVERY_AGENCY_NAME}</p>
+          <h3>Products:</h3>
+          <ul>
+            {order.products.map((product, index) => (
+              <li key={index}>
+                {product.PRODUCT_NAME} - Quantity: {product.ORDER_QUANTITY}
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
     </div>
   );
 };
 
-export default ShopOrders;
+export default OrdersComponent;

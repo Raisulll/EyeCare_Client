@@ -4,7 +4,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Signup.css";
 import styled from "styled-components";
-import image from "../../Assets/images/SignUp.svg"
+import image from "../../Assets/images/SignUp.svg";
 
 function SignUp() {
   const [fullName, setFullName] = useState("");
@@ -39,35 +39,12 @@ function SignUp() {
       patientArea: area,
       patientRoadNum: roadNumber,
       patientGender: gender,
-      patientPassword: password
+      patientPassword: password,
     };
 
     // Log the data in the console when the form is submitted
     console.log(data);
-
-    // Simulate sending the data (optional)
-    const result = await fetch("http://localhost:5000/auth/signup", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (result.status === 200) {
-      navigate("/signin");
-    } else if (result.status === 409) {
-      toast.error("User already exists!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
+    navigate("/signin");
   };
 
   return (

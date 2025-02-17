@@ -8,59 +8,56 @@ import "../Patient/UserProfile.css";
 const ViewDoctorProfile = () => {
   const { doctorId } = useParams(); // Get doctorId from URL parameters
   const navigate = useNavigate();
-  const [doctorData, setDoctorData] = useState({});
-  const [imagePreview, setImagePreview] = useState(null);
-  const [fullName, setFullName] = useState("");
-  const [mail, setMail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [district, setDistrict] = useState("");
-  const [area, setArea] = useState("");
-  const [roadNumber, setRoadNumber] = useState("");
-  const [speciality, setSpeciality] = useState("");
-  const [hospital, setHospital] = useState("");
-  const [timeslot, setTimeslot] = useState("");
+  const [imagePreview, setImagePreview] = useState(
+    "https://via.placeholder.com/150"
+  );
+  const [fullName, setFullName] = useState("Dr. John Doe");
+  const [mail, setMail] = useState("john.doe@example.com");
+  const [phone, setPhone] = useState("1234567890");
+  const [district, setDistrict] = useState("District A");
+  const [area, setArea] = useState("Area B");
+  const [roadNumber, setRoadNumber] = useState("123");
+  const [speciality, setSpeciality] = useState("Ophthalmologist");
+  const [hospital, setHospital] = useState("Sample Hospital");
+  const [timeslot, setTimeslot] = useState("09:00 AM - 05:00 PM");
   const [times, setTimes] = useState([]);
   const [appointmentDate, setAppointmentDate] = useState("");
   const [selectedTime, setSelectedTime] = useState("");
-  const [remuneration, setRemuneration] = useState(0);
+  const [remuneration, setRemuneration] = useState("$100");
 
   const localdata = JSON.parse(localStorage.getItem("user"));
   console.log(localdata);
 
   useEffect(() => {
-    const fetchDoctorData = async () => {
-      try {
-        const doctor = await fetch(
-          `http://localhost:5000/gets/doctordata?doctorId=${doctorId}`
-        );
-        const temp = await doctor.json();
-        setDoctorData(temp);
-        setImagePreview(temp.DOCTOR_IMAGE);
-        setFullName(temp.DOCTOR_NAME);
-        setMail(temp.DOCTOR_MAIL);
-        setPhone(temp.DOCTOR_PHONE);
-        setDistrict(temp.DOCTOR_DISTRICT);
-        setArea(temp.DOCTOR_AREA);
-        setRoadNumber(temp.DOCTOR_ROADNUMBER);
-        setSpeciality(temp.DOCTOR_SPECIALITY);
-        setHospital(temp.HOSPITAL_NAME);
-        setTimeslot(temp.DOCTOR_TIMESLOT);
-        setRemuneration(temp.DOCTOR_PAYMENT);
-        console.log(temp);
-        setTimes(generateTimeSlots(temp.DOCTOR_TIMESLOT));
-        console.log("Time slot:", times);
-      } catch (error) {
-        console.log(error);
-      }
+    const dummyDoctorData = {
+      DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      DOCTOR_NAME: "Dr. John Doe",
+      DOCTOR_MAIL: "john.doe@example.com",
+      DOCTOR_PHONE: "1234567890",
+      DOCTOR_DISTRICT: "District A",
+      DOCTOR_AREA: "Area B",
+      DOCTOR_ROADNUMBER: "123",
+      DOCTOR_SPECIALITY: "Ophthalmologist",
+      HOSPITAL_NAME: "Sample Hospital",
+      DOCTOR_TIMESLOT: "09:00 AM - 05:00 PM",
+      DOCTOR_PAYMENT: "$100",
     };
 
-    fetchDoctorData();
-    console.log("Time slot:", times);
+    setImagePreview(dummyDoctorData.DOCTOR_IMAGE);
+    setFullName(dummyDoctorData.DOCTOR_NAME);
+    setMail(dummyDoctorData.DOCTOR_MAIL);
+    setPhone(dummyDoctorData.DOCTOR_PHONE);
+    setDistrict(dummyDoctorData.DOCTOR_DISTRICT);
+    setArea(dummyDoctorData.DOCTOR_AREA);
+    setRoadNumber(dummyDoctorData.DOCTOR_ROADNUMBER);
+    setSpeciality(dummyDoctorData.DOCTOR_SPECIALITY);
+    setHospital(dummyDoctorData.HOSPITAL_NAME);
+    setTimeslot(dummyDoctorData.DOCTOR_TIMESLOT);
+    setRemuneration(dummyDoctorData.DOCTOR_PAYMENT);
+    setTimes(generateTimeSlots(dummyDoctorData.DOCTOR_TIMESLOT));
   }, [doctorId]);
 
   const generateTimeSlots = (timeRange) => {
-    console.log("Time range:", timeRange);
-
     if (
       !timeRange ||
       typeof timeRange !== "string" ||
@@ -78,8 +75,6 @@ const ViewDoctorProfile = () => {
       return [];
     }
 
-    console.log("Converted time range:", startTime, endTime);
-    console.log("Type of startTime:", typeof startTime);
     let newStartTime = parseInt(startTime);
     let newEndTime = parseInt(endTime);
     let turn = 1;
@@ -101,7 +96,6 @@ const ViewDoctorProfile = () => {
       }
     }
 
-    console.log("Generated slots:", slots);
     return slots;
   };
 
@@ -113,56 +107,21 @@ const ViewDoctorProfile = () => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = async () => {
+      reader.onload = () => {
         const base64String = reader.result;
         setImagePreview(base64String);
-        try {
-          const res = await fetch(
-            "http://localhost:5000/upload/doctorProfile",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                imageBase64: base64String,
-                doctorId: doctorId,
-              }),
-            }
-          );
-
-          const data = await res.json();
-          if (res.ok) {
-            console.log("Image uploaded successfully:", data);
-            toast.success("Image Upload Successful!", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          } else {
-            console.error("Image upload failed:", data.message);
-            toast.error("Image Upload Failed", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          }
-        } catch (error) {
-          console.error("Error uploading image:", error);
-          toast.error("Error uploading image.");
-        }
+        console.log("Image uploaded successfully:", base64String);
+        toast.success("Image Upload Successful!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       };
-
       reader.readAsDataURL(file);
     }
   };
@@ -175,39 +134,19 @@ const ViewDoctorProfile = () => {
       patientId: localdata.PatientId,
     };
     console.log("Appointment data:", data);
-    try {
-      fetch("http://localhost:5000/api/appointmentsdata", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ data }),
-      });
-      toast.success("Appointment successfully booked!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-      navigate("/home");
-    } catch (error) {
-      console.error("Error booking appointment:", error);
-      toast.error("Failed to book appointment", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
+    toast.success("Appointment successfully booked!", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+    navigate("/home");
   };
+
   return (
     <div className="firstdiv">
       <ul className="circles">

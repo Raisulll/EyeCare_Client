@@ -6,13 +6,10 @@ import "./Banner.css";
 const Banner = () => {
   const navigate = useNavigate();
   const goto = () => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user) {
-      navigate("/products");
-    } else {
-      navigate("/signin");
-    }
-  }
+    // Static navigation to products page
+    navigate("/products");
+  };
+
   return (
     <div className="banner">
       <div className="banner-desc">
@@ -41,7 +38,6 @@ const Banner = () => {
     </div>
   );
 };
-
 
 const StyledWrapper = styled.div`
   button {

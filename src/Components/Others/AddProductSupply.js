@@ -24,7 +24,7 @@ const AddToSupply = () => {
     }
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!productName || !productPrice || !productDescription) {
       toast.error("Please fill all fields!", {
         position: "top-right",
@@ -39,38 +39,14 @@ const AddToSupply = () => {
       return;
     }
 
-    try {
-      const data = {
-        productName,
-        productPrice,
-        productDescription,
-        productImage: imagePreview,
-      };
-      const result = await fetch("http://localhost:5000/sets/productstosupply", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      if (result.status === 200) 
-      {
-        console.log("Product added successfully!");
-      }
+    const data = {
+      productName,
+      productPrice,
+      productDescription,
+      productImage: imagePreview,
+    };
 
-    } catch (error) {
-      console.error("Error adding product:", error);
-      toast.error("Error adding product!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
+    console.log("Product added successfully:", data);
 
     toast.success("Product added successfully!", {
       position: "top-right",

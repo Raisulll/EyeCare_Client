@@ -5,36 +5,27 @@ import "./ProductDetails.css";
 
 function ProductDetails() {
   const location = useLocation();
-  const { title, description, price, image_url,shopId,userId,productId, quantity,shopName } =
-    location.state || {};
-
-  const addToCart = async () => {
-    console.log("Add to cart Clicked");
-    const data = {
-      userId: userId,
-      productId: productId,
-      shopId: shopId,
-      cartQuantity: 1
+  const { title, description, price, image_url, shopName, quantity } =
+    location.state || {
+      title: "Sample Product",
+      description: "This is a sample product description.",
+      price: "99.99",
+      image_url: "https://via.placeholder.com/150",
+      shopName: "Sample Shop",
+      quantity: 10,
     };
 
-    try {
-      const result = await fetch("http://localhost:5000/sets/addtocart", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+  const addToCart = () => {
+    console.log("Add to cart Clicked");
+    const data = {
+      userId: "sampleUserId",
+      productId: "sampleProductId",
+      shopId: "sampleShopId",
+      cartQuantity: 1,
+    };
 
-      if (result.status === 200) {
-        console.log("Product added to cart");
-      } else {
-        console.error("Failed to add product to cart");
-      }
-    } catch (error) {
-      console.error("Error adding product to cart:", error);
-    }
-  }
+    console.log("Product added to cart:", data);
+  };
 
   return (
     <div className="div-one">
@@ -57,7 +48,9 @@ function ProductDetails() {
         <div className="div-three">
           <h1>{title}</h1>
           <p>{description}</p>
-          <p><b>Shop:</b>{shopName}</p>
+          <p>
+            <b>Shop:</b> {shopName}
+          </p>
           <p>
             <b>Price:</b> ${price}
           </p>

@@ -8,29 +8,34 @@ const Appointments = () => {
   const [sortConfig, setSortConfig] = useState(null);
   const [isTableVisible, setIsTableVisible] = useState(true);
 
-  // Fetch doctorId from localStorage
-  const doctorData = JSON.parse(localStorage.getItem("user"));
-  const doctorId = doctorData?.doctorId;
-  console.log(doctorId);
-
+  // Dummy data for appointments
   useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/senddoctorappointments?doctorId=${doctorId}`
-        );
-        const data = await response.json();
-        console.log(data);
-        setAppointments(data);
-      } catch (error) {
-        console.error("Error fetching appointments:", error);
-      }
-    };
+    const dummyAppointments = [
+      {
+        APPOINTMENT_ID: "1",
+        PATIENT_NAME: "John Doe",
+        APPOINTMENT_DATE: "2025-02-10T00:00:00Z",
+        APPOINTMENT_TIME: "10:00 AM",
+        APPOINTMENT_STATUS: "Scheduled",
+      },
+      {
+        APPOINTMENT_ID: "2",
+        PATIENT_NAME: "Jane Smith",
+        APPOINTMENT_DATE: "2025-02-15T00:00:00Z",
+        APPOINTMENT_TIME: "11:00 AM",
+        APPOINTMENT_STATUS: "Completed",
+      },
+      {
+        APPOINTMENT_ID: "3",
+        PATIENT_NAME: "Emily Johnson",
+        APPOINTMENT_DATE: "2025-02-20T00:00:00Z",
+        APPOINTMENT_TIME: "12:00 PM",
+        APPOINTMENT_STATUS: "Cancelled",
+      },
+    ];
 
-    if (doctorId) {
-      fetchAppointments();
-    }
-  }, [doctorId]);
+    setAppointments(dummyAppointments);
+  }, []);
 
   const sortedAppointments = [...appointments].sort((a, b) => {
     if (!sortConfig) return 0;
@@ -66,14 +71,36 @@ const Appointments = () => {
   return (
     <StyledWrapper>
       <div className="card">
-        <div className="card__title">Appointments</div>
+        <div className="card__title" onClick={toggleTableVisibility}>
+          Appointments {isTableVisible ? "▲" : "▼"}
+        </div>
         {isTableVisible && (
           <>
             <div className="card__header">
-              <div className="header__item">Patient Name</div>
-              <div className="header__item">Date</div>
-              <div className="header__item">Time</div>
-              <div className="header__item">Status</div>
+              <div
+                className="header__item"
+                onClick={() => requestSort("PATIENT_NAME")}
+              >
+                Patient Name
+              </div>
+              <div
+                className="header__item"
+                onClick={() => requestSort("APPOINTMENT_DATE")}
+              >
+                Date
+              </div>
+              <div
+                className="header__item"
+                onClick={() => requestSort("APPOINTMENT_TIME")}
+              >
+                Time
+              </div>
+              <div
+                className="header__item"
+                onClick={() => requestSort("APPOINTMENT_STATUS")}
+              >
+                Status
+              </div>
               <div className="header__item">Add Prescription</div>
             </div>
             <div className="card__data">
@@ -167,9 +194,10 @@ const StyledWrapper = styled.div`
   }
 
   .header__item {
-    width: 33%;
+    width: 20%;
     text-align: center;
     font-weight: bold;
+    cursor: pointer;
   }
 
   .card__data {
@@ -181,7 +209,7 @@ const StyledWrapper = styled.div`
   .card__right,
   .card__center,
   .card__left {
-    width: 33%;
+    width: 20%;
   }
 
   .item {
@@ -201,11 +229,11 @@ const StyledWrapper = styled.div`
   .card__left .item {
     padding-right: 1em;
   }
-  
-  .btn{
-    all: unset;  
+
+  .btn {
+    all: unset;
   }
-  .btn:hover{
+  .btn:hover {
     cursor: pointer;
   }
 `;

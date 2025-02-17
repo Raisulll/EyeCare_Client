@@ -40,17 +40,7 @@ function ShopOwnerSignUp() {
       shopLicense: shopLicense,
     };
     console.log(data);
-    const result = await fetch("http://localhost:5000/auth/shopsignup", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(result);
-    if (result.status === 200) {
-      navigate("/otheruserssignin");
-    }
+    navigate("/otheruserssignin");
   };
 
   return (
@@ -322,6 +312,5 @@ const StyledWrapper = styled.div`
     right: 0;
   }
 `;
-
 
 export default ShopOwnerSignUp;

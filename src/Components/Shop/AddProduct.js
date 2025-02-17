@@ -3,58 +3,50 @@ import { useNavigate } from "react-router-dom";
 import { Button, Form } from "react-bootstrap";
 import "../../App.css";
 
+const dummyProducts = [
+  { PRODUCT_ID: "p1", PRODUCT_NAME: "Glasses" },
+  { PRODUCT_ID: "p2", PRODUCT_NAME: "Sunglasses" },
+  { PRODUCT_ID: "p3", PRODUCT_NAME: "Contact Lenses" },
+];
 
-const AddProduct = () => { 
+const AddProduct = () => {
   const navigate = useNavigate();
   const shopId = JSON.parse(localStorage.getItem("user")).ShopId;
-  console.log(shopId);
+  console.log("Shop ID:", shopId);
   const [allProducts, setAllProducts] = useState([]);
   const [productId, setProductId] = useState("");
   const [quantity, setQuantity] = useState("");
 
   useEffect(() => {
-    const fetchAllProducts = async () => {
-      try {
-        const products = await fetch(
-          `http://localhost:5000/gets/allproducts`
-        );
-        const temp = await products.json();
-        setAllProducts(temp);
-        console.log(temp);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchAllProducts();
-  }, [])
+    // Instead of fetching from an API, we load dummy data.
+    setAllProducts(dummyProducts);
+    console.log("Loaded dummy products:", dummyProducts);
+  }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     const data = {
       shopId,
       productId,
       quantity,
     };
-    console.log(data);
-    const result = await fetch("http://localhost:5000/sets/addproduct", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    const response = await result.json();
-    console.log(response);
+    console.log("Dummy Add Product Data:", data);
+    // Simulate successful product addition and navigate to shop profile
     navigate("/shopprofile");
-  }
-  return(
+  };
+
+  return (
     <div className="add-product-container">
       <h1>Add Product</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="productId">
           <Form.Label>Product</Form.Label>
-          <Form.Control as="select" onChange={(e) => setProductId(e.target.value)}>
-            <option>Select Product</option>
+          <Form.Control
+            as="select"
+            onChange={(e) => setProductId(e.target.value)}
+            required
+          >
+            <option value="">Select Product</option>
             {allProducts.map((product) => (
               <option key={product.PRODUCT_ID} value={product.PRODUCT_ID}>
                 {product.PRODUCT_NAME}
@@ -68,15 +60,15 @@ const AddProduct = () => {
             type="number"
             placeholder="Enter Quantity"
             onChange={(e) => setQuantity(e.target.value)}
+            required
           />
         </Form.Group>
-        <Button variant="primary" type="submit" onClick={
-          handleSubmit
-        }>
+        <Button variant="primary" type="submit">
           Add Product
         </Button>
       </Form>
     </div>
   );
-}
+};
+
 export default AddProduct;

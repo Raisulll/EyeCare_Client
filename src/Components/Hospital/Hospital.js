@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,40 +7,15 @@ import "../Patient/UserProfile.css";
 
 const HospitalProfile = () => {
   const navigate = useNavigate();
-  const [hospitalData, setHospitalData] = useState([]);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [district, setDistrict] = useState("");
-  const [area, setArea] = useState("");
-  const [roadNumber, setRoadNumber] = useState("");
-
-  const localdata = JSON.parse(localStorage.getItem("user"));
-
-  useEffect(() => {
-    // fetch hospital data from the server
-    const fetchHospitalData = async () => {
-      try {
-        const hospital = await fetch(
-          `http://localhost:5000/gets/hospitaldata?hospitalid=${localdata.HospitalId}`
-        );
-        const temp = await hospital.json();
-        setHospitalData(temp);
-        setImagePreview(temp.HOSPITAL_IMAGE);
-        setFullName(temp.HOSPITAL_NAME);
-        setEmail(temp.HOSPITAL_MAIL);
-        setPhone(temp.HOSPITAL_PHONE);
-        setDistrict(temp.HOSPITAL_DISTRICT);
-        setArea(temp.HOSPITAL_AREA);
-        setRoadNumber(temp.HOSPITAL_ROADNUMBER);
-        console.log(temp);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchHospitalData();
-  }, []);
+  const [imagePreview, setImagePreview] = useState(
+    "https://via.placeholder.com/150"
+  );
+  const [fullName, setFullName] = useState("Sample Hospital");
+  const [email, setEmail] = useState("hospital@example.com");
+  const [phone, setPhone] = useState("1234567890");
+  const [district, setDistrict] = useState("District A");
+  const [area, setArea] = useState("Area B");
+  const [roadNumber, setRoadNumber] = useState("123");
 
   const handleImageClick = () => {
     document.getElementById("file").click();
@@ -50,61 +25,27 @@ const HospitalProfile = () => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = async () => {
+      reader.onload = () => {
         const base64String = reader.result;
         setImagePreview(base64String);
-        try {
-          const res = await fetch(
-            "http://localhost:5000/upload/hospitalProfile",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                imageBase64: base64String,
-                hospitalId: localdata.HospitalId,
-              }),
-            }
-          );
-
-          const data = await res.json();
-          if (res.ok) {
-            console.log("Image uploaded successfully:", data);
-            toast.success("Image Upload Successful!", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          } else {
-            console.error("Image upload failed:", data.message);
-            toast.error("Image Upload Failed", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          }
-        } catch (error) {
-          console.error("Error uploading image:", error);
-          toast.error("Error uploading image.");
-        }
+        console.log("Image uploaded successfully:", base64String);
+        toast.success("Image Upload Successful!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const updateHospital = async () => {
-    if (phone.length !== 11) {
+  const updateHospital = () => {
+    if (phone.length !== 10) {
       toast.error("Invalid Phone Number!", {
         position: "top-right",
         autoClose: 2500,
@@ -117,29 +58,28 @@ const HospitalProfile = () => {
       });
       return;
     }
+
     const data = {
-      hospitalId: localdata.HospitalId,
       hospitalName: fullName,
       hospitalPhone: phone,
       hospitalDistrict: district,
       hospitalArea: area,
       hospitalRoadnumber: roadNumber,
-      hospitalPhone: phone,
       hospitalEmail: email,
-    }
-    console.log(data);
-    try {
-      const res = await fetch("http://localhost:5000/sets/updatehospital", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-    } catch (error) {
-      console.log(error);
-    }
-  }
+    };
+
+    console.log("Hospital data updated successfully:", data);
+    toast.success("Data Updated Successfully!", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
 
   return (
     <div className="firstdiv">
@@ -201,12 +141,12 @@ const HospitalProfile = () => {
             <div className="input-container">
               <input
                 type="text"
-                id="phoneNumber"
+                id="district"
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
                 required
               />
-              <label htmlFor="phoneNumber" className="label">
+              <label htmlFor="district" className="label">
                 District
               </label>
               <div className="underline" />

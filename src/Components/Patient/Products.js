@@ -9,40 +9,44 @@ const Products = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/gets/products`);
-        const data = await response.json();
-        setProducts(data);
-        console.log("Products fetched successfully", data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-    fetchProducts();
+    // Dummy data for products
+    const dummyProducts = [
+      {
+        PRODUCT_ID: "1",
+        PRODUCT_NAME: "Product 1",
+        PRODUCT_DESCRIPTION: "Description for Product 1",
+        PRODUCT_PRICE: "10.00",
+        PRODUCT_IMAGE: "https://via.placeholder.com/150",
+        SHOP_ID: "1",
+        SHOP_NAME: "Shop A",
+        QUANTITY: 5,
+      },
+      {
+        PRODUCT_ID: "2",
+        PRODUCT_NAME: "Product 2",
+        PRODUCT_DESCRIPTION: "Description for Product 2",
+        PRODUCT_PRICE: "20.00",
+        PRODUCT_IMAGE: "https://via.placeholder.com/150",
+        SHOP_ID: "2",
+        SHOP_NAME: "Shop B",
+        QUANTITY: 3,
+      },
+    ];
+
+    setProducts(dummyProducts);
   }, []);
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     const search = e.target.value.toLowerCase();
     console.log("Search:", search);
-    try {
-      const response = await fetch(
-        `http://localhost:5000/gets/productsearch?search=${search}`
-      );
-      const data = await response.json();
-      console.log("Search results:", data);
 
-      // Set the new products data
-      setProducts(data);
+    // Filter dummy products based on search input
+    const filteredProducts = products.filter((product) =>
+      product.PRODUCT_NAME.toLowerCase().includes(search)
+    );
 
-      // Log the new data (instead of products)
-      console.log("Products fetched successfully", products);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+    setProducts(filteredProducts);
   };
-
-
 
   return (
     <div className="products-container">
@@ -91,22 +95,21 @@ const Products = () => {
       <div className="products">
         {products.length > 0 &&
           products.map((product, index) => {
-            console.log('number of products: ', products);
+            console.log("number of products: ", products);
             return (
-               <Card
-                 className="product-card"
-                 key={index}
-                 title={product.PRODUCT_NAME}
-                 description={product.PRODUCT_DESCRIPTION}
-                 price={product.PRODUCT_PRICE}
-                 shopId={product.SHOP_ID}
-                 userId={userId}
-                 productId={product.PRODUCT_ID}
-                 quantity={product.QUANTITY}
-                 image_url={product.PRODUCT_IMAGE}
-                 shopName={product.SHOP_NAME}
-               />
-              //  <div>helllo</div>
+              <Card
+                className="product-card"
+                key={index}
+                title={product.PRODUCT_NAME}
+                description={product.PRODUCT_DESCRIPTION}
+                price={product.PRODUCT_PRICE}
+                shopId={product.SHOP_ID}
+                userId={userId}
+                productId={product.PRODUCT_ID}
+                quantity={product.QUANTITY}
+                image_url={product.PRODUCT_IMAGE}
+                shopName={product.SHOP_NAME}
+              />
             );
           })}
       </div>

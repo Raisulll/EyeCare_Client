@@ -16,116 +16,61 @@ const UserProfile = (props) => {
   const [roadNumber, setRoadNumber] = useState("");
 
   const localdata = JSON.parse(localStorage.getItem("user"));
-  // console.log("localdata:", localdata);
 
   useEffect(() => {
-    const fetchPatientData = async () => {
-      try {
-        const patient = await fetch(
-          `http://localhost:5000/gets/patientdata?patientid=${localdata.patientId}`
-        );
-        const temp = await patient.json();
-        setPatientData(temp);
-        // console.log("Patient Data:", temp);
-        setImagePreview(
-          temp.patient_image ||
-            "https://res.cloudinary.com/dnn7v3kkw/image/upload/v1727238419/EyeCare/nef8rhqyoovq7wcsodr0.jpg"
-        );
-        setFullName(temp.patient_name);
-        setEmail(temp.patient_mail);
-        setPhoneNumber(temp.patient_phone);
-
-        // Correctly format the date
-        const dobDate = new Date(temp.patient_dob);
-        const formattedDate = isNaN(dobDate.getTime())
-          ? null
-          : dobDate.getFullYear() +
-            "-" +
-            String(dobDate.getMonth() + 1).padStart(2, "0") +
-            "-" +
-            String(dobDate.getDate()).padStart(2, "0");
-        setDateOfBirth(formattedDate);
-
-        setDistrict(temp.patient_address.patient_district || "");
-        setArea(temp.patient_address.patient_area || "");
-        setRoadNumber(temp.patient_address.patient_roadnumber || "");
-      } catch (error) {
-        // console.log(error);
-      }
+    // Dummy data for patient
+    const dummyPatientData = {
+      patient_image: "https://via.placeholder.com/150",
+      patient_name: "John Doe",
+      patient_mail: "john.doe@example.com",
+      patient_phone: "1234567890",
+      patient_dob: "1990-01-01",
+      patient_address: {
+        patient_district: "District A",
+        patient_area: "Area B",
+        patient_roadnumber: "123",
+      },
     };
-    fetchPatientData();
+
+    setPatientData(dummyPatientData);
+    setImagePreview(dummyPatientData.patient_image);
+    setFullName(dummyPatientData.patient_name);
+    setEmail(dummyPatientData.patient_mail);
+    setPhoneNumber(dummyPatientData.patient_phone);
+    setDateOfBirth(dummyPatientData.patient_dob);
+    setDistrict(dummyPatientData.patient_address.patient_district);
+    setArea(dummyPatientData.patient_address.patient_area);
+    setRoadNumber(dummyPatientData.patient_address.patient_roadnumber);
   }, []);
 
   const handleImageClick = () => {
     document.getElementById("file").click();
   };
 
-  const handleImageChange = async (event) => {
+  const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = async () => {
+      reader.onload = () => {
         const base64String = reader.result;
         setImagePreview(base64String);
-        try {
-          const res = await fetch(
-            "http://localhost:5000/upload/patientProfile",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                imageBase64: base64String,
-                patientId: localdata.patientId,
-              }),
-            }
-          );
-
-          const data = await res.json();
-          if (res.ok) {
-            // console.log("Image uploaded successfully:", data);
-            // localStorage.setItem("user", JSON.stringify(data));
-            let oldData = JSON.parse(localStorage.getItem("user"));
-            oldData.patientImage = data.url;
-            localStorage.setItem("user", JSON.stringify(oldData));
-            props.setUser(localStorage.getItem("user"));
-            toast.success("Image Upload Successful!", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          } else {
-            // console.error("Image upload failed:", data.message);
-            toast.error("Image Upload Failed", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          }
-        } catch (error) {
-          // console.error("Error uploading image:", error);
-          toast.error("Error uploading image.");
-        }
+        console.log("Image uploaded successfully:", base64String);
+        toast.success("Image Upload Successful!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       };
-
       reader.readAsDataURL(file);
     }
   };
 
-  const updatePatientData = async () => {
-    // console.log("updatePatientData");
-    //check if the phone number is 11 digits if not show toast error
+  const updatePatientData = () => {
     if (phoneNumber.length !== 11) {
       toast.error("Invalid Phone Number!", {
         position: "top-right",
@@ -149,55 +94,18 @@ const UserProfile = (props) => {
       patientArea: area,
       patientRoadNumber: roadNumber,
     };
-    // console.log("Data:", data);
-    try {
-      const res = await fetch("http://localhost:5000/edit/patientProfileData", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
 
-      const result = await res.json();
-      if (res.ok) {
-        // console.log("Patient data updated successfully:", result);
-        toast.success("Data Updated Successfully!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else {
-        // console.error("Failed to update patient data:", result.message);
-        toast.error("Failed to update data!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
-    } catch (error) {
-      // console.error("Error updating patient data:", error);
-      toast.error("Error updating data!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
+    console.log("Patient data updated successfully:", data);
+    toast.success("Data Updated Successfully!", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   };
 
   return (

@@ -1,68 +1,50 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Button, Card, Col, Container, ListGroup, Row } from "react-bootstrap";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import "../Patient/UserProfile.css";
-import { Card, Container, Row, Col, ListGroup, Button } from "react-bootstrap";
 
 const DeliveryProfile = () => {
-  const [deliveryData, setDeliveryData] = useState({});
-  const [imagePreview, setImagePreview] = useState(null);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [district, setDistrict] = useState("");
-  const [area, setArea] = useState("");
-  const [roadNumber, setRoadNumber] = useState("");
-  const [status, setStatus] = useState("");
-  const [deliveryCharge, setDeliveryCharge] = useState("");
+  const [imagePreview, setImagePreview] = useState(
+    "https://via.placeholder.com/150"
+  );
+  const [fullName, setFullName] = useState("Sample Delivery Agency");
+  const [email, setEmail] = useState("delivery@example.com");
+  const [phone, setPhone] = useState("1234567890");
+  const [district, setDistrict] = useState("District A");
+  const [area, setArea] = useState("Area B");
+  const [roadNumber, setRoadNumber] = useState("123");
+  const [status, setStatus] = useState("Active");
+  const [deliveryCharge, setDeliveryCharge] = useState("$10");
   const [orders, setOrders] = useState([]);
 
-  const localdata = JSON.parse(localStorage.getItem("user"));
-  const deliveryId = JSON.parse(localStorage.getItem("user")).deliveryId;
-
   useEffect(() => {
-    // Fetch delivery agency data
-    const fetchDeliveryData = async () => {
-      try {
-        const delivery = await fetch(
-          `http://localhost:5000/gets/deliverydata?deliveryId=${deliveryId}`
-        );
-        const temp = await delivery.json();
-        setDeliveryData(temp[0]);
-        setImagePreview(temp[0].DELIVERY_AGENCY_IMAGE);
-        setFullName(temp[0].DELIVERY_AGENCY_NAME);
-        setEmail(temp[0].DELIVERY_AGENCY_EMAIL);
-        setPhone(temp[0].DELIVERY_AGENCY_PHONE);
-        setDistrict(temp[0].DELIVERY_AGENCY_DISTRICT);
-        setArea(temp[0].DELIVERY_AGENCY_AREA);
-        setRoadNumber(temp[0].DELIVERY_AGENCY_ROADNUMBER);
-        setStatus(temp[0].DELIVERY_AGENCY_STATUS);
-        setDeliveryCharge(temp[0].DELIVERY_CHARGE);
-        console.log("Delivery Data1:", temp);
-      } catch (error) {
-        console.log("Error fetching delivery data:", error);
-      }
-    };
+    // Dummy data for orders
+    const dummyOrders = [
+      {
+        ORDER_ID: "1",
+        PATIENT_NAME: "John Doe",
+        ORDER_DATE: "10/2/2025",
+        PATIENT_PHONE: "1234567890",
+        PATIENT_AREA: "Area B",
+        PATIENT_DISTRICT: "District A",
+        SHOP_NAME: "Sample Shop",
+        ORDER_STATUS: "Pending",
+      },
+      {
+        ORDER_ID: "2",
+        PATIENT_NAME: "Jane Smith",
+        ORDER_DATE: "15/2/2025",
+        PATIENT_PHONE: "0987654321",
+        PATIENT_AREA: "Area C",
+        PATIENT_DISTRICT: "District B",
+        SHOP_NAME: "Sample Shop",
+        ORDER_STATUS: "Pending",
+      },
+    ];
 
-    // Fetch orders for the delivery agency
-    const fetchOrders = async () => {
-      // try {
-      //   const orders = await fetch(
-      //     `http://localhost:5000/gets/ordersfordeliveryagency?deliveryId=${deliveryId}`
-      //   );
-      //   const temp = await orders.json();
-      //   setOrders(temp);
-      //   console.log("Orders:", orders);
-      // } catch (error) {
-      //   console.log("Error fetching orders:", error);
-      // }
-    };
-
-    fetchDeliveryData();
-    console.log("Delivery Data:", deliveryData);
-    fetchOrders();
+    setOrders(dummyOrders);
   }, []);
 
   const handleImageClick = () => {
@@ -73,187 +55,43 @@ const DeliveryProfile = () => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = async () => {
+      reader.onload = () => {
         const base64String = reader.result;
         setImagePreview(base64String);
-        try {
-          const res = await fetch("http://localhost:5000/upload/deliveryprofile", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              imageBase64: base64String,
-              deliveryId: localdata.deliveryId,
-            }),
-          });
-
-          const data = await res.json();
-          if (res.ok) {
-            console.log("Image uploaded successfully:", data);
-            toast.success("Image Upload Successful!", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          } else {
-            console.error("Image upload failed:", data.message);
-            toast.error("Image Upload Failed", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          }
-        } catch (error) {
-          console.error("Error uploading image:", error);
-          toast.error("Error uploading image.");
-        }
+        console.log("Image uploaded successfully:", base64String);
+        toast.success("Image Upload Successful!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       };
-
       reader.readAsDataURL(file);
     }
   };
 
-  // Function to mark an order as delivered
-  const handleDelivered = async (orderId) => {
-    try {
-      const response = await fetch(
-        `http://localhost:5000/gets/markOrderDelivered?orderId=${orderId}`,
-        {
-          method: "PUT", // Assuming the API uses PUT to update order status
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (response.ok) {
-        // Update the orders state to remove or mark the delivered order
-        setOrders((prevOrders) =>
-          prevOrders.filter((order) => order.ORDER_ID !== orderId)
-        );
-        console.log(`Order ${orderId} marked as delivered.`);
-      } else {
-        console.log("Failed to mark order as delivered.");
-      }
-    } catch (error) {
-      console.log("Error marking order as delivered:", error);
-    }
+  const handleDelivered = (orderId) => {
+    console.log(`Order ${orderId} marked as delivered.`);
+    setOrders((prevOrders) =>
+      prevOrders.filter((order) => order.ORDER_ID !== orderId)
+    );
+    toast.success(`Order ${orderId} marked as delivered!`, {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   };
 
   return (
-    // <Container className="mt-5">
-    //   <Row>
-    //     <Col md={4}>
-    //       {/* Delivery Agency Profile Card */}
-    //       <Card>
-    //         <Card.Header as="h5">Delivery Agency Profile</Card.Header>
-    //         <Card.Body>
-    //           <Card.Title>{deliveryData.DELIVERY_AGENCY_NAME}</Card.Title>
-    //           <Card.Text>
-    //             <strong>Phone:</strong> {deliveryData.DELIVERY_AGENCY_PHONE}
-    //           </Card.Text>
-    //           <Card.Text>
-    //             <strong>Email:</strong> {deliveryData.DELIVERY_AGENCY_EMAIL}
-    //           </Card.Text>
-    //           <Card.Text>
-    //             <strong>License:</strong> {deliveryData.DELIVERY_AGENCY_LICENSE}
-    //           </Card.Text>
-    //           <Card.Text>
-    //             <strong>Area:</strong> {deliveryData.DELIVERY_AGENCY_AREA}
-    //           </Card.Text>
-    //           <Card.Text>
-    //             <strong>District:</strong>{" "}
-    //             {deliveryData.DELIVERY_AGENCY_DISTRICT}
-    //           </Card.Text>
-    //           <Card.Text>
-    //             <strong>Road Number:</strong>{" "}
-    //             {deliveryData.DELIVERY_AGENCY_ROADNUMBER}
-    //           </Card.Text>
-    //           <Card.Text>
-    //             <strong>Status:</strong> {deliveryData.DELIVERY_AGENCY_STATUS}
-    //           </Card.Text>
-    //           <Card.Text>
-    //             <strong>Delivery Charge:</strong> $
-    //             {deliveryData.DELIVERY_CHARGE}
-    //           </Card.Text>
-    //         </Card.Body>
-    //       </Card>
-    //     </Col>
-
-    //     <Col md={8}>
-    //       {/* Orders List */}
-    //       <Card>
-    //         <Card.Header as="h5">Orders</Card.Header>
-    //         <ListGroup variant="flush">
-    //           {orders.length > 0 ? (
-    //             orders.map((order, index) => (
-    //               <ListGroup.Item key={index}>
-    //                 <Row>
-    //                   <Col md={6}>
-    //                     <strong>Order ID:</strong> {order.ORDER_ID}
-    //                   </Col>
-    //                   <Col md={6}>
-    //                     <strong>Order Date:</strong>{" "}
-    //                     {new Date(order.ORDER_DATE).toLocaleString()}
-    //                   </Col>
-    //                 </Row>
-    //                 <Row>
-    //                   <Col md={6}>
-    //                     <strong>Patient Name:</strong> {order.PATIENT_NAME}
-    //                   </Col>
-    //                   <Col md={6}>
-    //                     <strong>Patient Phone:</strong> {order.PATIENT_PHONE}
-    //                   </Col>
-    //                 </Row>
-    //                 <Row>
-    //                   <Col md={6}>
-    //                     <strong>Patient Area:</strong> {order.PATIENT_AREA}
-    //                   </Col>
-    //                   <Col md={6}>
-    //                     <strong>Patient District:</strong>{" "}
-    //                     {order.PATIENT_DISTRICT}
-    //                   </Col>
-    //                 </Row>
-    //                 <Row>
-    //                   <Col md={6}>
-    //                     <strong>Shop Name:</strong> {order.SHOP_NAME}
-    //                   </Col>
-    //                   <Col md={6}>
-    //                     <strong>Order Status:</strong> {order.ORDER_STATUS}
-    //                   </Col>
-    //                 </Row>
-    //                 <Row className="mt-3">
-    //                   <Col md={12} className="text-right">
-    //                     {/* Delivered Button */}
-    //                     <Button
-    //                       variant="success"
-    //                       onClick={() => handleDelivered(order.ORDER_ID)}
-    //                     >
-    //                       Mark as Delivered
-    //                     </Button>
-    //                   </Col>
-    //                 </Row>
-    //               </ListGroup.Item>
-    //             ))
-    //           ) : (
-    //             <ListGroup.Item>No orders found.</ListGroup.Item>
-    //           )}
-    //         </ListGroup>
-    //       </Card>
-    //     </Col>
-    //   </Row>
-    // </Container>
     <div className="firstdiv">
       <ToastContainer />
       <div className="second">
@@ -278,7 +116,7 @@ const DeliveryProfile = () => {
                 required
               />
               <label htmlFor="fullName" className="label">
-                Shop Name
+                Delivery Agency Name
               </label>
               <div className="underline" />
             </div>
@@ -313,12 +151,12 @@ const DeliveryProfile = () => {
             <div className="input-container">
               <input
                 type="text"
-                id="phoneNumber"
+                id="district"
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
                 required
               />
-              <label htmlFor="phoneNumber" className="label">
+              <label htmlFor="district" className="label">
                 District
               </label>
               <div className="underline" />
@@ -400,6 +238,68 @@ const DeliveryProfile = () => {
           </StyledWrapper>
         </div>
       </div>
+      <Container className="mt-5">
+        <Row>
+          <Col md={12}>
+            <Card>
+              <Card.Header as="h5">Orders</Card.Header>
+              <ListGroup variant="flush">
+                {orders.length > 0 ? (
+                  orders.map((order, index) => (
+                    <ListGroup.Item key={index}>
+                      <Row>
+                        <Col md={6}>
+                          <strong>Order ID:</strong> {order.ORDER_ID}
+                        </Col>
+                        <Col md={6}>
+                          <strong>Order Date:</strong> {order.ORDER_DATE}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={6}>
+                          <strong>Patient Name:</strong> {order.PATIENT_NAME}
+                        </Col>
+                        <Col md={6}>
+                          <strong>Patient Phone:</strong> {order.PATIENT_PHONE}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={6}>
+                          <strong>Patient Area:</strong> {order.PATIENT_AREA}
+                        </Col>
+                        <Col md={6}>
+                          <strong>Patient District:</strong>{" "}
+                          {order.PATIENT_DISTRICT}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col md={6}>
+                          <strong>Shop Name:</strong> {order.SHOP_NAME}
+                        </Col>
+                        <Col md={6}>
+                          <strong>Order Status:</strong> {order.ORDER_STATUS}
+                        </Col>
+                      </Row>
+                      <Row className="mt-3">
+                        <Col md={12} className="text-right">
+                          <Button
+                            variant="success"
+                            onClick={() => handleDelivered(order.ORDER_ID)}
+                          >
+                            Mark as Delivered
+                          </Button>
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  ))
+                ) : (
+                  <ListGroup.Item>No orders found.</ListGroup.Item>
+                )}
+              </ListGroup>
+            </Card>
+          </Col>
+        </Row>
+      </Container>
     </div>
   );
 };
@@ -521,6 +421,5 @@ const StyledWrapper = styled.div`
     right: 0;
   }
 `;
-
 
 export default DeliveryProfile;

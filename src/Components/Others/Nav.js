@@ -1,47 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import "./Nav.css";
 
-
-function NavigationBar(props) {
-  const [user, setUser] = useState(localStorage.getItem("user"));
+function NavigationBar() {
+  const [user, setUser] = useState({
+    userType: "patient",
+    patientImage: "https://via.placeholder.com/150",
+  });
   const [dropdownActive, setDropdownActive] = useState(false);
   const navigate = useNavigate();
-  const localdata = JSON.parse(localStorage.getItem("user"));
-  let jsonUser = props.user;
-  let userType = "nai";
-  if (localdata) {
-    userType = localdata.usertype;
-  }
-  if (typeof props.user === "string") {
-    jsonUser = JSON.parse(props.user);
-  } else {
-    jsonUser = props.user;
-  }
-
-  // console.log(jsonUser);
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      setUser(localStorage.getItem("user"));
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-
-    return () => {
-      window.removeEventListener("storage", handleStorageChange);
-    };
-  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
     setUser(null);
     navigate("/signin");
   };
 
   const userprofile = () => {
-    console.log(userType);
+    const userType = user.userType;
     if (userType === "doctor") {
       navigate("/doctorprofile");
     } else if (userType === "hospital") {
@@ -50,8 +26,7 @@ function NavigationBar(props) {
       navigate("/shopprofile");
     } else if (userType === "delivery") {
       navigate("/deliveryprofile");
-    }
-    else {
+    } else {
       navigate("/profile");
     }
   };
@@ -59,7 +34,6 @@ function NavigationBar(props) {
   const toggleDropdown = () => {
     setDropdownActive(!dropdownActive);
   };
-
 
   return (
     <header className="navHeader">
@@ -73,42 +47,42 @@ function NavigationBar(props) {
         />
       </div>
       <div className="navLinks">
-        {userType === "patient" && (
+        {user.userType === "patient" && (
           <li>
             <Link to="/home">Home</Link>
           </li>
         )}
-        {userType === "patient" && (
+        {user.userType === "patient" && (
           <li>
             <Link to="/products">Products</Link>
           </li>
         )}
-        {userType === "patient" && (
+        {user.userType === "patient" && (
           <li>
             <Link to="alldoctors">Doctors</Link>
           </li>
         )}
-        {userType === "admin" && (
+        {user.userType === "admin" && (
           <li>
             <Link to="/addproducttosupply">Add Product</Link>
           </li>
         )}
-        {userType === "shop" && (
+        {user.userType === "shop" && (
           <li>
             <Link to="/orders">Orders</Link>
           </li>
         )}
-        {userType === "delivery" && (
+        {user.userType === "delivery" && (
           <li>
             <Link to="/deliveryorders">Orders</Link>
           </li>
         )}
-        {userType === "patient" && (
+        {user.userType === "patient" && (
           <li>
             <Link to="/patientorders">Orders</Link>
           </li>
         )}
-        {userType === "hospital" && (
+        {user.userType === "hospital" && (
           <li>
             <Link to="/surgerySchedule">Surgery Schedule</Link>
           </li>
@@ -116,7 +90,7 @@ function NavigationBar(props) {
       </div>
       {user && (
         <div className="navIcons">
-          {userType === "patient" && (
+          {user.userType === "patient" && (
             <li>
               <Link to="/cart">
                 <i className="bi bi-bag navIcon"></i>
@@ -126,7 +100,7 @@ function NavigationBar(props) {
           <li className={`dropdown ${dropdownActive ? "active" : ""}`}>
             <Link to="#" className="navProfileIcon" onClick={toggleDropdown}>
               <img
-                src={jsonUser?.patientImage}
+                src={user.patientImage}
                 alt="Profile"
                 className="navProfileImage"
               />

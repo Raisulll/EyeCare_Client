@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, ListGroup } from "react-bootstrap";
 import "../Shop/shoporder.css";
 
@@ -8,85 +8,57 @@ const ShopOrders = () => {
   const localdata = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    const fetchPreviousOrders = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/gets/prevorders?patientId=${localdata.PatientId}`
-        );
-        const temp = await response.json();
+    // Dummy data for previous orders
+    const dummyPreviousOrders = [
+      {
+        ORDER_ID: "1",
+        SHOP_NAME: "Shop A",
+        ORDER_DATE: "15/02/2025",
+        DELIVERY_AGENCY_NAME: "Agency X",
+        products: [
+          { PRODUCT_NAME: "Product 1", ORDER_QUANTITY: 2 },
+          { PRODUCT_NAME: "Product 2", ORDER_QUANTITY: 1 },
+        ],
+      },
+      {
+        ORDER_ID: "2",
+        SHOP_NAME: "Shop B",
+        ORDER_DATE: "10/02/2025",
+        DELIVERY_AGENCY_NAME: "Agency Y",
+        products: [
+          { PRODUCT_NAME: "Product 3", ORDER_QUANTITY: 1 },
+          { PRODUCT_NAME: "Product 4", ORDER_QUANTITY: 3 },
+        ],
+      },
+    ];
 
-        temp.forEach((order) => {
-          const date = new Date(order.ORDER_DATE);
-          order.ORDER_DATE = `${date.getDate()}/${
-            date.getMonth() + 1
-          }/${date.getFullYear()}`;
-        });
+    // Dummy data for upcoming orders
+    const dummyUpcomingOrders = [
+      {
+        ORDER_ID: "3",
+        SHOP_NAME: "Shop C",
+        ORDER_DATE: "20/02/2025",
+        DELIVERY_AGENCY_NAME: "Agency Z",
+        products: [
+          { PRODUCT_NAME: "Product 5", ORDER_QUANTITY: 1 },
+          { PRODUCT_NAME: "Product 6", ORDER_QUANTITY: 2 },
+        ],
+      },
+      {
+        ORDER_ID: "4",
+        SHOP_NAME: "Shop D",
+        ORDER_DATE: "25/02/2025",
+        DELIVERY_AGENCY_NAME: "Agency W",
+        products: [
+          { PRODUCT_NAME: "Product 7", ORDER_QUANTITY: 2 },
+          { PRODUCT_NAME: "Product 8", ORDER_QUANTITY: 1 },
+        ],
+      },
+    ];
 
-        const groupedOrders = temp.reduce((acc, order) => {
-          const { ORDER_ID } = order;
-          if (!acc[ORDER_ID]) {
-            acc[ORDER_ID] = {
-              ORDER_ID,
-              SHOP_NAME: order.SHOP_NAME,
-              ORDER_DATE: order.ORDER_DATE,
-              DELIVERY_AGENCY_NAME: order.DELIVERY_AGENCY_NAME,
-              products: [],
-            };
-          }
-          acc[ORDER_ID].products.push({
-            PRODUCT_NAME: order.PRODUCT_NAME,
-            ORDER_QUANTITY: order.ORDER_QUANTITY,
-          });
-          return acc;
-        }, {});
-
-        setPreviousOrders(Object.values(groupedOrders));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    const fetchUpcomingOrders = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/gets/upcomingorders?patientId=${localdata.PatientId}`
-        );
-        const temp = await response.json();
-
-        temp.forEach((order) => {
-          const date = new Date(order.ORDER_DATE);
-          order.ORDER_DATE = `${date.getDate()}/${
-            date.getMonth() + 1
-          }/${date.getFullYear()}`;
-        });
-
-        const groupedOrders = temp.reduce((acc, order) => {
-          const { ORDER_ID } = order;
-          if (!acc[ORDER_ID]) {
-            acc[ORDER_ID] = {
-              ORDER_ID,
-              SHOP_NAME: order.SHOP_NAME,
-              ORDER_DATE: order.ORDER_DATE,
-              DELIVERY_AGENCY_NAME: order.DELIVERY_AGENCY_NAME,
-              products: [],
-            };
-          }
-          acc[ORDER_ID].products.push({
-            PRODUCT_NAME: order.PRODUCT_NAME,
-            ORDER_QUANTITY: order.ORDER_QUANTITY,
-          });
-          return acc;
-        }, {});
-
-        setUpcomingOrders(Object.values(groupedOrders));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchPreviousOrders();
-    fetchUpcomingOrders();
-  }, [localdata.PatientId]);
+    setPreviousOrders(dummyPreviousOrders);
+    setUpcomingOrders(dummyUpcomingOrders);
+  }, []);
 
   const renderOrderCard = (order) => (
     <Card key={order.ORDER_ID} style={{ width: "18rem", margin: "10px" }}>

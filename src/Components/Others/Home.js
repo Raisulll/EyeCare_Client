@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DoctorCard from "./DoctorCard";
-import DoctorAppointmentCard from "../Patient/DoctorAppointmentCard";
 import home1 from "../../Assets/images/home1.svg";
 import home2 from "../../Assets/images/home2.svg";
+import DoctorAppointmentCard from "../Patient/DoctorAppointmentCard";
+import DoctorCard from "./DoctorCard";
 import "./Home.css";
 
 const Home = () => {
@@ -13,74 +13,79 @@ const Home = () => {
   const [previousAppointments, setPreviousAppointments] = useState([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
 
-  const localdata = JSON.parse(localStorage.getItem("user"));
-
   useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/doctors");
-        if (!response.ok) throw new Error("Failed to fetch doctors");
-        const data = await response.json();
-        setDoctors(data);
-        console.log(doctors);
-      } catch (error) {
-        console.error("Error fetching doctors:", error);
-      }
-    };
+    // Dummy data for doctors
+    const dummyDoctors = [
+      {
+        DOCTOR_ID: "1",
+        DOCTOR_NAME: "Dr. John Doe",
+        DOCTOR_SPECIALITY: "Ophthalmologist",
+        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      },
+      {
+        DOCTOR_ID: "2",
+        DOCTOR_NAME: "Dr. Jane Smith",
+        DOCTOR_SPECIALITY: "Optometrist",
+        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      },
+      {
+        DOCTOR_ID: "3",
+        DOCTOR_NAME: "Dr. Emily Johnson",
+        DOCTOR_SPECIALITY: "Pediatric Ophthalmologist",
+        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      },
+    ];
 
-    const fetchPreviousAppointments = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/previousappointments?patientId=${localdata.PatientId}`
-        );
-        if (!response.ok)
-          throw new Error("Failed to fetch previous appointments");
-        const data = await response.json();
-        console.log(data);
-        data.forEach((appointment) => {
-          const date = new Date(appointment.APPOINTMENT_DATE);
-          appointment.APPOINTMENT_DATE = date.toDateString();
-        });
-        setPreviousAppointments(data);
-      } catch (error) {
-        console.error("Error fetching previous appointments:", error);
-      }
-    };
+    // Dummy data for previous appointments
+    const dummyPreviousAppointments = [
+      {
+        APPOINTMENT_ID: "1",
+        DOCTOR_NAME: "Dr. John Doe",
+        APPOINTMENT_DATE: "2025-02-10",
+        APPOINTMENT_TIME: "10:00 AM",
+        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        HOSPITAL_NAME: "Hospital A",
+      },
+      {
+        APPOINTMENT_ID: "2",
+        DOCTOR_NAME: "Dr. Jane Smith",
+        APPOINTMENT_DATE: "2025-02-15",
+        APPOINTMENT_TIME: "11:00 AM",
+        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        HOSPITAL_NAME: "Hospital B",
+      },
+    ];
 
-    const fetchUpcomingAppointments = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/upcommingappointments?patientId=${localdata.PatientId}`
-        );
-        if (!response.ok)
-          throw new Error("Failed to fetch upcoming appointments");
-        const data = await response.json();
-        console.log(data);
-        //format the date and time to be more readable
-        data.forEach((appointment) => {
-          const date = new Date(appointment.APPOINTMENT_DATE);
-          appointment.APPOINTMENT_DATE = date.toDateString();
-          // const time = new Date(appointment.APPOINTMENT_TIME);
-          // appointment.APPOINTMENT_TIME = time.toLocaleTimeString();
-        });
-        setUpcomingAppointments(data);
-      } catch (error) {
-        console.error("Error fetching upcoming appointments:", error);
-      }
-    };
+    // Dummy data for upcoming appointments
+    const dummyUpcomingAppointments = [
+      {
+        APPOINTMENT_ID: "3",
+        DOCTOR_NAME: "Dr. Emily Johnson",
+        APPOINTMENT_DATE: "2025-02-20",
+        APPOINTMENT_TIME: "12:00 PM",
+        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        HOSPITAL_NAME: "Hospital C",
+      },
+      {
+        APPOINTMENT_ID: "4",
+        DOCTOR_NAME: "Dr. John Doe",
+        APPOINTMENT_DATE: "2025-02-25",
+        APPOINTMENT_TIME: "01:00 PM",
+        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        HOSPITAL_NAME: "Hospital D",
+      },
+    ];
 
-    fetchDoctors();
-    fetchPreviousAppointments();
-    fetchUpcomingAppointments();
-    console.log("previous: ",previousAppointments);
-    console.log("upcoming",upcomingAppointments);
+    setDoctors(dummyDoctors);
+    setPreviousAppointments(dummyPreviousAppointments);
+    setUpcomingAppointments(dummyUpcomingAppointments);
   }, []);
 
   return (
     <div className="home-container">
       <div className="doctor-image">
         <div className="doctor-list" onClick={() => navigate("/alldoctors")}>
-          {doctors.slice(0, 3).map((doctor,index) => (
+          {doctors.slice(0, 3).map((doctor, index) => (
             <DoctorCard
               key={index}
               image={doctor.DOCTOR_IMAGE}
@@ -89,7 +94,10 @@ const Home = () => {
               doctorId={doctor.DOCTOR_ID}
             />
           ))}
-          <button className="home-button" onClick={() => navigate("/alldoctors")}>
+          <button
+            className="home-button"
+            onClick={() => navigate("/alldoctors")}
+          >
             View All Doctors
           </button>
         </div>
@@ -117,7 +125,10 @@ const Home = () => {
               hospital={appointment.HOSPITAL_NAME}
             />
           ))}
-          <button className="home-button" onClick={() => navigate("/alldoctors")}>
+          <button
+            className="home-button"
+            onClick={() => navigate("/allappointments")}
+          >
             View All Appointments
           </button>
         </div>

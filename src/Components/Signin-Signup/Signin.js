@@ -2,7 +2,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import styled from "styled-components";
 import image from "../../Assets/images/SignIn.svg";
@@ -27,54 +27,11 @@ function SignIn(props) {
       patientEmail: email,
       patientPassword: password,
     };
-    const result = await fetch("http://localhost:5000/auth/login", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (result.status === 200) {
-      const userInfo = await result.json();
-      localStorage.setItem("user", JSON.stringify(userInfo)); //to do - image
-      props.setUser(userInfo);
-      window.dispatchEvent(new Event("storage"));
-      navigate("/profile");
-    } else if (result.status === 401) {
-      toast.error("Invalid Password!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    } else if (result.status === 404) {
-      toast.error("User not exists!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    } else {
-      toast.error("Server Issue!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
+    const userInfo = await result.json();
+    localStorage.setItem("user", JSON.stringify(userInfo)); //to do - image
+    props.setUser(userInfo);
+    window.dispatchEvent(new Event("storage"));
+    navigate("/profile");
   };
 
   return (

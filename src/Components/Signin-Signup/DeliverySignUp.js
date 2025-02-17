@@ -21,17 +21,19 @@ function DeliverySignUp() {
 
   const navigate = useNavigate();
 
-  // if a user is already logged in, they should be redirected to the home page
+  // If a user is already logged in, redirect to the home page
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
       navigate("/");
     }
-  });
+  }, [navigate]);
 
-  const collectData = async (e) => {
+  const collectData = (e) => {
     e.preventDefault();
-    const data = {
+    // Build dummy delivery agency user data from form inputs
+    const dummyData = {
+      id: "deliv-001",
       deliveryName: fullName,
       deliveryMail: email,
       deliveryPhone: phoneNumber,
@@ -43,23 +45,28 @@ function DeliverySignUp() {
       deliveryCharge: deliveryCharge,
       deliveryType: deliveryType,
     };
-    console.log(data);
-    const result = await fetch("http://localhost:5000/auth/deliverysignup", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
+
+    // Save dummy data in localStorage to simulate sign up
+    localStorage.setItem("user", JSON.stringify(dummyData));
+    window.dispatchEvent(new Event("storage"));
+
+    // Show success toast and navigate to the sign in page
+    toast.success("Sign Up Successful", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
     });
-    console.log(result);
-    if (result.status === 200) {
-      navigate("/otheruserssignin");
-    }
+    navigate("/otheruserssignin");
   };
 
   return (
     <div className="mainDiv">
-      <ul class="circles">
+      <ul className="circles">
         <li></li>
         <li></li>
         <li></li>
@@ -176,7 +183,7 @@ function DeliverySignUp() {
               onChange={(e) => setDeliveryLicense(e.target.value)}
               required
             />
-            <label htmlFor="shopLicense" className="label">
+            <label htmlFor="deliveryLicense" className="label">
               Agency License
             </label>
             <div className="underline" />
@@ -191,27 +198,12 @@ function DeliverySignUp() {
               onChange={(e) => setDeliveryCharge(e.target.value)}
               required
             />
-            <label htmlFor="shopLicense" className="label">
+            <label htmlFor="deliveryCharge" className="label">
               Delivery Charge
             </label>
             <div className="underline" />
           </div>
         </StyledWrapper>
-        {/* <StyledWrapper>
-          <div className="input-container">
-            <input
-              type="text"
-              id="deliveryType"
-              value={deliveryType}
-              onChange={(e) => setDeliveryType(e.target.value)}
-              required
-            />
-            <label htmlFor="shopLicense" className="label">
-              Delivery Type
-            </label>
-            <div className="underline" />
-          </div>
-        </StyledWrapper> */}
         <StyledWrapper>
           <div className="input-container">
             <select

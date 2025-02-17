@@ -10,7 +10,7 @@ function ForgotPassword() {
 
   const navigate = useNavigate();
 
-  // if a user is already logged in, they should be redirected to the home page
+  // If a user is already logged in, they should be redirected to the home page
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
@@ -18,33 +18,21 @@ function ForgotPassword() {
     }
   }, [navigate]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      userType: userType,
-      email: email,
-    };
-    console.log(data);
-    const result = await fetch("http://localhost:5000/auth/resetpassword", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    console.log(result);
-    if (result.status === 200) {
-      const responseData = await result.json();
-      setIsSubmitted(true);
-      navigate("/otp", { state: { email: responseData.email } }); // Pass the email as state
-    } else {
-      console.log("Password Reset Failed");
-    }
+
+    // Dummy behavior: simulate a successful password reset request.
+    const dummyResponse = { email };
+
+    setIsSubmitted(true);
+
+    // Navigate to OTP page with dummy response data
+    navigate("/otp", { state: { email: dummyResponse.email } });
   };
 
   return (
     <div className="mainDiv">
-      <ul class="circles">
+      <ul className="circles">
         <li></li>
         <li></li>
         <li></li>
@@ -57,11 +45,11 @@ function ForgotPassword() {
         <li></li>
       </ul>
       <form className="mainForm" onSubmit={handleSubmit}>
-        <h1>Rocover your Account</h1>
+        <h1>Recover your Account</h1>
         <StyledWrapper>
           <div className="input-container">
             <select
-              id="gender"
+              id="userType"
               value={userType}
               onChange={(e) => setUserType(e.target.value)}
               required
@@ -86,7 +74,7 @@ function ForgotPassword() {
               onChange={(e) => setEmail(e.target.value)}
               required
             />
-            <label htmlFor="Email" className="label">
+            <label htmlFor="email" className="label">
               Enter your Email
             </label>
             <div className="underline" />

@@ -15,241 +15,92 @@ function OtherUserSignin() {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
-  // if a user is already logged in, they should be redirected to the home page
+  // If a user is already logged in, redirect to home
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
       navigate("/");
     }
-  });
+  }, [navigate]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const data = {
-      userType: userType,
-      doctorEmail: email,
-      doctorPassword: password,
-    };
 
-    if (userType === "doctor") {
-      delete data.userType;
-      console.log("Doctor Data: ", data);
-      try {
-        const result = await fetch("http://localhost:5000/auth/doctorsignin", {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        console.log(result);
-        if (result.status === 200) {
-          const userInfo = await result.json();
-          localStorage.setItem("user", JSON.stringify(userInfo));
-          window.dispatchEvent(new Event("storage"));
-          navigate("/doctorprofile", { state: { userInfo } });
-          console.log("Doctor Sign In Successful");
-        } else if (result.status === 401) {
-          toast.error("Invalid Password!", {
-            position: "top-right",
-            autoClose: 2500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        } else if (result.status === 404) {
-          toast.error("User not exists!", {
-            position: "top-right",
-            autoClose: 2500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        } else {
-          toast.error("Server Issue!", {
-            position: "top-right",
-            autoClose: 2500,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: false,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    } else if (userType === "shopOwner") {
-      const shopData = {
-        shopMail: email,
-        shopPassword: password,
-      };
-      console.log("Shop Owner Data: ", shopData);
-      const result = await fetch("http://localhost:5000/auth/shopsignin", {
-        method: "POST",
-        body: JSON.stringify(shopData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(result);
-      if (result.status === 200) {
-        const userInfo = await result.json();
-        localStorage.setItem("user", JSON.stringify(userInfo));
-        window.dispatchEvent(new Event("storage"));
-        navigate("/shopprofile", { state: { userInfo } });
-        console.log("Shop Owner Sign In Successful");
-      } else if (result.status === 401) {
-        toast.error("Invalid Password!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else if (result.status === 404) {
-        toast.error("User not exists!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else {
-        toast.error("Server Issue!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
-    } else if (userType === "eyeHospitalManager") {
-      const hospitalData = {
-        hospitalMail: email,
-        hospitalPassword: password,
-      };
-      console.log("Hospital Manager Data: ", hospitalData);
-      const result = await fetch("http://localhost:5000/auth/hospitalsignin", {
-        method: "POST",
-        body: JSON.stringify(hospitalData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(result);
-      if (result.status === 200) {
-        const userInfo = await result.json();
-        localStorage.setItem("user", JSON.stringify(userInfo));
-        window.dispatchEvent(new Event("storage"));
-        navigate("/hospitalProfile", { state: { userInfo } });
-        console.log("Hospital Sign In Successful");
-      } else if (result.status === 401) {
-        toast.error("Invalid Password!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else if (result.status === 404) {
-        toast.error("User not exists!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else {
-        toast.error("Server Issue!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
-    } else {
-      const deliveryData = {
-        deliveryMail: email,
-        deliveryPassword: password,
-      };
-      console.log("Delivery Agency Data: ", deliveryData);
-      const result = await fetch("http://localhost:5000/auth/deliverysignin", {
-        method: "POST",
-        body: JSON.stringify(deliveryData),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      console.log(result);
-      if (result.status === 200) {
-        const userInfo = await result.json();
-        localStorage.setItem("user", JSON.stringify(userInfo));
-        window.dispatchEvent(new Event("storage"));
-        navigate("/deliveryprofile", { state: { userInfo } });
-        console.log("Delivery Agency Sign In Successful");
-      } else if (result.status === 401) {
-        toast.error("Invalid Password!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else if (result.status === 404) {
-        toast.error("User not exists!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else {
-        toast.error("Server Issue!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
+    let userInfo;
+
+    // Create dummy user data without any validation checks
+    switch (userType) {
+      case "doctor":
+        userInfo = {
+          id: "doc-123",
+          name: "Dr. John Doe",
+          email,
+          specialization: "Ophthalmology",
+          phone: "123-456-7890",
+        };
+        break;
+      case "shopOwner":
+        userInfo = {
+          id: "shop-456",
+          name: "Alice Smith",
+          email,
+          shopName: "Alice's Eyewear",
+          address: "123 Fashion Ave, New York, NY",
+          phone: "987-654-3210",
+        };
+        break;
+      case "eyeHospitalManager":
+        userInfo = {
+          id: "hosp-789",
+          name: "Robert Brown",
+          email,
+          hospitalName: "VisionCare Hospital",
+          address: "456 Health Blvd, Los Angeles, CA",
+          phone: "555-555-5555",
+        };
+        break;
+      case "deliveryAgency":
+        userInfo = {
+          id: "deliv-321",
+          name: "Express Delivery Inc.",
+          email,
+          vehicle: "Delivery Van",
+          contact: "444-444-4444",
+        };
+        break;
+      default:
+        userInfo = {
+          id: "guest-000",
+          name: "Guest User",
+          email,
+          role: "guest",
+        };
+        break;
     }
+
+    // Save dummy user info in localStorage and simulate navigation
+    localStorage.setItem("user", JSON.stringify(userInfo));
+    window.dispatchEvent(new Event("storage"));
+    toast.success("Sign In Successful", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+
+    // Navigate to a profile page based on user type (or guest page if none selected)
+    let path = "/";
+    if (userType === "doctor") path = "/doctorprofile";
+    else if (userType === "shopOwner") path = "/shopprofile";
+    else if (userType === "eyeHospitalManager") path = "/hospitalProfile";
+    else if (userType === "deliveryAgency") path = "/deliveryprofile";
+    navigate(path, { state: { userInfo } });
   };
+
   return (
     <div className="maindiv">
       <ul className="circles">
@@ -276,13 +127,12 @@ function OtherUserSignin() {
               id="userType"
               value={userType}
               onChange={(e) => setUserType(e.target.value)}
-              required
             >
               <option value="" hidden></option>
               <option value="doctor">Doctor</option>
               <option value="shopOwner">Shop Owner</option>
               <option value="eyeHospitalManager">Eye Hospital Manager</option>
-              <option value="deliveryAgency">Delivey Agency</option>
+              <option value="deliveryAgency">Delivery Agency</option>
             </select>
             <label htmlFor="userType" className="label">
               Select User Type
@@ -296,7 +146,6 @@ function OtherUserSignin() {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              required
             />
             <label htmlFor="email" className="label">
               Email
@@ -311,13 +160,12 @@ function OtherUserSignin() {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
             />
             <FontAwesomeIcon
               icon={showPassword ? faEye : faEyeSlash}
               className="password-toggle-icon"
               onClick={() => setShowPassword(!showPassword)}
-              style={({ cursor: "pointer" }, { color: "#000" }, { top: "7px" })}
+              style={{ cursor: "pointer", color: "#000", top: "7px" }}
             />
             <label htmlFor="password" className="label">
               Password

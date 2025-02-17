@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -7,45 +7,18 @@ import "../Patient/UserProfile.css";
 
 const DoctorProfile = () => {
   const navigate = useNavigate();
-  const [doctorData, setDoctorData] = useState({});
-  const [imagePreview, setImagePreview] = useState(null);
-  const [fullName, setFullName] = useState("");
-  const [mail, setMail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [district, setDistrict] = useState("");
-  const [area, setArea] = useState("");
-  const [roadNumber, setRoadNumber] = useState("");
-  const [specilaity, setSpeciality] = useState("");
-  const [hospital, setHospital] = useState("");
-  const [timeslot, setTimeslot] = useState("");
-
-  const localdata = JSON.parse(localStorage.getItem("user"));
-
-  useEffect(() => {
-    const fetchDoctorData = async () => {
-      try {
-        const doctor = await fetch(
-          `http://localhost:5000/gets/doctordata?doctorId=${localdata.doctorId}`
-        );
-        const temp = await doctor.json();
-        setDoctorData(temp);
-        setImagePreview(temp.DOCTOR_IMAGE);
-        setFullName(temp.DOCTOR_NAME);
-        setMail(temp.DOCTOR_MAIL);
-        setPhone(temp.DOCTOR_PHONE);
-        setDistrict(temp.DOCTOR_DISTRICT);
-        setArea(temp.DOCTOR_AREA);
-        setRoadNumber(temp.DOCTOR_ROADNUMBER);
-        setSpeciality(temp.DOCTOR_SPECIALITY);
-        setHospital(temp.HOSPITAL_NAME);
-        setTimeslot(temp.DOCTOR_TIMESLOT);
-        console.log(temp);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchDoctorData();
-  }, []);
+  const [imagePreview, setImagePreview] = useState(
+    "https://via.placeholder.com/150"
+  );
+  const [fullName, setFullName] = useState("Dr. John Doe");
+  const [mail, setMail] = useState("john.doe@example.com");
+  const [phone, setPhone] = useState("1234567890");
+  const [district, setDistrict] = useState("District A");
+  const [area, setArea] = useState("Area B");
+  const [roadNumber, setRoadNumber] = useState("123");
+  const [speciality, setSpeciality] = useState("Ophthalmologist");
+  const [hospital, setHospital] = useState("Sample Hospital");
+  const [timeslot, setTimeslot] = useState("09:00 AM - 05:00 PM");
 
   const handleImageClick = () => {
     document.getElementById("file").click();
@@ -55,63 +28,27 @@ const DoctorProfile = () => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = async () => {
+      reader.onload = () => {
         const base64String = reader.result;
         setImagePreview(base64String);
-        try {
-          const res = await fetch(
-            "http://localhost:5000/upload/doctorProfile",
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                imageBase64: base64String,
-                doctorId: localdata.doctorId,
-              }),
-            }
-          );
-
-          const data = await res.json();
-          if (res.ok) {
-            console.log("Image uploaded successfully:", data);
-            toast.success("Image Upload Successful!", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          } else {
-            console.error("Image upload failed:", data.message);
-            toast.error("Image Upload Failed", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          }
-        } catch (error) {
-          console.error("Error uploading image:", error);
-          toast.error("Error uploading image.");
-        }
+        console.log("Image uploaded successfully:", base64String);
+        toast.success("Image Upload Successful!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       };
-
       reader.readAsDataURL(file);
     }
   };
 
-  const updateDoctorData = async () => {
-    console.log("updatePatientData");
-    if (phone.length !== 11) {
+  const updateDoctorData = () => {
+    if (phone.length !== 10) {
       toast.error("Invalid Phone Number!", {
         position: "top-right",
         autoClose: 2500,
@@ -126,64 +63,28 @@ const DoctorProfile = () => {
     }
 
     const data = {
-      doctorId: localdata.doctorId,
       doctorName: fullName,
       doctorMail: mail,
       doctorPhone: phone,
       doctorDistrict: district,
       doctorArea: area,
       doctorRoadNumber: roadNumber,
-      doctorSpeciality: specilaity,
+      doctorSpeciality: speciality,
+      hospitalName: hospital,
+      timeslot: timeslot,
     };
-    console.log("Data:", data);
-    try {
-      const res = await fetch("http://localhost:5000/edit/doctorProfileData", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
 
-      const result = await res.json();
-      if (res.ok) {
-        console.log("Patient data updated successfully:", result);
-        toast.success("Data Updated Successfully!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      } else {
-        console.error("Failed to update patient data:", result.message);
-        toast.error("Failed to update data!", {
-          position: "top-right",
-          autoClose: 2500,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: false,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
-      }
-    } catch (error) {
-      console.error("Error updating patient data:", error);
-      toast.error("Error updating data!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
+    console.log("Doctor data updated successfully:", data);
+    toast.success("Data Updated Successfully!", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
   };
 
   return (
@@ -258,12 +159,12 @@ const DoctorProfile = () => {
             <div className="input-container">
               <input
                 type="text"
-                id="phoneNumber"
-                value={specilaity}
+                id="speciality"
+                value={speciality}
                 onChange={(e) => setSpeciality(e.target.value)}
                 required
               />
-              <label htmlFor="phoneNumber" className="label">
+              <label htmlFor="speciality" className="label">
                 Doctor Speciality
               </label>
               <div className="underline" />
@@ -322,12 +223,12 @@ const DoctorProfile = () => {
             <div className="input-container">
               <input
                 type="text"
-                id="roadNumber"
+                id="hospital"
                 value={hospital}
                 onChange={(e) => setHospital(e.target.value)}
                 required
               />
-              <label htmlFor="roadNumber" className="label">
+              <label htmlFor="hospital" className="label">
                 Hospital Name
               </label>
               <div className="underline" />
@@ -339,12 +240,12 @@ const DoctorProfile = () => {
             <div className="input-container">
               <input
                 type="text"
-                id="timeSlot"
+                id="timeslot"
                 value={timeslot}
                 onChange={(e) => setTimeslot(e.target.value)}
                 required
               />
-              <label htmlFor="roadNumber" className="label">
+              <label htmlFor="timeslot" className="label">
                 Time Slot
               </label>
               <div className="underline" />
@@ -470,7 +371,7 @@ const StyledWrapper = styled.div`
     box-sizing: border-box;
     position: absolute;
     border: solid var(--secondary-color);
-    border-width: 0 var(--arrow-stroke) var(--arrow-stroke) 0;
+    border-width: 0 var(--arrow-stroke) var (--arrow-stroke) 0;
     display: inline-block;
     top: -3px;
     right: 3px;

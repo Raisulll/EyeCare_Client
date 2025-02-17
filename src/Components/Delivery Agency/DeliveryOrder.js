@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Card, Button, ListGroup } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
+import { Button, Card, ListGroup } from "react-bootstrap";
 import "../Shop/shoporder.css";
 
 const DeliveryOrder = () => {
@@ -7,79 +7,53 @@ const DeliveryOrder = () => {
   const localdata = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
-    const fetchOrders = async () => {
-      try {
-        const orders = await fetch(
-          `http://localhost:5000/gets/ordersfordelivery?deliveryId=${localdata.deliveryId}`
-        );
-        const temp = await orders.json();
-
-        // Format the date
-        temp.forEach((order) => {
-          const date = new Date(order.ORDER_DATE);
-          order.ORDER_DATE = `${date.getDate()}/${
-            date.getMonth() + 1
-          }/${date.getFullYear()}`;
-        });
-
-        // Group orders by ORDER_ID
-        const groupedOrders = temp.reduce((acc, order) => {
-          const { ORDER_ID } = order;
-          if (!acc[ORDER_ID]) {
-            acc[ORDER_ID] = {
-              ORDER_ID,
-              PATIENT_NAME: order.PATIENT_NAME,
-              ORDER_DATE: order.ORDER_DATE,
-              DELIVERY_AGENCY_NAME: order.DELIVERY_AGENCY_NAME,
-              PATIENT_ADDRESS: order.PATIENT_ADDRESS, 
-              PATIENT_PHONE: order.PATIENT_PHONE,
-              products: [],
-            };
-          }
-          acc[ORDER_ID].products.push({
-            PRODUCT_NAME: order.PRODUCT_NAME,
-            ORDER_QUANTITY: order.ORDER_QUANTITY,
-          });
-          return acc;
-        }, {});
-
-        setOrder(Object.values(groupedOrders));
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchOrders();
-  }, [localdata.deliveryId]);
-
-  const deliverOrder = async (orderId) => {
-    console.log(`Delivering order ${orderId}...`);
-    try {
-      const response = await fetch(`http://localhost:5000/sets/done`, {
-        method: "POST",
-        body: JSON.stringify({ orderId }),
-        headers: {
-          "Content-Type": "application/json",
+    // Dummy data for orders
+    const dummyOrders = [
+      {
+        ORDER_ID: "1",
+        PATIENT_NAME: "John Doe",
+        ORDER_DATE: "10/2/2025",
+        DELIVERY_AGENCY_NAME: "Sample Delivery Agency",
+        PATIENT_ADDRESS: {
+          PATIENT_ROADNUMBER: "123",
+          PATIENT_AREA: "Area B",
+          PATIENT_DISTRICT: "District A",
         },
-      });
+        PATIENT_PHONE: "1234567890",
+        products: [
+          { PRODUCT_NAME: "Product 1", ORDER_QUANTITY: 2 },
+          { PRODUCT_NAME: "Product 2", ORDER_QUANTITY: 1 },
+        ],
+      },
+      {
+        ORDER_ID: "2",
+        PATIENT_NAME: "Jane Smith",
+        ORDER_DATE: "15/2/2025",
+        DELIVERY_AGENCY_NAME: "Sample Delivery Agency",
+        PATIENT_ADDRESS: {
+          PATIENT_ROADNUMBER: "456",
+          PATIENT_AREA: "Area C",
+          PATIENT_DISTRICT: "District B",
+        },
+        PATIENT_PHONE: "0987654321",
+        products: [
+          { PRODUCT_NAME: "Product 3", ORDER_QUANTITY: 3 },
+          { PRODUCT_NAME: "Product 4", ORDER_QUANTITY: 2 },
+        ],
+      },
+    ];
 
-      // Check if the response is successful (status 200)
-      if (response.status === 200) {
-        // Filter out the delivered order from the UI
-        setOrder((prevOrders) =>
-          prevOrders.filter((order) => order.ORDER_ID !== orderId)
-        );
-        console.log(`Order ${orderId} marked as delivered.`);
-      } else {
-        throw new Error(
-          `Failed to mark order as delivered. Status: ${response.status}`
-        );
-      }
-    } catch (error) {
-      console.error("Error delivering order:", error);
-    }
+    setOrder(dummyOrders);
+  }, []);
+
+  const deliverOrder = (orderId) => {
+    console.log(`Delivering order ${orderId}...`);
+    // Filter out the delivered order from the UI
+    setOrder((prevOrders) =>
+      prevOrders.filter((order) => order.ORDER_ID !== orderId)
+    );
+    console.log(`Order ${orderId} marked as delivered.`);
   };
-
-
 
   return (
     <div className="order-div">

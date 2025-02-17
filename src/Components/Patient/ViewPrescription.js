@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import {
+  Button,
   Card,
   Col,
   Container,
+  Form,
   Row,
   Spinner,
-  Button,
-  Form,
 } from "react-bootstrap";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../../App.css";
@@ -22,19 +22,17 @@ const ViewPrescription = () => {
   const [surgeryTime, setSurgeryTime] = useState("");
 
   useEffect(() => {
-    const fetchPrescription = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/gets/prescriptionforpatient?appointmentId=${appointmentId}`
-        );
-        const data = await response.json();
-        setPrescription(data);
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching prescription:", error);
-      }
+    // Dummy data for prescription
+    const dummyPrescription = {
+      DOCTOR_NAME: "Dr. John Doe",
+      APPOINTMENT_DATE: "2025-02-15T00:00:00Z",
+      PATIENT_ISSUE: "Eye Infection",
+      MEDICINE: "Antibiotic Eye Drops",
+      GLASS: "Yes",
+      SURGERY: "Cataract Surgery",
     };
-    fetchPrescription();
+
+    setPrescription(dummyPrescription);
   }, [appointmentId]);
 
   const scheduleSurgery = () => {
@@ -46,22 +44,9 @@ const ViewPrescription = () => {
       surgerystatus: "Scheduled",
     };
 
-    fetch(`http://localhost:5000/sets/surgery`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(scheduleData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Surgery scheduled:", data);
-        // Navigate or show a confirmation to the user
-        navigate(`/surgeryconfirmation?appointmentId=${appointmentId}`);
-      })
-      .catch((error) => {
-        console.error("Error scheduling surgery:", error);
-      });
+    console.log("Surgery scheduled:", scheduleData);
+    // Navigate or show a confirmation to the user
+    navigate(`/surgeryconfirmation?appointmentId=${appointmentId}`);
   };
 
   if (!prescription) {

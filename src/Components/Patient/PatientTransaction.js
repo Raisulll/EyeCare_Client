@@ -11,22 +11,29 @@ const PatientTransaction = () => {
   console.log(patientId);
 
   useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const response = await fetch(`http://localhost:5000/gets/sendpatienttransactions?patientId=${patientId}`);
-        const data = await response.json();
-        console.log(data);
-        setTransactions(data);
-      } catch (error) {
-        console.error("Error fetching transactions:", error);
-      }
-    };
-    fetchTransactions();
+    // Dummy data for transactions
+    const dummyTransactions = [
+      {
+        PAYMENT_TO: "Clinic A",
+        TRANSACTION_FOR: "Consultation",
+        TRANSACTION_DATE: "2025-02-10T00:00:00Z",
+        TRANSACTION_AMOUNT: "$100",
+      },
+      {
+        PAYMENT_TO: "Clinic B",
+        TRANSACTION_FOR: "Medication",
+        TRANSACTION_DATE: "2025-02-15T00:00:00Z",
+        TRANSACTION_AMOUNT: "$50",
+      },
+    ];
+
+    setTransactions(dummyTransactions);
   }, [patientId]);
-  
+
   const toggleTableVisibility = () => {
     setIsTableVisible(!isTableVisible);
   };
+
   return (
     <div className="appointments-container">
       <h2 onClick={toggleTableVisibility} className="toggle-bar">

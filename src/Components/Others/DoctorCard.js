@@ -1,12 +1,17 @@
 import React from "react";
-import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
+import styled from "styled-components";
 
-const DoctorCard = ({ image, name, role, doctorId }) => {
+const DoctorCard = ({
+  image = "https://via.placeholder.com/150",
+  name = "Dr. John Doe",
+  role = "Ophthalmologist",
+  doctorId = "1",
+}) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/viewdoctorprofile/${doctorId}`); 
+    navigate(`/viewdoctorprofile/${doctorId}`);
     console.log("Doctor ID:", doctorId);
   };
 

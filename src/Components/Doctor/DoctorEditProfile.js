@@ -5,16 +5,16 @@ import { useNavigate } from "react-router-dom";
 const EditProfile = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    doctorName: "",
-    doctorGender: "",
-    doctorEmail: "",
-    doctorPhone: "",
-    doctorDistrict: "",
-    doctorArea: "",
-    doctorRoadNum: "",
-    doctorLicense: "",
-    timeslot: "",
-    experience: "",
+    doctorName: "Dr. John Doe",
+    doctorGender: "Male",
+    doctorEmail: "john.doe@example.com",
+    doctorPhone: "1234567890",
+    doctorDistrict: "District A",
+    doctorArea: "Area B",
+    doctorRoadNum: "123",
+    doctorLicense: "ABC123",
+    timeslot: "09:00 AM - 05:00 PM",
+    experience: "10 years",
   });
 
   useEffect(() => {
@@ -22,16 +22,16 @@ const EditProfile = () => {
     if (user) {
       setFormData({
         doctorId: user.doctorId,
-        doctorName: user.doctorName || "",
-        doctorGender: user.doctorGender || "",
-        doctorEmail: user.doctorEmail || "",
-        doctorPhone: user.doctorPhone || "",
-        doctorDistrict: user.doctorDistrict || "",
-        doctorArea: user.doctorArea || "",
-        doctorRoadNum: user.doctorRoadNum || "",
-        doctorLicense: user.doctorLicense || "",
-        timeslot: user.timeslot || "",
-        experience: user.experience || "",
+        doctorName: user.doctorName || "Dr. John Doe",
+        doctorGender: user.doctorGender || "Male",
+        doctorEmail: user.doctorEmail || "john.doe@example.com",
+        doctorPhone: user.doctorPhone || "1234567890",
+        doctorDistrict: user.doctorDistrict || "District A",
+        doctorArea: user.doctorArea || "Area B",
+        doctorRoadNum: user.doctorRoadNum || "123",
+        doctorLicense: user.doctorLicense || "ABC123",
+        timeslot: user.timeslot || "09:00 AM - 05:00 PM",
+        experience: user.experience || "10 years",
       });
     }
   }, []);
@@ -44,29 +44,13 @@ const EditProfile = () => {
     }));
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    try {
-      const response = await fetch(`http://localhost:5000/edit/doctorprofile`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      if (response.ok) {
-        alert("Profile updated successfully!");
-        //update local storage with new profile data
-        localStorage.setItem("user", JSON.stringify(formData));
-        navigate("/doctorprofile");
-      } else {
-        throw new Error("Failed to update profile");
-      }
-    } catch (error) {
-      console.error("Error updating profile:", error);
-      alert("Failed to update profile. Please try again.");
-    }
+    alert("Profile updated successfully!");
+    // Update local storage with new profile data
+    localStorage.setItem("user", JSON.stringify(formData));
+    navigate("/doctorprofile");
   };
 
   return (

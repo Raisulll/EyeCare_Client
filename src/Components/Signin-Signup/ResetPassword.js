@@ -27,22 +27,7 @@ function ResetPassword() {
       email: email,
       password: password,
     };
-
-    const result = await fetch("http://localhost:5000/auth/updatepass", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    console.log(result);
-
-    if (result.status === 200) {
-      navigate("/signin");
-    } else {
-      setError("Password update failed. Please try again.");
-    }
+    navigate("/signin");
   };
 
   return (

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import CartItem from "./CartItem";
 import { toast, ToastContainer } from "react-toastify";
@@ -7,48 +6,62 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Cart.css";
 
 const Cart = () => {
-  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [deliveryAgencies, setDeliveryAgencies] = useState([]);
   const [selectedAgency, setSelectedAgency] = useState(null);
   const [totalAmount, setTotalAmount] = useState(0);
-  const localdata = JSON.parse(localStorage.getItem("user"));
-  const [orderId, setOrderId] = useState("");
+
+  // Dummy data for cart items
+  const dummyCartItems = [
+    {
+      PRODUCT_ID: 1,
+      SHOP_ID: 101,
+      SHOP_NAME: "Health Store",
+      PRODUCT_IMAGE: "https://via.placeholder.com/150",
+      PRODUCT_NAME: "Vitamin C Tablets",
+      PRODUCT_PRICE: 15.99,
+      CART_QUANTITY: 2,
+      QUANTITY: 10,
+    },
+    {
+      PRODUCT_ID: 2,
+      SHOP_ID: 102,
+      SHOP_NAME: "Wellness Center",
+      PRODUCT_IMAGE: "https://via.placeholder.com/150",
+      PRODUCT_NAME: "Protein Powder",
+      PRODUCT_PRICE: 49.99,
+      CART_QUANTITY: 1,
+      QUANTITY: 5,
+    },
+  ];
+
+  // Dummy data for delivery agencies
+  const dummyDeliveryAgencies = [
+    {
+      DELIVERY_AGENCY_ID: 1,
+      DELIVERY_AGENCY_NAME: "Fast Delivery Co.",
+      DELIVERY_AGENCY_STATUS: "Active",
+      DELIVERY_CHARGE: 5.99,
+    },
+    {
+      DELIVERY_AGENCY_ID: 2,
+      DELIVERY_AGENCY_NAME: "Quick Ship Inc.",
+      DELIVERY_AGENCY_STATUS: "Active",
+      DELIVERY_CHARGE: 7.99,
+    },
+  ];
 
   useEffect(() => {
-    const fetchCartItems = async () => {
-      try {
-        const cartItems = await fetch(
-          `http://localhost:5000/gets/cartitems?patientId=${localdata.PatientId}`
-        );
-        const temp = await cartItems.json();
-        setCartItems(temp);
-      } catch (error) {
-        console.error("Error fetching cart items:", error);
-      }
-    };
-    fetchCartItems();
-
-    const fetchDeliveryAgencies = async () => {
-      try {
-        const deliveryAgencies = await fetch(
-          `http://localhost:5000/gets/deliveryagency`
-        );
-        const temp = await deliveryAgencies.json();
-        setDeliveryAgencies(temp);
-
-        if (temp.length > 0) {
-          setSelectedAgency(temp[0]); 
-        }
-      } catch (error) {
-        console.error("Error fetching delivery agencies:", error);
-      }
-    };
-    fetchDeliveryAgencies();
+    // Simulate fetching cart items and delivery agencies
+    setCartItems(dummyCartItems);
+    setDeliveryAgencies(dummyDeliveryAgencies);
+    if (dummyDeliveryAgencies.length > 0) {
+      setSelectedAgency(dummyDeliveryAgencies[0]);
+    }
   }, []);
 
   useEffect(() => {
-    updateTotalAmount(selectedAgency); 
+    updateTotalAmount(selectedAgency);
   }, [cartItems, selectedAgency]);
 
   const updateQuantity = (productId, newQuantity) => {
@@ -84,7 +97,7 @@ const Cart = () => {
     setTotalAmount(totalItemsAmount + deliveryCharge);
   };
 
-  const checkout = async () => {
+  const checkout = () => {
     if (cartItems.length === 0) {
       toast.error("Your cart is empty. Please add items to proceed.", {
         position: "top-right",
@@ -93,32 +106,16 @@ const Cart = () => {
       });
       return;
     }
-    const data = {
-      patientId: localdata.PatientId,
-      deliveryAgencyId: selectedAgency.DELIVERY_AGENCY_ID,
-      amount : totalAmount,
-    };
-
-    console.log("data", data);
-    try {
-      const result = await fetch("http://localhost:5000/sets/placeorder", {
-        method: "POST",
-        body: JSON.stringify(data),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      if (result.status === 200) {
-        navigate("/");
-      }
-    } catch (error) {
-      console.error("Error placing order:", error);
-    }
+    toast.success("Order placed successfully!", {
+      position: "top-right",
+      autoClose: 3000,
+      hideProgressBar: true,
+    });
   };
 
   return (
     <div className="cartContainer">
-      <ToastContainer /> {/* Toast notification container */}
+      <ToastContainer />
       <div className="secondContainer">
         <div className="main-cart-items">
           <h2>Cart</h2>
@@ -211,7 +208,6 @@ const StyledWrapper = styled.div`
     margin: 15px auto;
     width: 35vw;
   }
-
   .input-container input[type="text"],
   .input-container input[type="email"],
   .input-container input[type="date"],
@@ -226,7 +222,6 @@ const StyledWrapper = styled.div`
     background-color: transparent;
     outline: none;
   }
-
   .input-container .label {
     position: absolute;
     top: 0;
@@ -235,7 +230,6 @@ const StyledWrapper = styled.div`
     transition: all 0.3s ease;
     pointer-events: none;
   }
-
   .input-container input:focus ~ .label,
   .input-container input:valid ~ .label,
   .input-container select:focus ~ .label,
@@ -244,7 +238,6 @@ const StyledWrapper = styled.div`
     font-size: 16px;
     color: #263238;
   }
-
   .input-container .underline {
     position: absolute;
     bottom: 0;
@@ -255,12 +248,10 @@ const StyledWrapper = styled.div`
     transform: scaleX(0);
     transition: all 0.3s ease;
   }
-
   .input-container input:focus ~ .underline,
   .input-container input:valid ~ .underline {
     transform: scaleX(1);
   }
-
   button {
     --primary-color: #645bff;
     --secondary-color: #fff;
@@ -279,13 +270,11 @@ const StyledWrapper = styled.div`
     gap: 0.6em;
     font-weight: bold;
   }
-
   button .arrow-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
   }
-
   button .arrow {
     margin-top: 1px;
     width: var(--arrow-width);
@@ -294,7 +283,6 @@ const StyledWrapper = styled.div`
     position: relative;
     transition: 0.2s;
   }
-
   button .arrow::before {
     content: "";
     box-sizing: border-box;
@@ -308,15 +296,12 @@ const StyledWrapper = styled.div`
     padding: 3px;
     transform: rotate(-45deg);
   }
-
   button:hover {
     background-color: var(--hover-color);
   }
-
   button:hover .arrow {
     background: var(--secondary-color);
   }
-
   button:hover .arrow:before {
     right: 0;
   }

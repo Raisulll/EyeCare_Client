@@ -9,50 +9,75 @@ const AllAppointments = () => {
   const [previousAppointments, setPreviousAppointments] = useState([]);
   const [upcomingAppointments, setUpcomingAppointments] = useState([]);
 
-  const localdata = JSON.parse(localStorage.getItem("user"));
+  // Static dummy data for appointments
+  const dummyPreviousAppointments = [
+    {
+      APPOINTMENT_ID: 1,
+      APPOINTMENT_DATE: "2023-09-25T10:00:00Z",
+      APPOINTMENT_TIME: "10:00 AM",
+      DOCTOR_NAME: "Dr. John Smith",
+      DOCTOR_SPECIALITY: "Cardiologist",
+      HOSPITAL_NAME: "City Hospital",
+      DOCTOR_IMAGE: "https://via.placeholder.com/150",
+    },
+    {
+      APPOINTMENT_ID: 2,
+      APPOINTMENT_DATE: "2023-09-20T14:30:00Z",
+      APPOINTMENT_TIME: "2:30 PM",
+      DOCTOR_NAME: "Dr. Jane Doe",
+      DOCTOR_SPECIALITY: "Dermatologist",
+      HOSPITAL_NAME: "Green Valley Clinic",
+      DOCTOR_IMAGE: "https://via.placeholder.com/150",
+    },
+  ];
+
+  const dummyUpcomingAppointments = [
+    {
+      APPOINTMENT_ID: 3,
+      APPOINTMENT_DATE: "2023-10-10T09:00:00Z",
+      APPOINTMENT_TIME: "9:00 AM",
+      DOCTOR_NAME: "Dr. Emily Brown",
+      DOCTOR_SPECIALITY: "Pediatrician",
+      HOSPITAL_NAME: "Sunrise Hospital",
+      DOCTOR_IMAGE: "https://via.placeholder.com/150",
+    },
+    {
+      APPOINTMENT_ID: 4,
+      APPOINTMENT_DATE: "2023-10-15T11:00:00Z",
+      APPOINTMENT_TIME: "11:00 AM",
+      DOCTOR_NAME: "Dr. Michael Green",
+      DOCTOR_SPECIALITY: "Orthopedic Surgeon",
+      HOSPITAL_NAME: "Central Health",
+      DOCTOR_IMAGE: "https://via.placeholder.com/150",
+    },
+  ];
 
   useEffect(() => {
-    const fetchPreviousAppointments = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/previousappointments?patientId=${localdata.PatientId}`
-        );
-        if (!response.ok)
-          throw new Error("Failed to fetch previous appointments");
-        const data = await response.json();
-        console.log("Previous Appointments:", data);
-        data.forEach((appointment) => {
-          const date = new Date(appointment.APPOINTMENT_DATE);
-          appointment.APPOINTMENT_DATE = date.toDateString();
-        });
-        setPreviousAppointments(data);
-      } catch (error) {
-        console.error("Error fetching previous appointments:", error);
+    // Format dates for previous appointments
+    const formattedPreviousAppointments = dummyPreviousAppointments.map(
+      (appointment) => {
+        const date = new Date(appointment.APPOINTMENT_DATE);
+        return {
+          ...appointment,
+          APPOINTMENT_DATE: date.toDateString(),
+        };
       }
-    };
+    );
 
-    const fetchUpcomingAppointments = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/upcommingappointments?patientId=${localdata.PatientId}`
-        );
-        if (!response.ok)
-          throw new Error("Failed to fetch upcoming appointments");
-        const data = await response.json();
-        console.log("Upcoming Appointments:", data);
-        data.forEach((appointment) => {
-          const date = new Date(appointment.APPOINTMENT_DATE);
-          appointment.APPOINTMENT_DATE = date.toDateString();
-        });
-        setUpcomingAppointments(data);
-      } catch (error) {
-        console.error("Error fetching upcoming appointments:", error);
+    // Format dates for upcoming appointments
+    const formattedUpcomingAppointments = dummyUpcomingAppointments.map(
+      (appointment) => {
+        const date = new Date(appointment.APPOINTMENT_DATE);
+        return {
+          ...appointment,
+          APPOINTMENT_DATE: date.toDateString(),
+        };
       }
-    };
+    );
 
-    fetchPreviousAppointments();
-    fetchUpcomingAppointments();
-  }, [localdata.PatientId]); // Dependency array to avoid infinite re-fetch
+    setPreviousAppointments(formattedPreviousAppointments);
+    setUpcomingAppointments(formattedUpcomingAppointments);
+  }, []);
 
   return (
     <div className="home-container">
@@ -77,6 +102,7 @@ const AllAppointments = () => {
           <p>No previous appointments found</p>
         )}
       </div>
+
       <h6>Upcoming Appointments</h6>
       <div className="doctor-list">
         {upcomingAppointments.length > 0 ? (

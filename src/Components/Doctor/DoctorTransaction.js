@@ -7,37 +7,33 @@ const DoctorTransaction = () => {
   const [transactions, setTransactions] = useState([]);
   const [isTableVisible, setIsTableVisible] = useState(true);
 
-  // Fetch doctorId from localStorage
-  const doctorData = JSON.parse(localStorage.getItem("user"));
-  const doctorId = doctorData?.doctorId;
-  console.log(doctorId);
-
   useEffect(() => {
-    const fetchTransactions = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/gets/senddoctortransactions?doctorId=${doctorId}`
-        );
-        const data = await response.json();
-        console.log(data);
-        setTransactions(data);
-      } catch (error) {
-        console.error("Error fetching transactions:", error);
-      }
-    };
+    // Dummy data for transactions
+    const dummyTransactions = [
+      {
+        PATIENT_NAME: "John Doe",
+        TRANSACTION_DATE: "2025-02-10T00:00:00Z",
+        TRANSACTION_AMOUNT: "$100",
+      },
+      {
+        PATIENT_NAME: "Jane Smith",
+        TRANSACTION_DATE: "2025-02-15T00:00:00Z",
+        TRANSACTION_AMOUNT: "$150",
+      },
+      {
+        PATIENT_NAME: "Emily Johnson",
+        TRANSACTION_DATE: "2025-02-20T00:00:00Z",
+        TRANSACTION_AMOUNT: "$200",
+      },
+    ];
 
-    if (doctorId) {
-      fetchTransactions();
-    }
-  }, [doctorId]);
-
+    setTransactions(dummyTransactions);
+  }, []);
 
   return (
     <StyledWrapper>
       <div className="card">
-        <div className="card__title" >
-          Transactions History
-        </div>
+        <div className="card__title">Transactions History</div>
         {isTableVisible && (
           <>
             {/* Table Headers */}

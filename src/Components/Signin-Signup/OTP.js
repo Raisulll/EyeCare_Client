@@ -23,19 +23,7 @@ function OTP() {
     e.preventDefault();
     const enteredOtp = otp.join("");
 
-    const result = await fetch("http://localhost:5000/auth/verifyotp", {
-      method: "POST",
-      body: JSON.stringify({ otp: enteredOtp, email }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (result.status === 200) {
-      navigate("/resetpassword", { state: { email } });
-    } else {
-      console.log("OTP Verification Failed");
-    }
+    navigate("/resetpassword", { state: { email } });
   };
 
   return (

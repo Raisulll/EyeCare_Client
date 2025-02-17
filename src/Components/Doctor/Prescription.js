@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Button, Card, Col, Container, Form, Row } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../../App.css";
 
 function Prescription() {
@@ -10,10 +9,10 @@ function Prescription() {
   const params = new URLSearchParams(location.search);
   const appointmentId = params.get("appointmentId");
 
-  const [doctorName, setDoctorName] = useState("");
-  const [patientName, setPatientName] = useState("");
-  const [patientAge, setPatientAge] = useState("");
-  const [appointmentDate, setAppointmentDate] = useState("");
+  const [doctorName, setDoctorName] = useState("Dr. John Doe");
+  const [patientName, setPatientName] = useState("Jane Doe");
+  const [patientAge, setPatientAge] = useState("30 years");
+  const [appointmentDate, setAppointmentDate] = useState("2025-02-15");
   const [patientIssue, setPatientIssue] = useState("");
   const [medicine, setMedicine] = useState("");
   const [glassNeeded, setGlassNeeded] = useState(false);
@@ -21,28 +20,7 @@ function Prescription() {
   const [surgeryNeeded, setSurgeryNeeded] = useState(false);
   const [surgeryDetails, setSurgeryDetails] = useState("");
 
-  useEffect(() => {
-    const fetchAppointmentInfo = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/gets/appointmentinfo?appointmentId=${appointmentId}`
-        );
-        const data = await response.json();
-        setDoctorName(data.DOCTOR_NAME);
-        setPatientName(data.PATIENT_NAME);
-        const date = new Date(data.APPOINTMENT_DATE);
-        const options = { year: "numeric", month: "short", day: "numeric" };
-        const formattedDate = date.toLocaleDateString("en-IN", options);
-        setAppointmentDate(formattedDate);
-        setPatientAge(`${data.PATIENT_AGE} years`);
-      } catch (error) {
-        console.error("Error fetching appointment info:", error);
-      }
-    };
-    fetchAppointmentInfo();
-  }, [appointmentId]);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
 
     const data = {
@@ -53,19 +31,8 @@ function Prescription() {
       surgeryDetails: surgeryNeeded ? surgeryDetails : null,
     };
 
-    const result = await fetch("http://localhost:5000/sets/setprescription", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (result.status === 200) {
-      navigate("/doctorprofile");
-    } else {
-      console.error("Failed to save prescription");
-    }
+    console.log("Prescription data saved successfully:", data);
+    navigate("/doctorprofile");
   };
 
   return (

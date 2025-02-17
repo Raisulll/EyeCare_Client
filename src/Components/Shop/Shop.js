@@ -7,42 +7,44 @@ import "../Patient/UserProfile.css";
 
 const Shop = () => {
   const navigate = useNavigate();
-  const [shopData, setShopData] = useState([]);
-  const [imagePreview, setImagePreview] = useState(null);
-  const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
-  const [district, setDistrict] = useState("");
-  const [area, setArea] = useState("");
-  const [roadNumber, setRoadNumber] = useState("");
-  const [orders, setOrders] = useState([]);
   const localdata = JSON.parse(localStorage.getItem("user"));
+  // For demo purposes, ensure localdata has a ShopId (or use a dummy one)
+  const shopId = localdata?.ShopId || "shop-001";
+  console.log("Shop ID:", shopId);
+
+  // Dummy shop data
+  const dummyShopData = {
+    SHOP_IMAGE: "https://via.placeholder.com/150",
+    SHOP_NAME: "Demo Shop",
+    SHOP_MAIL: "demo@shop.com",
+    SHOP_PHONE: "1234567890",
+    SHOP_DISTRICT: "Demo District",
+    SHOP_AREA: "Demo Area",
+    SHOP_ROADNUMBER: "123 Demo Road",
+  };
+
+  const [shopData, setShopData] = useState(dummyShopData);
+  const [imagePreview, setImagePreview] = useState(dummyShopData.SHOP_IMAGE);
+  const [fullName, setFullName] = useState(dummyShopData.SHOP_NAME);
+  const [email, setEmail] = useState(dummyShopData.SHOP_MAIL);
+  const [phone, setPhone] = useState(dummyShopData.SHOP_PHONE);
+  const [district, setDistrict] = useState(dummyShopData.SHOP_DISTRICT);
+  const [area, setArea] = useState(dummyShopData.SHOP_AREA);
+  const [roadNumber, setRoadNumber] = useState(dummyShopData.SHOP_ROADNUMBER);
+  const [orders, setOrders] = useState([]);
 
   useEffect(() => {
-    const fetchShopData = async () => {
-      try {
-        const shop = await fetch(
-          `http://localhost:5000/gets/shopdata?shopid=${localdata.ShopId}`
-        );
-        const temp = await shop.json();
-        setShopData(temp);
-        console.log(temp);
-        setImagePreview(temp.SHOP_IMAGE);
-        setFullName(temp.SHOP_NAME);
-        setEmail(temp.SHOP_MAIL);
-        setPhone(temp.SHOP_PHONE);
-        setDistrict(temp.SHOP_DISTRICT);
-        setArea(temp.SHOP_AREA);
-        setRoadNumber(temp.SHOP_ROADNUMBER);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchShopData();
+    // Instead of fetching, we load dummy shop data
+    setShopData(dummyShopData);
+    setImagePreview(dummyShopData.SHOP_IMAGE);
+    setFullName(dummyShopData.SHOP_NAME);
+    setEmail(dummyShopData.SHOP_MAIL);
+    setPhone(dummyShopData.SHOP_PHONE);
+    setDistrict(dummyShopData.SHOP_DISTRICT);
+    setArea(dummyShopData.SHOP_AREA);
+    setRoadNumber(dummyShopData.SHOP_ROADNUMBER);
   }, []);
 
-  
   const handleImageClick = () => {
     document.getElementById("file").click();
   };
@@ -51,53 +53,22 @@ const Shop = () => {
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = async () => {
+      reader.onload = () => {
         const base64String = reader.result;
         setImagePreview(base64String);
-        try {
-          const res = await fetch("http://localhost:5000/upload/shopprofile", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              imageBase64: base64String,
-              shopId: localdata.ShopId,
-            }),
-          });
-
-          const data = await res.json();
-          if (res.ok) {
-            console.log("Image uploaded successfully:", data);
-            toast.success("Image Upload Successful!", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          } else {
-            console.error("Image upload failed:", data.message);
-            toast.error("Image Upload Failed", {
-              position: "top-right",
-              autoClose: 2500,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: false,
-              draggable: true,
-              progress: undefined,
-              theme: "colored",
-            });
-          }
-        } catch (error) {
-          console.error("Error uploading image:", error);
-          toast.error("Error uploading image.");
-        }
+        // Simulate a successful image upload (dummy)
+        console.log("Dummy image uploaded successfully.");
+        toast.success("Image Upload Successful!", {
+          position: "top-right",
+          autoClose: 2500,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: false,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
       };
-
       reader.readAsDataURL(file);
     }
   };
@@ -162,12 +133,12 @@ const Shop = () => {
             <div className="input-container">
               <input
                 type="text"
-                id="phoneNumber"
+                id="district"
                 value={district}
                 onChange={(e) => setDistrict(e.target.value)}
                 required
               />
-              <label htmlFor="phoneNumber" className="label">
+              <label htmlFor="district" className="label">
                 District
               </label>
               <div className="underline" />
@@ -220,7 +191,21 @@ const Shop = () => {
             </button>
           </StyledWrapper>
           <StyledWrapper>
-            <button>
+            <button
+              onClick={() => {
+                // Dummy update logic: simply show a toast message.
+                toast.success("Profile Updated (Dummy)!", {
+                  position: "top-right",
+                  autoClose: 2500,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: false,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "colored",
+                });
+              }}
+            >
               Update
               <div className="arrow-wrapper">
                 <div className="arrow" />
@@ -350,6 +335,5 @@ const StyledWrapper = styled.div`
     right: 0;
   }
 `;
-
 
 export default Shop;

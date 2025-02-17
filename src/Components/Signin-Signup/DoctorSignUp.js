@@ -4,7 +4,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./Signup.css";
 import styled from "styled-components";
-import image from "../../Assets/images/SignUp.svg"
+import image from "../../Assets/images/SignUp.svg";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 
 function DoctorSignUp() {
   const [fullName, setFullName] = useState("");
@@ -19,11 +21,11 @@ function DoctorSignUp() {
   const [doctorLicense, setDoctorLicense] = useState("");
   const [timeSlot, setTimeSlot] = useState("");
   const [experience, setExperience] = useState("");
-  const [payment, setPayment] = useState();
+  const [payment, setPayment] = useState("");
 
   const navigate = useNavigate();
 
-  // if a user is already logged in, they should be redirected to the home page
+  // If a user is already logged in, redirect to the home page
   useEffect(() => {
     const user = localStorage.getItem("user");
     if (user) {
@@ -31,9 +33,11 @@ function DoctorSignUp() {
     }
   }, [navigate]);
 
-  const collectData = async (e) => {
+  const collectData = (e) => {
     e.preventDefault();
-    const data = {
+    // Build dummy doctor data from the form inputs
+    const dummyData = {
+      id: "doc-001",
       doctorName: fullName,
       doctorEmail: email,
       doctorPhone: phoneNumber,
@@ -45,36 +49,30 @@ function DoctorSignUp() {
       doctorLicense: doctorLicense,
       timeSlot: timeSlot,
       experience: experience,
+      payment: payment,
     };
 
-    const result = await fetch("http://localhost:5000/auth/doctorsignup", {
-      method: "POST",
-      body: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    // Save dummy doctor data in localStorage
+    localStorage.setItem("user", JSON.stringify(dummyData));
+    window.dispatchEvent(new Event("storage"));
 
-    console.log(result);
-    if (result.status === 200) {
-      navigate("/otheruserssignin");
-    } else if (result.status === 409) {
-      toast.error("User already exists!", {
-        position: "top-right",
-        autoClose: 2500,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: false,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
-    }
+    // Show success toast and navigate to the sign in page
+    toast.success("Sign Up Successful", {
+      position: "top-right",
+      autoClose: 2500,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+    navigate("/otheruserssignin");
   };
 
   return (
     <div className="mainDiv">
-      <ul class="circles">
+      <ul className="circles">
         <li></li>
         <li></li>
         <li></li>
@@ -268,6 +266,12 @@ function DoctorSignUp() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <FontAwesomeIcon
+              icon={showPassword ? faEye : faEyeSlash}
+              className="password-toggle-icon"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{ cursor: "pointer", color: "#000", top: "7px" }}
+            />
             <label htmlFor="password" className="label">
               Password
             </label>
@@ -403,6 +407,5 @@ const StyledWrapper = styled.div`
     right: 0;
   }
 `;
-
 
 export default DoctorSignUp;

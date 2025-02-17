@@ -1,49 +1,50 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import DoctorCard from "./DoctorCard";
 import "./AllDoctors.css";
+import DoctorCard from "./DoctorCard";
 
 const AllDoctors = () => {
   const [doctors, setDoctors] = useState([]);
 
   useEffect(() => {
-    const fetchDoctors = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/doctors");
-        if (!response.ok) throw new Error("Failed to fetch doctors");
-        const data = await response.json();
-        console.log("data", data);
-        setDoctors(data);
-      } catch (error) {
-        console.error("Error fetching doctors:", error);
-        alert(error.message);
-      }
-    };
+    // Dummy data for doctors
+    const dummyDoctors = [
+      {
+        DOCTOR_ID: "1",
+        DOCTOR_NAME: "Dr. John Doe",
+        DOCTOR_SPECIALITY: "Ophthalmologist",
+        DOCTOR_PAYMENT: "100",
+        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      },
+      {
+        DOCTOR_ID: "2",
+        DOCTOR_NAME: "Dr. Jane Smith",
+        DOCTOR_SPECIALITY: "Optometrist",
+        DOCTOR_PAYMENT: "150",
+        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      },
+      {
+        DOCTOR_ID: "3",
+        DOCTOR_NAME: "Dr. Emily Johnson",
+        DOCTOR_SPECIALITY: "Pediatric Ophthalmologist",
+        DOCTOR_PAYMENT: "200",
+        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      },
+    ];
 
-    fetchDoctors();
+    setDoctors(dummyDoctors);
   }, []);
 
-  const handleSearch = async (e) => {
+  const handleSearch = (e) => {
     const search = e.target.value.toLowerCase();
     console.log("Search:", search);
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/doctorsearch?search=${search}`
-      );
-      const data = await response.json();
-      console.log("Search results:", data);
-      const formattedDoctors = data.map((doctor) => ({
-        id: doctor.DOCTOR_ID,
-        name: doctor.DOCTOR_NAME,
-        experience: doctor.DOCTOR_SPECIALITY,
-        payment: doctor.DOCTOR_PAYMENT,
-        image: doctor.DOCTOR_IMAGE,
-      }));
-      setDoctors(data);
-      console.log("Doctors fetched successfully", doctors);
-    } catch (error) {
-      console.error("Error fetching products:", error);
-    }
+
+    // Filter dummy doctors based on search input
+    const filteredDoctors = doctors.filter((doctor) =>
+      doctor.DOCTOR_NAME.toLowerCase().includes(search)
+    );
+
+    setDoctors(filteredDoctors);
   };
 
   return (
