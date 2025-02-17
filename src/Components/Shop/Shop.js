@@ -14,7 +14,7 @@ const Shop = () => {
 
   // Dummy shop data
   const dummyShopData = {
-    SHOP_IMAGE: "https://via.placeholder.com/150",
+    SHOP_IMAGE: "https://placehold.co/600x400",
     SHOP_NAME: "Demo Shop",
     SHOP_MAIL: "demo@shop.com",
     SHOP_PHONE: "1234567890",

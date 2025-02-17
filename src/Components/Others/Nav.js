@@ -6,7 +6,7 @@ import "./Nav.css";
 function NavigationBar() {
   const [user, setUser] = useState({
     userType: "patient",
-    patientImage: "https://via.placeholder.com/150",
+    patientImage: "https://placehold.co/600x400",
   });
   const [dropdownActive, setDropdownActive] = useState(false);
   const navigate = useNavigate();

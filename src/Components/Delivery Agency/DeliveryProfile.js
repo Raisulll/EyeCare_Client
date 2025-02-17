@@ -7,7 +7,7 @@ import "../Patient/UserProfile.css";
 
 const DeliveryProfile = () => {
   const [imagePreview, setImagePreview] = useState(
-    "https://via.placeholder.com/150"
+    "https://placehold.co/600x400"
   );
   const [fullName, setFullName] = useState("Sample Delivery Agency");
   const [email, setEmail] = useState("delivery@example.com");

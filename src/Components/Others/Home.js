@@ -20,19 +20,19 @@ const Home = () => {
         DOCTOR_ID: "1",
         DOCTOR_NAME: "Dr. John Doe",
         DOCTOR_SPECIALITY: "Ophthalmologist",
-        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        DOCTOR_IMAGE: "https://placehold.co/600x400",
       },
       {
         DOCTOR_ID: "2",
         DOCTOR_NAME: "Dr. Jane Smith",
         DOCTOR_SPECIALITY: "Optometrist",
-        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        DOCTOR_IMAGE: "https://placehold.co/600x400",
       },
       {
         DOCTOR_ID: "3",
         DOCTOR_NAME: "Dr. Emily Johnson",
         DOCTOR_SPECIALITY: "Pediatric Ophthalmologist",
-        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        DOCTOR_IMAGE: "https://placehold.co/600x400",
       },
     ];
 
@@ -43,7 +43,7 @@ const Home = () => {
         DOCTOR_NAME: "Dr. John Doe",
         APPOINTMENT_DATE: "2025-02-10",
         APPOINTMENT_TIME: "10:00 AM",
-        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        DOCTOR_IMAGE: "https://placehold.co/600x400",
         HOSPITAL_NAME: "Hospital A",
       },
       {
@@ -51,7 +51,7 @@ const Home = () => {
         DOCTOR_NAME: "Dr. Jane Smith",
         APPOINTMENT_DATE: "2025-02-15",
         APPOINTMENT_TIME: "11:00 AM",
-        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        DOCTOR_IMAGE: "https://placehold.co/600x400",
         HOSPITAL_NAME: "Hospital B",
       },
     ];
@@ -63,7 +63,7 @@ const Home = () => {
         DOCTOR_NAME: "Dr. Emily Johnson",
         APPOINTMENT_DATE: "2025-02-20",
         APPOINTMENT_TIME: "12:00 PM",
-        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        DOCTOR_IMAGE: "https://placehold.co/600x400",
         HOSPITAL_NAME: "Hospital C",
       },
       {
@@ -71,7 +71,7 @@ const Home = () => {
         DOCTOR_NAME: "Dr. John Doe",
         APPOINTMENT_DATE: "2025-02-25",
         APPOINTMENT_TIME: "01:00 PM",
-        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        DOCTOR_IMAGE: "https://placehold.co/600x400",
         HOSPITAL_NAME: "Hospital D",
       },
     ];

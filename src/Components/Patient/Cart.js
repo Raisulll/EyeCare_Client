@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
-import CartItem from "./CartItem";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import styled from "styled-components";
 import "./Cart.css";
+import CartItem from "./CartItem";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -17,7 +17,7 @@ const Cart = () => {
       PRODUCT_ID: 1,
       SHOP_ID: 101,
       SHOP_NAME: "Health Store",
-      PRODUCT_IMAGE: "https://via.placeholder.com/150",
+      PRODUCT_IMAGE: "https://placehold.co/600x400",
       PRODUCT_NAME: "Vitamin C Tablets",
       PRODUCT_PRICE: 15.99,
       CART_QUANTITY: 2,
@@ -27,7 +27,7 @@ const Cart = () => {
       PRODUCT_ID: 2,
       SHOP_ID: 102,
       SHOP_NAME: "Wellness Center",
-      PRODUCT_IMAGE: "https://via.placeholder.com/150",
+      PRODUCT_IMAGE: "https://placehold.co/600x400",
       PRODUCT_NAME: "Protein Powder",
       PRODUCT_PRICE: 49.99,
       CART_QUANTITY: 1,

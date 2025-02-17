@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const DoctorCard = ({
-  image = "https://via.placeholder.com/150",
+  image = "https://placehold.co/600x400",
   name = "Dr. John Doe",
   role = "Ophthalmologist",
   doctorId = "1",

@@ -8,7 +8,7 @@ import "../Patient/UserProfile.css";
 const DoctorProfile = () => {
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(
-    "https://via.placeholder.com/150"
+    "https://placehold.co/600x400"
   );
   const [fullName, setFullName] = useState("Dr. John Doe");
   const [mail, setMail] = useState("john.doe@example.com");

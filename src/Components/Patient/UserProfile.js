@@ -20,7 +20,7 @@ const UserProfile = (props) => {
   useEffect(() => {
     // Dummy data for patient
     const dummyPatientData = {
-      patient_image: "https://via.placeholder.com/150",
+      patient_image: "https://placehold.co/600x400",
       patient_name: "John Doe",
       patient_mail: "john.doe@example.com",
       patient_phone: "1234567890",

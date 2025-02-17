@@ -9,7 +9,7 @@ const ViewDoctorProfile = () => {
   const { doctorId } = useParams(); // Get doctorId from URL parameters
   const navigate = useNavigate();
   const [imagePreview, setImagePreview] = useState(
-    "https://via.placeholder.com/150"
+    "https://placehold.co/600x400"
   );
   const [fullName, setFullName] = useState("Dr. John Doe");
   const [mail, setMail] = useState("john.doe@example.com");
@@ -30,7 +30,7 @@ const ViewDoctorProfile = () => {
 
   useEffect(() => {
     const dummyDoctorData = {
-      DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      DOCTOR_IMAGE: "https://placehold.co/600x400",
       DOCTOR_NAME: "Dr. John Doe",
       DOCTOR_MAIL: "john.doe@example.com",
       DOCTOR_PHONE: "1234567890",

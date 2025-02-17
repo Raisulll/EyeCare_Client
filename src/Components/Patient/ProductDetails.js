@@ -10,7 +10,7 @@ function ProductDetails() {
       title: "Sample Product",
       description: "This is a sample product description.",
       price: "99.99",
-      image_url: "https://via.placeholder.com/150",
+      image_url: "https://placehold.co/600x400",
       shopName: "Sample Shop",
       quantity: 10,
     };

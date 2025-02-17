@@ -14,21 +14,21 @@ const AllDoctors = () => {
         DOCTOR_NAME: "Dr. John Doe",
         DOCTOR_SPECIALITY: "Ophthalmologist",
         DOCTOR_PAYMENT: "100",
-        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        DOCTOR_IMAGE: "https://placehold.co/600x400",
       },
       {
         DOCTOR_ID: "2",
         DOCTOR_NAME: "Dr. Jane Smith",
         DOCTOR_SPECIALITY: "Optometrist",
         DOCTOR_PAYMENT: "150",
-        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        DOCTOR_IMAGE: "https://placehold.co/600x400",
       },
       {
         DOCTOR_ID: "3",
         DOCTOR_NAME: "Dr. Emily Johnson",
         DOCTOR_SPECIALITY: "Pediatric Ophthalmologist",
         DOCTOR_PAYMENT: "200",
-        DOCTOR_IMAGE: "https://via.placeholder.com/150",
+        DOCTOR_IMAGE: "https://placehold.co/600x400",
       },
     ];
 

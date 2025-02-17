@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import DoctorAppointmentCard from "../Patient/DoctorAppointmentCard";
 import "../Others/AllDoctors.css";
+import DoctorAppointmentCard from "../Patient/DoctorAppointmentCard";
 
 const AllAppointments = () => {
   const navigate = useNavigate();
@@ -18,7 +18,7 @@ const AllAppointments = () => {
       DOCTOR_NAME: "Dr. John Smith",
       DOCTOR_SPECIALITY: "Cardiologist",
       HOSPITAL_NAME: "City Hospital",
-      DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      DOCTOR_IMAGE: "https://placehold.co/600x400",
     },
     {
       APPOINTMENT_ID: 2,
@@ -27,7 +27,7 @@ const AllAppointments = () => {
       DOCTOR_NAME: "Dr. Jane Doe",
       DOCTOR_SPECIALITY: "Dermatologist",
       HOSPITAL_NAME: "Green Valley Clinic",
-      DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      DOCTOR_IMAGE: "https://placehold.co/600x400",
     },
   ];
 
@@ -39,7 +39,7 @@ const AllAppointments = () => {
       DOCTOR_NAME: "Dr. Emily Brown",
       DOCTOR_SPECIALITY: "Pediatrician",
       HOSPITAL_NAME: "Sunrise Hospital",
-      DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      DOCTOR_IMAGE: "https://placehold.co/600x400",
     },
     {
       APPOINTMENT_ID: 4,
@@ -48,7 +48,7 @@ const AllAppointments = () => {
       DOCTOR_NAME: "Dr. Michael Green",
       DOCTOR_SPECIALITY: "Orthopedic Surgeon",
       HOSPITAL_NAME: "Central Health",
-      DOCTOR_IMAGE: "https://via.placeholder.com/150",
+      DOCTOR_IMAGE: "https://placehold.co/600x400",
     },
   ];
 
