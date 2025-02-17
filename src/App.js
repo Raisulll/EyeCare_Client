@@ -120,6 +120,7 @@ function AppContent() {
           <Route path="/GetAppointment" element={<GetAppointment />} />
           <Route path="/deliverysignup" element={<DeliverySignUp />} />
           <Route path="/productdetails" element={<ProductDetails />} />
+          
         </Routes>
       </main>
     </>
